@@ -6,11 +6,12 @@
  *   fixtures/ui/*      -> src/components/ui/__ds-lint-fixtures__/
  * Each `@expect ds/<rule>` comment means "the next line must report <rule>". Nothing else may be reported.
  */
+
+import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { cpSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { join, relative } from "node:path";
 import { after, before, test } from "node:test";
-import assert from "node:assert/strict";
 
 const root = join(import.meta.dirname, "../..");
 const targets = {
