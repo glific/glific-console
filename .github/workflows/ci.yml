@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  VITE_API_URL: /api
+
+jobs:
+  checks:
+    name: Typecheck, lint, test, build, size
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install Playwright Chromium (Vitest Browser Mode)
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Lint
+        run: pnpm exec biome ci --reporter=github .
+      - name: Design-system lint
+        run: pnpm lint:ds
+      - name: Unit and component tests (coverage gate on src/components)
+        run: pnpm test:coverage
+      - name: Build
+        run: pnpm build
+      - name: Bundle size
+        run: pnpm size
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: coverage
+          path: coverage
+          retention-days: 7
+
+  e2e:
+    name: E2E, a11y and visual
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Same image as `pnpm test:visual:update`, so screenshots match the committed baselines.
+    container:
+      image: mcr.microsoft.com/playwright:v1.65.0-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: E2E and a11y
+        run: pnpm test:e2e
+      - name: Visual regression
+        run: pnpm test:visual
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7

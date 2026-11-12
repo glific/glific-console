@@ -1,0 +1,14 @@
+[
+  {
+    "name": "App JS (initial)",
+    "path": "dist/assets/index-*.js",
+    "limit": "200 kB",
+    "gzip": true
+  },
+  {
+    "name": "App CSS",
+    "path": "dist/assets/index-*.css",
+    "limit": "16 kB",
+    "gzip": true
+  }
+]

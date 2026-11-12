@@ -1,0 +1,56 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits"],
+  "schedule": ["before 6am on monday"],
+  "timezone": "Asia/Kolkata",
+  "rangeStrategy": "pin",
+  "lockFileMaintenance": { "enabled": true, "schedule": ["before 6am on monday"] },
+  "packageRules": [
+    {
+      "description": "Automerge patch updates to devDependencies only",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    { "groupName": "React", "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"] },
+    {
+      "groupName": "Vite and Vitest",
+      "matchPackageNames": ["vite", "@vitejs/**", "vitest", "@vitest/**", "@tailwindcss/vite"]
+    },
+    {
+      "description": "Keep @playwright/test in step with the Docker image used for visual baselines (re-run pnpm test:visual:update after bumping)",
+      "groupName": "Playwright",
+      "matchPackageNames": ["@playwright/test", "@axe-core/playwright", "axe-core"]
+    },
+    {
+      "groupName": "Tailwind and shadcn",
+      "matchPackageNames": [
+        "tailwindcss",
+        "tw-animate-css",
+        "shadcn",
+        "cn",
+        "class-variance-authority",
+        "radix-ui",
+        "lucide-react",
+        "sonner"
+      ]
+    },
+    {
+      "groupName": "Tooling",
+      "matchPackageNames": [
+        "@biomejs/biome",
+        "typescript",
+        "lefthook",
+        "@commitlint/**",
+        "@changesets/**",
+        "size-limit",
+        "@size-limit/**"
+      ]
+    },
+    {
+      "groupName": "Data, routing and i18n",
+      "matchPackageNames": ["@tanstack/**", "react-router", "i18next", "react-i18next", "msw"]
+    },
+    { "groupName": "GitHub Actions", "matchManagers": ["github-actions"] }
+  ]
+}

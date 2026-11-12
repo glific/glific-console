@@ -1,0 +1,19 @@
+# Installed by `pnpm install` (prepare script). Skip once with LEFTHOOK=0 git commit ...
+pre-commit:
+  parallel: true
+  jobs:
+    - name: biome
+      glob: "*.{js,ts,tsx,jsx,json,jsonc,css}"
+      run: pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
+    - name: typecheck
+      glob: "*.{ts,tsx}"
+      run: pnpm exec tsc -b
+    - name: ds-lint
+      glob: "{src/**,tools/ds-lint/**,biome.json}"
+      run: pnpm lint:ds
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: pnpm exec commitlint --edit {1}
