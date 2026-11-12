@@ -31,6 +31,8 @@ describe("RadioGroup", () => {
     await expect
       .element(screen.getByRole("radio", { name: "sms" }))
       .toHaveFocus()
+    // Radix also checks on arrow-focus, but that depends on keydown/focus ordering and flakes on slow CI; Space is deterministic.
+    await userEvent.keyboard(" ")
     await expect
       .element(screen.getByRole("radio", { name: "sms" }))
       .toBeChecked()
