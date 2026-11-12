@@ -8,7 +8,7 @@ import { worker } from "@/test/msw";
 import { renderRoute } from "@/test/render";
 
 async function fillAndSubmit(phone: string, password: string) {
-  await userEvent.fill(screen.getByLabelText("Phone number"), phone);
+  await userEvent.fill(await screen.findByLabelText("Phone number"), phone);
   await userEvent.fill(screen.getByLabelText("Password"), password);
   await userEvent.keyboard("{Enter}");
 }
@@ -40,7 +40,7 @@ describe("LoginPage", () => {
 
   it("validates empty fields, toggles password visibility and handles network failure", async () => {
     renderRoute("/login", { signedIn: false });
-    await userEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    await userEvent.click(await screen.findByRole("button", { name: "Sign in" }));
     expect((await screen.findByRole("alert")).textContent).toContain("Enter your phone number and password.");
 
     const password = screen.getByLabelText("Password");

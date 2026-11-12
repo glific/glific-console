@@ -43,6 +43,8 @@ export default defineConfig(({ mode }) => {
         "sonner",
         "msw",
         "msw/browser",
+        "msw/graphql",
+        "graphql-ws",
         "axe-core",
         "@testing-library/react",
       ],

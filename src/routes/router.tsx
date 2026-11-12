@@ -1,6 +1,5 @@
 import { createBrowserRouter, Navigate, type RouteObject } from "react-router";
-import { LoginPage, LogoutPage, RequireAuth } from "@/features/auth";
-import { ContactsPage } from "@/features/contacts";
+import { RequireAuth } from "@/features/auth/require-auth";
 import { internalPagesEnabled } from "@/lib/internal-pages";
 import { HomePage } from "./home";
 import { NotFoundPage } from "./not-found";
@@ -13,8 +12,13 @@ interface RouteOptions {
 
 export function createRoutes({ internalPages }: RouteOptions): RouteObject[] {
   return [
-    { path: "login", element: <LoginPage />, errorElement: <RouteErrorBoundary /> },
-    { path: "logout", element: <LogoutPage /> },
+    // Every page is lazy so the first load is only the shell; each route fetches its own chunk.
+    {
+      path: "login",
+      lazy: async () => ({ Component: (await import("@/features/auth/login-page")).LoginPage }),
+      errorElement: <RouteErrorBoundary />,
+    },
+    { path: "logout", lazy: async () => ({ Component: (await import("@/features/auth/logout-page")).LogoutPage }) },
     {
       element: (
         <RequireAuth>
@@ -27,7 +31,10 @@ export function createRoutes({ internalPages }: RouteOptions): RouteObject[] {
           errorElement: <RouteErrorBoundary />,
           children: [
             { index: true, element: <HomePage /> },
-            { path: "contacts", element: <ContactsPage /> },
+            {
+              path: "contacts",
+              lazy: async () => ({ Component: (await import("@/features/contacts")).ContactsPage }),
+            },
             ...(internalPages ? internalRoutes : []),
             { path: "*", element: <NotFoundPage /> },
           ],

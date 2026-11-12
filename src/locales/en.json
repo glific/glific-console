@@ -39,16 +39,20 @@
   },
   "contacts": {
     "title": "Contacts",
-    "description": "People who have messaged your WhatsApp number.",
+    "description": "Everyone who has messaged your WhatsApp number.",
     "search": "Search contacts",
     "columns": {
       "name": "Name",
       "phone": "Phone",
-      "status": "Status"
+      "status": "Status",
+      "lastMessage": "Last message"
     },
     "status": {
-      "valid": "Opted in",
-      "invalid": "Opted out"
+      "VALID": "Active",
+      "PROCESSING": "Processing",
+      "INVALID": "Invalid number",
+      "FAILED": "Failed",
+      "BLOCKED": "Blocked"
     },
     "empty": {
       "title": "No contacts yet",
@@ -190,5 +194,9 @@
     },
     "signOut": "Sign out",
     "signingOut": "Signing out…"
+  },
+  "list": {
+    "total_one": "{{count}} result",
+    "total_other": "{{count}} results"
   }
 }

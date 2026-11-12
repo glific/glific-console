@@ -8,11 +8,15 @@ test.describe("contacts", () => {
     await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Contacts" }).click();
     await expect(page).toHaveURL(/\/contacts$/);
     await expect(page.getByRole("heading", { level: 1, name: "Contacts" })).toBeVisible();
-    await expect(page.getByRole("row")).toHaveCount(5);
+    await expect(page.getByRole("row")).toHaveCount(26);
+    await expect(page.getByText("60 results")).toBeVisible();
+
+    await page.getByRole("button", { name: "Next" }).click();
+    await expect(page.getByText("Page 2 of 3")).toBeVisible();
 
     await page.getByRole("searchbox", { name: "Search contacts" }).fill("rahul");
-    await expect(page.getByRole("row")).toHaveCount(2);
-    await expect(page.getByRole("cell", { name: "Rahul Verma" })).toBeVisible();
+    await expect(page.getByText("6 results")).toBeVisible();
+    await expect(page.getByRole("cell", { name: "Rahul Verma", exact: true })).toBeVisible();
 
     await page.getByRole("searchbox", { name: "Search contacts" }).fill("nobody");
     await expect(page.getByRole("heading", { name: "No matching contacts" })).toBeVisible();

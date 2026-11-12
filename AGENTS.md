@@ -15,7 +15,7 @@ TanStack Query, i18next. Single app, pnpm. Stack rationale: `docs/adr/0001-stack
 | `pnpm test` / `pnpm test:coverage` | Vitest Browser Mode (Chromium). Coverage gate: 80% on `src/components`                       |
 | `pnpm test:e2e`                    | Playwright flows + axe a11y (starts its own dev server)                                      |
 | `pnpm test:visual`                 | Visual regression. Baselines come only from `pnpm test:visual:update` (runs in Docker)       |
-| `pnpm build` / `pnpm size`         | Production build / bundle budgets (`.size-limit.json`)                                       |
+| `pnpm build` / `pnpm size`         | Production build / bundle budgets (`.size-limit.js`: initial load and total)                 |
 | `pnpm changeset`                   | Record a user-facing change                                                                  |
 
 ## Layout
@@ -77,9 +77,16 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
 
 ## Data
 
-- Server state lives in TanStack Query hooks in `features/<name>/api.ts` with a key factory (`contactKeys`).
-- HTTP goes through `apiClient` (`src/lib/api-client.ts`). Never call `fetch` from components.
-- Add an MSW handler in `src/mocks/handlers.ts` for every endpoint you use, so dev and tests work offline.
+- The API is Glific's GraphQL. Write operations with `graphql(\`query Name ...\`)`from`@/graphql/generated`in
+ `features/<name>/api.ts`, run them with `request()`from`@/graphql/client`, wrap them in TanStack Query hooks
+  with a key factory (`contactKeys`). Live updates: `subscribe()`from`@/graphql/subscriptions`.
+- After adding or changing an operation run `pnpm codegen` and commit `src/graphql/generated` (CI fails if stale).
+  Backend schema changed? `pnpm schema:pull` (needs the `glific` repo at `../glific` or `GLIFIC_BACKEND_DIR`).
+- REST (auth only) goes through `apiClient`. Never call `fetch` from components.
+- Add an MSW handler for every operation (`glificApi.query("Name", ...)` in `src/mocks/handlers.ts`) so dev and tests
+  work offline. Dev sign-in with MSW: any phone, password `password`.
+- Pages are lazy routes in `src/routes/router.tsx` (`lazy: () => import(...)`), so the first load stays small.
+- List screens use `ListPage` (`src/components/list-page.tsx`): search, filters, server pagination and all states.
 - Env vars: add to `src/lib/env.ts` (typed + validated) and `.env.example`. Never read `import.meta.env` elsewhere.
 
 ## Tests
