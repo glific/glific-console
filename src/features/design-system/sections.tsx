@@ -77,8 +77,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { spacingTokens, typographyTokens } from "@/styles/tokens";
-import { Palette } from "./palette";
 
 /*
  * Internal catalog page. The sample copy below ("Rename flow", "Asha Kulkarni") is demo fixture data, not product
@@ -87,6 +85,8 @@ import { Palette } from "./palette";
 
 export interface CatalogSection {
   id: string;
+  /** Table-of-contents group. */
+  group?: "Foundations" | "Components" | "Glific patterns";
   title: string;
   description: string;
   content: ReactNode;
@@ -101,71 +101,13 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-const typeClass: Record<string, string> = {
-  "text-display": "text-display",
-  "text-title": "text-title",
-  "text-heading": "text-heading",
-  "text-subheading": "text-subheading",
-  "text-body": "text-body",
-  "text-body-sm": "text-body-sm",
-  "text-caption": "text-caption",
-};
-
-const spacingClass: Record<string, string> = {
-  page: "w-page",
-  section: "w-section",
-  stack: "w-stack",
-  inline: "w-inline",
-};
-
 const buttonVariants = ["default", "secondary", "outline", "ghost", "destructive", "link"] as const;
 const badgeVariants = ["default", "secondary", "outline", "destructive", "ghost", "link"] as const;
 const badgeTones = ["neutral", "success", "warning", "danger", "info", "ai"] as const;
 
 export const sections: CatalogSection[] = [
   {
-    id: "colours",
-    title: "Colours",
-    description:
-      "Each colour once, from src/styles/tokens.css, with the semantic tokens that use it. Use the token as a class (bg-primary, text-muted-foreground), never the raw value.",
-    content: <Palette />,
-  },
-  {
-    id: "typography",
-    title: "Typography",
-    description: "The type scale. Use text-title for page titles, text-body for UI text.",
-    content: (
-      <div className="flex flex-col gap-stack">
-        {typographyTokens.map((token) => (
-          <div key={token.name} className="flex flex-wrap items-baseline gap-stack">
-            <span className="w-32 shrink-0 font-mono text-caption text-muted-foreground">{token.name}</span>
-            <span className={typeClass[token.name]}>Send a welcome message</span>
-            <span className="text-caption text-muted-foreground">{token.description}</span>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: "spacing",
-    title: "Spacing",
-    description: "Named spacing for layout. The numeric Tailwind scale (gap-2, p-4) is still available.",
-    content: (
-      <div className="flex flex-col gap-stack">
-        {spacingTokens.map((token) => (
-          <div key={token.name} className="flex items-center gap-stack">
-            <span className="w-32 shrink-0 font-mono text-caption text-muted-foreground">{token.utility}</span>
-            <div
-              className={`h-4 rounded-sm bg-primary ${spacingClass[token.utility ?? ""] ?? ""}`}
-              aria-hidden="true"
-            />
-            <span className="text-caption text-muted-foreground">{token.description}</span>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
+    group: "Components",
     id: "button",
     title: "Button",
     description: "components/ui/button. Add a variant here instead of creating a new button component.",
@@ -204,6 +146,7 @@ export const sections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "badge",
     title: "Badge",
     description: "components/ui/badge",
@@ -227,6 +170,7 @@ export const sections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "form",
     title: "Form controls",
     description: "Input, Textarea, Select, Checkbox, Switch, RadioGroup, composed with Field for labels and errors.",
@@ -282,6 +226,7 @@ export const sections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "card",
     title: "Card",
     description: "components/ui/card",
@@ -300,6 +245,7 @@ export const sections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "tabs",
     title: "Tabs",
     description: "components/ui/tabs, default and line variants",
@@ -327,6 +273,7 @@ export const sections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "table",
     title: "Table",
     description: "components/ui/table",
@@ -357,6 +304,7 @@ export const sections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "avatar",
     title: "Avatar, Skeleton, Separator",
     description: "Display primitives",
@@ -394,6 +342,7 @@ export const sections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "overlays",
     title: "Overlays",
     description: "Dialog, AlertDialog, Sheet, DropdownMenu, Popover, Tooltip and toasts",
@@ -496,6 +445,7 @@ export const sections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "composed",
     title: "Composed components",
     description: "src/components: PageHeader, EmptyState, ErrorState, Spinner",

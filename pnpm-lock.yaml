@@ -166,6 +166,12 @@ importers:
 
   .:
     dependencies:
+      '@fontsource-variable/google-sans-flex':
+        specifier: 5.3.2
+        version: 5.3.2
+      '@fontsource-variable/noto-sans-devanagari':
+        specifier: 5.3.0
+        version: 5.3.0
       '@tanstack/react-query':
         specifier: 5.107.1
         version: 5.107.1(@types/react@19.3.0)(react@19.3.1)
@@ -704,6 +710,12 @@ packages:
 
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
+
+  '@fontsource-variable/google-sans-flex@5.3.2':
+    resolution: {integrity: sha512-y7k6vuO6ib6GdOns4Da7NungIK7W5PXblS+ObXyaHPcKNKNSmJrEFMzsMsIL2SINGjV3+knXzyGnyfcj4X44qw==}
+
+  '@fontsource-variable/noto-sans-devanagari@5.3.0':
+    resolution: {integrity: sha512-52XBcJS3jRvZ5ugFXJvdKgffXPYnN08LeodXkgCbepOdMKVRVTQu1yj071cq8S3zmUwT6w6XKKXRSQlQkwwNNg==}
 
   '@inquirer/ansi@2.1.0':
     resolution: {integrity: sha512-63GU5AD9KhNbWM0jlhHoMJTEFck2upFOPxHlnCKf3xYTV3rjTUUQfodihmTnfYQzMLS29oy8lK/gA1eJgu4bhA==}
@@ -4522,6 +4534,10 @@ snapshots:
       react-dom: 19.3.1(react@19.3.1)
 
   '@floating-ui/utils@0.2.12': {}
+
+  '@fontsource-variable/google-sans-flex@5.3.2': {}
+
+  '@fontsource-variable/noto-sans-devanagari@5.3.0': {}
 
   '@inquirer/ansi@2.1.0': {}
 

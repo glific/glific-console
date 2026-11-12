@@ -22,11 +22,17 @@ TanStack Query, i18next. Single app, pnpm. Stack rationale: `docs/adr/0001-stack
 
 ```
 src/components/ui/     shadcn components: owned code, customised in place
-src/components/        app-level composed components (EmptyState, ErrorState, PageHeader, Spinner)
+src/components/        app-level composed components (EmptyState, ErrorState, PageHeader, StatTile, ...)
+src/components/chat/   chat: MessageBubble, MessageMedia, PollMessage, ChatHeader, ChatComposer, ...
+src/components/whatsapp/  WhatsApp previews: TemplateMessage, ListMessage, QuickReplyMessage, WhatsAppText
+src/components/ai/     Glific AI: AiMark, PromptBox, ThinkingIndicator, PromptSuggestions, AiMessage
+src/components/data-table/  DataTable (TanStack Table v9): sorting, selection, client/server pagination
 src/features/<name>/   feature code: components, hooks, api.ts, types.ts, tests, index.ts (public surface)
+src/features/design-system/  the /design-system brandbook page: check it before building anything new
 src/routes/            route tree (router.tsx), layout, pages, 404, error boundary
 src/lib/               api-client, query-client, env/config, i18n, storage, utils (cn)
-src/styles/tokens.css  ALL design tokens; tokens.ts is the manifest the catalog reads
+src/styles/tokens.css  ALL design tokens; tokens.ts is the manifest the design-system page reads
+src/styles/fonts.css   self-hosted Google Sans Flex + Noto Sans Devanagari (Latin, Latin Ext, Devanagari only)
 src/locales/en.json    UI strings
 src/mocks/             MSW handlers (dev + tests)
 src/test/              test helpers: renderWithProviders, renderRoute, expectNoA11yViolations, MSW worker

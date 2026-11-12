@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { to: "/", key: "nav.home", end: true },
   { to: "/contacts", key: "nav.contacts", end: false },
-  { to: "/components", key: "nav.components", end: false },
+  { to: "/design-system", key: "nav.designSystem", end: false },
 ] as const;
 
 export function RootLayout() {

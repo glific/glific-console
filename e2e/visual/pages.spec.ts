@@ -14,9 +14,9 @@ test.describe("visual @visual", () => {
     await expect(page).toHaveScreenshot("contacts.png", { fullPage: true });
   });
 
-  test("components", async ({ page }) => {
-    await page.goto("/components");
-    await expect(page.getByRole("heading", { level: 1, name: "Components" })).toBeVisible();
-    await expect(page).toHaveScreenshot("components.png", { fullPage: true });
+  test("design-system", async ({ page }) => {
+    await page.goto("/design-system");
+    await expect(page.getByRole("heading", { level: 1, name: "Design system" })).toBeVisible();
+    await expect(page).toHaveScreenshot("design-system.png", { fullPage: true });
   });
 });

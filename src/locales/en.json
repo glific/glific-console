@@ -7,7 +7,7 @@
     "label": "Main",
     "home": "Home",
     "contacts": "Contacts",
-    "components": "Components"
+    "designSystem": "Design system"
   },
   "common": {
     "loading": "Loading",
@@ -61,11 +61,6 @@
     "error": {
       "title": "Couldn't load contacts"
     }
-  },
-  "catalog": {
-    "title": "Components",
-    "description": "Everything available to build screens with: tokens, shadcn/ui components and our composed components.",
-    "jumpTo": "Jump to section"
   },
   "pagination": {
     "label": "Pagination",
@@ -173,5 +168,10 @@
     "send": "Ask",
     "thinking": "Thinking…",
     "suggestions": "Suggestions"
+  },
+  "designSystem": {
+    "title": "Design system",
+    "description": "Glific 2.0 brandbook: principles, brand, colour, type and every component, built from the real tokens.",
+    "contents": "Contents"
   }
 }

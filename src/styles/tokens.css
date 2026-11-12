@@ -115,7 +115,8 @@
   --radius: 0.75rem;
 
   /* Devanagari is in the stack because much of Glific's content is Hindi or Marathi. */
-  --font-family-sans: "Google Sans Flex", -apple-system, "Segoe UI", "Noto Sans Devanagari", sans-serif;
+  --font-family-sans:
+    "Google Sans Flex Variable", "Noto Sans Devanagari Variable", -apple-system, "Segoe UI", sans-serif;
   --font-family-mono: "SF Mono", ui-monospace, Menlo, monospace;
 }
 

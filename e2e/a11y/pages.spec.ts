@@ -3,7 +3,7 @@ import { expect, test } from "../fixtures";
 const pages = [
   { path: "/", heading: "Home" },
   { path: "/contacts", heading: "Contacts" },
-  { path: "/components", heading: "Components" },
+  { path: "/design-system", heading: "Design system" },
   { path: "/nowhere", heading: "Page not found" },
 ];
 

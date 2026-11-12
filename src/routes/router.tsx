@@ -1,4 +1,4 @@
-import { createBrowserRouter, type RouteObject } from "react-router";
+import { createBrowserRouter, Navigate, type RouteObject } from "react-router";
 import { ContactsPage } from "@/features/contacts";
 import { HomePage } from "./home";
 import { NotFoundPage } from "./not-found";
@@ -16,10 +16,11 @@ export const routes: RouteObject[] = [
           { index: true, element: <HomePage /> },
           { path: "contacts", element: <ContactsPage /> },
           {
-            path: "components",
-            // Lazy: the catalog pulls in every component (charts, emoji, calendar) and must not weigh on the app bundle.
-            lazy: async () => ({ Component: (await import("@/features/component-catalog")).CatalogPage }),
+            path: "design-system",
+            // Lazy: the design system pulls in every component (charts, emoji, calendar) and must not weigh on the app bundle.
+            lazy: async () => ({ Component: (await import("@/features/design-system")).DesignSystemPage }),
           },
+          { path: "components", element: <Navigate to="/design-system" replace /> },
           { path: "*", element: <NotFoundPage /> },
         ],
       },

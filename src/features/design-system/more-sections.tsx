@@ -367,6 +367,7 @@ const chartData = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i)
 
 export const moreSections: CatalogSection[] = [
   {
+    group: "Glific patterns",
     id: "chat",
     title: "Chat",
     description:
@@ -384,6 +385,7 @@ export const moreSections: CatalogSection[] = [
     ),
   },
   {
+    group: "Glific patterns",
     id: "whatsapp",
     title: "WhatsApp preview",
     description: "components/whatsapp: how templates and interactive messages look on the contact's phone.",
@@ -428,6 +430,7 @@ export const moreSections: CatalogSection[] = [
     ),
   },
   {
+    group: "Glific patterns",
     id: "ai",
     title: "Glific AI",
     description:
@@ -435,6 +438,7 @@ export const moreSections: CatalogSection[] = [
     content: <AiDemo />,
   },
   {
+    group: "Components",
     id: "data-table",
     title: "Data table",
     description:
@@ -442,12 +446,14 @@ export const moreSections: CatalogSection[] = [
     content: <DataTableDemo />,
   },
   {
+    group: "Components",
     id: "pickers",
     title: "Pickers and inputs",
     description: "Combobox (single and multi), date picker, search, file upload.",
     content: <PickersDemo />,
   },
   {
+    group: "Components",
     id: "feedback",
     title: "Feedback and status",
     description: "Alert, Progress, StatusDot, StatTile, HelpTip, Kbd",
@@ -501,6 +507,7 @@ export const moreSections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "navigation",
     title: "Navigation and disclosure",
     description: "Breadcrumb, Pagination, Accordion, Collapsible, HoverCard, Command, ScrollArea",
@@ -598,6 +605,7 @@ export const moreSections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "controls",
     title: "More controls",
     description: "ToggleGroup (segmented control), Toggle, Slider, ButtonGroup, InputGroup, Item",
@@ -657,6 +665,7 @@ export const moreSections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "chart",
     title: "Chart",
     description: "components/ui/chart (recharts), coloured by the chart tokens.",
@@ -678,6 +687,7 @@ export const moreSections: CatalogSection[] = [
     ),
   },
   {
+    group: "Components",
     id: "empty-variants",
     title: "Empty states in context",
     description: "EmptyState composed inside a card, as list pages will use it.",
