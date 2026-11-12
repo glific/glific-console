@@ -40,6 +40,6 @@ describe("Popover", () => {
     await expectNoA11yViolations()
     await userEvent.keyboard("{Escape}")
     await expect.poll(() => screen.queryByText("Filter contacts")).toBeNull()
-    expect(trigger).toHaveFocus()
+    await expect.element(trigger).toHaveFocus()
   })
 })

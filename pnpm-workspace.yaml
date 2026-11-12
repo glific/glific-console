@@ -1,1 +1,5 @@
 savePrefix: ""
+
+# lefthook's postinstall only installs git hooks; the "prepare" script already does that.
+allowBuilds:
+  lefthook: false

@@ -52,7 +52,7 @@ describe("Dialog", () => {
     await expectNoA11yViolations(dialog)
     await userEvent.keyboard("{Escape}")
     await expect.poll(() => screen.queryByRole("dialog")).toBeNull()
-    expect(trigger).toHaveFocus()
+    await expect.element(trigger).toHaveFocus()
   })
 
   it("has translated close buttons", async () => {
