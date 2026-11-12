@@ -15,7 +15,8 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
     },
-    build: { target: "es2023" },
+    // The manifest records the import graph; .size-limit.js reads it to budget the initial load and lazy SDKs.
+    build: { target: "es2023", manifest: true },
     // Pre-bundle so Vitest never re-optimises mid-run (which loads a second React and breaks hooks).
     optimizeDeps: {
       include: [
@@ -45,6 +46,8 @@ export default defineConfig(({ mode }) => {
         "msw/browser",
         "msw/graphql",
         "graphql-ws",
+        "@sentry/react",
+        "posthog-js",
         "axe-core",
         "@testing-library/react",
       ],

@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { isRouteErrorResponse, Link, useRouteError } from "react-router";
 import { ErrorState } from "@/components/error-state";
 import { Button } from "@/components/ui/button";
+import { reportError } from "@/lib/monitoring";
 import { NotFoundPage } from "./not-found";
 
 export function RouteErrorBoundary() {
@@ -10,7 +11,7 @@ export function RouteErrorBoundary() {
 
   if (isRouteErrorResponse(error) && error.status === 404) return <NotFoundPage />;
 
-  if (import.meta.env.DEV) console.error(error);
+  reportError(error, { source: "route" });
 
   return (
     <div className="p-page">
