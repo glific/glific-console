@@ -1,0 +1,14 @@
+node_modules
+dist
+coverage
+.env
+.env.*
+!.env.example
+*.local
+.DS_Store
+node_modules/.tmp
+test-results
+playwright-report
+blob-report
+.vitest-attachments
+src/**/__screenshots__
