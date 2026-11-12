@@ -1,15 +1,18 @@
 import { useTranslation } from "react-i18next";
 import { NavLink, Outlet } from "react-router";
+import { internalPagesEnabled } from "@/lib/internal-pages";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/", key: "nav.home", end: true },
   { to: "/contacts", key: "nav.contacts", end: false },
-  { to: "/design-system", key: "nav.designSystem", end: false },
 ] as const;
 
-export function RootLayout() {
+const internalNavItems = [{ to: "/design-system", key: "nav.designSystem", end: false }] as const;
+
+export function RootLayout({ internalPages = internalPagesEnabled() }: { internalPages?: boolean }) {
   const { t } = useTranslation();
+  const items = internalPages ? [...navItems, ...internalNavItems] : navItems;
   return (
     <div className="flex min-h-svh flex-col">
       <a
@@ -22,7 +25,7 @@ export function RootLayout() {
         <div className="flex items-center gap-section">
           <span className="text-subheading">{t("app.name")}</span>
           <nav aria-label={t("nav.label")} className="flex items-center gap-1">
-            {navItems.map((item) => (
+            {items.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}

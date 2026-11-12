@@ -9,6 +9,11 @@ export interface Env {
   readonly VITE_API_URL: string;
   /** Serve API responses from MSW handlers in the browser (dev only). */
   readonly VITE_ENABLE_MOCKS: boolean;
+  /**
+   * Hostnames that serve the internal /design-system page, e.g. `prod.glific.com`. Every NGO runs the same build
+   * on its own shortcode subdomain, so this is decided per host at runtime. Empty: served nowhere.
+   */
+  readonly VITE_DESIGN_SYSTEM_HOSTS: readonly string[];
 }
 
 export class EnvError extends Error {
@@ -34,11 +39,21 @@ function optionalBoolean(raw: RawEnv, key: keyof Env, problems: string[]): boole
   return false;
 }
 
+function optionalList(raw: RawEnv, key: keyof Env): string[] {
+  const value = raw[key];
+  if (typeof value !== "string") return [];
+  return value
+    .split(",")
+    .map((item) => item.trim().toLowerCase())
+    .filter(Boolean);
+}
+
 export function parseEnv(raw: RawEnv): Env {
   const problems: string[] = [];
   const env: Env = {
     VITE_API_URL: requireString(raw, "VITE_API_URL", problems),
     VITE_ENABLE_MOCKS: optionalBoolean(raw, "VITE_ENABLE_MOCKS", problems),
+    VITE_DESIGN_SYSTEM_HOSTS: optionalList(raw, "VITE_DESIGN_SYSTEM_HOSTS"),
   };
   if (problems.length > 0) {
     throw new EnvError(`Invalid environment:\n  - ${problems.join("\n  - ")}\nSee .env.example.`);

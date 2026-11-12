@@ -17,4 +17,14 @@ describe("router", () => {
     expect(await screen.findByRole("heading", { level: 1, name: "Page not found" })).toBeVisible();
     expect(screen.getByRole("link", { name: "Go to home" })).toHaveAttribute("href", "/");
   });
+
+  it("serves /design-system only where internal pages are enabled", async () => {
+    const { unmount } = renderRoute("/design-system");
+    expect(await screen.findByRole("heading", { level: 1, name: "Page not found" })).toBeVisible();
+    expect(screen.queryByRole("link", { name: "Design system" })).toBeNull();
+    unmount();
+    renderRoute("/design-system", { internalPages: true });
+    expect(await screen.findByRole("heading", { level: 1, name: "Design system" }, { timeout: 5000 })).toBeVisible();
+    expect(screen.getByRole("link", { name: "Design system" })).toHaveAttribute("aria-current", "page");
+  });
 });

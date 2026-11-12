@@ -6,6 +6,7 @@ describe("parseEnv", () => {
     expect(parseEnv({ VITE_API_URL: " /api ", VITE_ENABLE_MOCKS: "true" })).toEqual({
       VITE_API_URL: "/api",
       VITE_ENABLE_MOCKS: true,
+      VITE_DESIGN_SYSTEM_HOSTS: [],
     });
     expect(parseEnv({ VITE_API_URL: "/api" }).VITE_ENABLE_MOCKS).toBe(false);
   });
