@@ -14,7 +14,14 @@
     "close": "Close",
     "more": "More",
     "retry": "Try again",
-    "goHome": "Go to home"
+    "goHome": "Go to home",
+    "search": "Search",
+    "clear": "Clear",
+    "select": "Select",
+    "selected": "{{count}} selected",
+    "noResults": "No results",
+    "help": "Help",
+    "beta": "Beta"
   },
   "errors": {
     "generic": {
@@ -71,5 +78,100 @@
   "command": {
     "title": "Search",
     "description": "Search for a command to run"
+  },
+  "search": {
+    "placeholder": "Search",
+    "clear": "Clear search"
+  },
+  "combobox": {
+    "placeholder": "Select…",
+    "search": "Search…",
+    "empty": "Nothing found"
+  },
+  "datePicker": {
+    "placeholder": "Pick a date",
+    "selected": "selected"
+  },
+  "dataTable": {
+    "selectAll": "Select all rows",
+    "selectRow": "Select row",
+    "sortAscending": "Sorted ascending",
+    "sortDescending": "Sorted descending",
+    "sort": "Sort by {{column}}",
+    "rowsPerPage": "Rows per page",
+    "pageOf": "Page {{page}} of {{pages}}",
+    "empty": "No rows",
+    "selection": "{{count}} selected",
+    "clearSelection": "Clear selection"
+  },
+  "fileDropzone": {
+    "title": "Drop a file here, or browse",
+    "browse": "Browse files",
+    "accepts": "Accepts {{types}}"
+  },
+  "emoji": {
+    "open": "Insert emoji",
+    "search": "Search emoji",
+    "loading": "Loading emoji…",
+    "empty": "No emoji found"
+  },
+  "chat": {
+    "composer": {
+      "placeholder": "Type a message…",
+      "windowClosed": "The 24-hour window has closed. Send a template to reach them.",
+      "more": "More options",
+      "attach": "Attach a file",
+      "voice": "Record a voice note",
+      "send": "Send",
+      "message": "Message",
+      "quickReplies": "Quick replies"
+    },
+    "status": {
+      "pending": "Sending",
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "read": "Read",
+      "error": "Not delivered"
+    },
+    "seeError": "See what went wrong",
+    "today": "Today",
+    "window": {
+      "open": "{{time}} left in the window",
+      "closing": "{{time}} left in the window",
+      "closed": "Window closed",
+      "none": "No message window"
+    },
+    "poll": {
+      "single": "Select one",
+      "multi": "Select one or more"
+    },
+    "media": {
+      "image": "Image",
+      "video": "Video",
+      "audio": "Voice note",
+      "document": "Document",
+      "location": "Location",
+      "sticker": "Sticker",
+      "download": "Download {{name}}"
+    },
+    "unread": "{{count}} unread",
+    "contactInfo": "Contact details",
+    "contactOptions": "Contact options",
+    "close": "Close the chat"
+  },
+  "whatsapp": {
+    "preview": "WhatsApp preview",
+    "businessAccount": "Business account",
+    "listButton": "View options",
+    "sendLocation": "Send location",
+    "templateFooter": "Template"
+  },
+  "ai": {
+    "name": "Glific AI",
+    "prompt": "Ask Glific AI",
+    "placeholder": "Describe what you want to build…",
+    "send": "Ask",
+    "thinking": "Thinking…",
+    "suggestions": "Suggestions"
   }
 }

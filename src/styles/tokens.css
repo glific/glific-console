@@ -47,7 +47,8 @@
   /* WhatsApp chat */
   --palette-wa-wallpaper: #f8f6f2;
   --palette-wa-bubble-out: #d9fdd3;
-  --palette-wa-meta: #667781;
+  /* WhatsApp uses #667781; darkened so timestamps pass AA on the green bubble */
+  --palette-wa-meta: #54656f;
   --palette-wa-read: #53bdeb;
   --palette-wa-green: #25d366;
 }

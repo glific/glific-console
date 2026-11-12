@@ -10,6 +10,7 @@ import {
   getDefaultClassNames,
   type Locale,
 } from "react-day-picker"
+import { useTranslation } from "react-i18next"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -23,10 +24,12 @@ function Calendar({
   locale,
   formatters,
   components,
+  labels,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"]
 }) {
+  const { t } = useTranslation()
   const defaultClassNames = getDefaultClassNames()
 
   return (
@@ -40,6 +43,12 @@ function Calendar({
       )}
       captionLayout={captionLayout}
       locale={locale}
+      labels={{
+        // Start with the visible day number so the accessible name contains the visible text (WCAG 2.5.3).
+        labelDayButton: (date, modifiers) =>
+          `${date.getDate()} ${date.toLocaleString(locale?.code, { month: "long", year: "numeric" })}${modifiers.selected ? `, ${t("datePicker.selected")}` : ""}`,
+        ...labels,
+      }}
       formatters={{
         formatMonthDropdown: (date) =>
           date.toLocaleString(locale?.code, { month: "short" }),

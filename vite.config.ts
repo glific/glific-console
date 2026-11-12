@@ -16,6 +16,24 @@ export default defineConfig(({ mode }) => {
       alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
     },
     build: { target: "es2023" },
+    // Pre-bundle so Vitest never re-optimises mid-run (which loads a second React and breaks hooks).
+    optimizeDeps: {
+      include: [
+        "@tanstack/react-table",
+        "cmdk",
+        "date-fns",
+        "frimousse",
+        "react-day-picker",
+        "recharts",
+        "radix-ui",
+        "lucide-react",
+        "sonner",
+        "msw",
+        "msw/browser",
+        "axe-core",
+        "@testing-library/react",
+      ],
+    },
     test: {
       include: ["src/**/*.test.{ts,tsx}"],
       setupFiles: ["src/test/setup.ts"],
