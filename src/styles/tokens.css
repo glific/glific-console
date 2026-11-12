@@ -19,7 +19,6 @@
 
   /* zinc neutrals (HeroUI) */
   --palette-zinc-100: #f5f5f5;
-  --palette-zinc-150: #f4f4f5;
   --palette-zinc-250: #e4e4e7;
   --palette-zinc-300: #d4d4d8;
   --palette-zinc-600: #52525b;
@@ -70,7 +69,7 @@
   --secondary-foreground: var(--palette-brand-700);
   --muted: var(--palette-zinc-100);
   --muted-foreground: var(--palette-zinc-600);
-  --accent: var(--palette-zinc-150);
+  --accent: var(--palette-zinc-100);
   --accent-foreground: var(--palette-zinc-900);
   --destructive: var(--palette-red-700);
   --destructive-foreground: var(--palette-white);
