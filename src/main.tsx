@@ -7,7 +7,8 @@ import { createRouter } from "./routes/router";
 import "./index.css";
 
 async function enableMocking() {
-  if (!env.VITE_ENABLE_MOCKS) return;
+  // The DEV check lets the bundler drop MSW from production builds entirely.
+  if (!import.meta.env.DEV || !env.VITE_ENABLE_MOCKS) return;
   const { worker } = await import("./mocks/browser");
   await worker.start({ onUnhandledFrame: "bypass", quiet: true });
 }
