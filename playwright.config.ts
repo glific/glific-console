@@ -22,6 +22,8 @@ export default defineConfig({
   webServer: {
     // Dev mode serves MSW mocks (VITE_ENABLE_MOCKS in .env.development), so E2E needs no backend.
     command: `pnpm exec vite --port ${PORT} --strictPort --host 0.0.0.0`,
+    // E2E stays on plain localhost (no certificates or /etc/hosts entries needed in CI).
+    env: { GLIFIC_LOCALHOST: "1" },
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !isCI,
     timeout: 60_000,

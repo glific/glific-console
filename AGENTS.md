@@ -5,18 +5,18 @@ TanStack Query, i18next. Single app, pnpm. Stack rationale: `docs/adr/0001-stack
 
 ## Commands
 
-| Command                            | What it does                                                                                 |
-| ---------------------------------- | -------------------------------------------------------------------------------------------- |
-| `pnpm dev`                         | Dev server with MSW mocks (`.env.development`)                                               |
-| `pnpm check`                       | typecheck + lint + DS lint + unit/component tests. **Must pass before you say you're done.** |
-| `pnpm typecheck`                   | `tsc -b`                                                                                     |
-| `pnpm lint` / `pnpm lint:fix`      | Biome check (format, lint, imports, DS rules)                                                |
-| `pnpm lint:ds`                     | Design-system rules only, plus the fixture self-test proving each rule fires                 |
-| `pnpm test` / `pnpm test:coverage` | Vitest Browser Mode (Chromium). Coverage gate: 80% on `src/components`                       |
-| `pnpm test:e2e`                    | Playwright flows + axe a11y (starts its own dev server)                                      |
-| `pnpm test:visual`                 | Visual regression. Baselines come only from `pnpm test:visual:update` (runs in Docker)       |
-| `pnpm build` / `pnpm size`         | Production build / bundle budgets (`.size-limit.js`: initial load and total)                 |
-| `pnpm changeset`                   | Record a user-facing change                                                                  |
+| Command                            | What it does                                                                                            |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                         | Dev server on https://glific.test:3000 with MSW mocks (`.env.development`); `GLIFIC_DEV_PORT` to change |
+| `pnpm check`                       | typecheck + lint + DS lint + unit/component tests. **Must pass before you say you're done.**            |
+| `pnpm typecheck`                   | `tsc -b`                                                                                                |
+| `pnpm lint` / `pnpm lint:fix`      | Biome check (format, lint, imports, DS rules)                                                           |
+| `pnpm lint:ds`                     | Design-system rules only, plus the fixture self-test proving each rule fires                            |
+| `pnpm test` / `pnpm test:coverage` | Vitest Browser Mode (Chromium). Coverage gate: 80% on `src/components`                                  |
+| `pnpm test:e2e`                    | Playwright flows + axe a11y (starts its own dev server)                                                 |
+| `pnpm test:visual`                 | Visual regression. Baselines come only from `pnpm test:visual:update` (runs in Docker)                  |
+| `pnpm build` / `pnpm size`         | Production build / bundle budgets (`.size-limit.js`: initial load and total)                            |
+| `pnpm changeset`                   | Record a user-facing change                                                                             |
 
 ## Layout
 
