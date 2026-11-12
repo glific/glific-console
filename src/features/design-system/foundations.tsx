@@ -55,30 +55,12 @@ const weights = [
 ];
 
 const principles = [
-  {
-    title: "One green, used sparingly",
-    body: "The brand green means “this is the main action” or “this is live”. One filled green button per view; everything else is quieter.",
-  },
-  {
-    title: "AI is violet",
-    body: "Glific AI never borrows the brand colour, so a suggestion is never mistaken for something published or live.",
-  },
-  {
-    title: "Hindi and Marathi are first-class",
-    body: "Devanagari is in the font stack everywhere, not bolted on. Test every screen with a long Hindi label.",
-  },
-  {
-    title: "Every list has a loading, empty and error state",
-    body: "Skeletons while loading, an EmptyState with a next step, and an ErrorState with “Try again”.",
-  },
-  {
-    title: "Accessible by default",
-    body: "AA contrast, visible focus, full keyboard use and labelled controls. Tests fail if a component breaks these.",
-  },
-  {
-    title: "Tokens, not values",
-    body: "Colours, sizes and spacing come from tokens. Raw hex values and one-off pixel sizes fail lint.",
-  },
+  "One green, used sparingly",
+  "AI is violet",
+  "Hindi and Marathi are first-class",
+  "Every list has a loading, empty and error state",
+  "Accessible by default",
+  "Tokens, not values",
 ];
 
 export const foundations: CatalogSection[] = [
@@ -90,10 +72,9 @@ export const foundations: CatalogSection[] = [
     content: (
       <div className="grid gap-stack sm:grid-cols-2 lg:grid-cols-3">
         {principles.map((principle, index) => (
-          <div key={principle.title} className="flex flex-col gap-1 rounded-xl bg-shell p-stack">
+          <div key={principle} className="flex flex-col gap-1 rounded-xl bg-shell p-stack">
             <span className="text-caption font-semibold text-primary">0{index + 1}</span>
-            <h3 className="text-subheading">{principle.title}</h3>
-            <p className="text-body-sm text-muted-foreground">{principle.body}</p>
+            <h3 className="text-subheading">{principle}</h3>
           </div>
         ))}
       </div>
