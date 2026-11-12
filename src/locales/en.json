@@ -1,0 +1,61 @@
+{
+  "app": {
+    "name": "Glific",
+    "skipToContent": "Skip to content"
+  },
+  "nav": {
+    "label": "Main",
+    "home": "Home",
+    "contacts": "Contacts"
+  },
+  "theme": {
+    "toggle": "Change theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "common": {
+    "loading": "Loading",
+    "retry": "Try again",
+    "goHome": "Go to home"
+  },
+  "errors": {
+    "generic": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred. Try again, or go back to home."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you are looking for doesn't exist or has moved."
+    }
+  },
+  "home": {
+    "title": "Home",
+    "description": "Welcome to the new Glific console."
+  },
+  "contacts": {
+    "title": "Contacts",
+    "description": "People who have messaged your WhatsApp number.",
+    "search": "Search contacts",
+    "columns": {
+      "name": "Name",
+      "phone": "Phone",
+      "status": "Status"
+    },
+    "status": {
+      "valid": "Opted in",
+      "invalid": "Opted out"
+    },
+    "empty": {
+      "title": "No contacts yet",
+      "description": "Contacts appear here once someone messages your number."
+    },
+    "noResults": {
+      "title": "No matching contacts",
+      "description": "Try a different name or phone number."
+    },
+    "error": {
+      "title": "Couldn't load contacts"
+    }
+  }
+}
