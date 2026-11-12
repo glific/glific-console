@@ -6,11 +6,15 @@
     <title>Glific Console</title>
     <script>
       // Apply the saved theme before first paint to avoid a light flash. Mirrors src/lib/theme.tsx.
-      try {
-        var t = localStorage.getItem("glific-console:theme");
-        if (t === "dark" || ((t === null || t === "system") && matchMedia("(prefers-color-scheme: dark)").matches))
-          document.documentElement.classList.add("dark");
-      } catch (e) {}
+      (() => {
+        try {
+          const saved = localStorage.getItem("glific-console:theme");
+          const systemDark = matchMedia("(prefers-color-scheme: dark)").matches;
+          if (saved === "dark" || ((saved === null || saved === "system") && systemDark)) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch {}
+      })();
     </script>
   </head>
   <body>
