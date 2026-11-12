@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Link, NavLink, Outlet } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useIsGlificAdmin } from "@/features/auth/current-user";
-import { internalPagesEnabled } from "@/lib/internal-pages";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -13,10 +12,10 @@ const navItems = [
 
 const internalNavItems = [{ to: "/design-system", key: "nav.designSystem", end: false }] as const;
 
-export function RootLayout({ internalPages = internalPagesEnabled() }: { internalPages?: boolean }) {
+export function RootLayout() {
   const { t } = useTranslation();
   const { isGlificAdmin } = useIsGlificAdmin();
-  const items = internalPages && isGlificAdmin ? [...navItems, ...internalNavItems] : navItems;
+  const items = isGlificAdmin ? [...navItems, ...internalNavItems] : navItems;
   return (
     <div className="flex min-h-svh flex-col">
       <a

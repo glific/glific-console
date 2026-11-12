@@ -1,17 +1,12 @@
-import { createBrowserRouter, Navigate, Outlet, type RouteObject } from "react-router";
+import { createBrowserRouter, Outlet, type RouteObject } from "react-router";
 import { RequireAuth } from "@/features/auth/require-auth";
 import { RequireGlificAdmin } from "@/features/auth/require-glific-admin";
-import { internalPagesEnabled } from "@/lib/internal-pages";
 import { HomePage } from "./home";
 import { NotFoundPage } from "./not-found";
 import { RootLayout } from "./root-layout";
 import { RouteErrorBoundary } from "./route-error";
 
-interface RouteOptions {
-  internalPages: boolean;
-}
-
-export function createRoutes({ internalPages }: RouteOptions): RouteObject[] {
+export function createRoutes(): RouteObject[] {
   return [
     // Every page is lazy so the first load is only the shell; each route fetches its own chunk.
     {
@@ -23,7 +18,7 @@ export function createRoutes({ internalPages }: RouteOptions): RouteObject[] {
     {
       element: (
         <RequireAuth>
-          <RootLayout internalPages={internalPages} />
+          <RootLayout />
         </RequireAuth>
       ),
       errorElement: <RouteErrorBoundary />,
@@ -36,7 +31,20 @@ export function createRoutes({ internalPages }: RouteOptions): RouteObject[] {
               path: "contacts",
               lazy: async () => ({ Component: (await import("@/features/contacts")).ContactsPage }),
             },
-            ...(internalPages ? internalRoutes : []),
+            {
+              path: "design-system",
+              element: (
+                <RequireGlificAdmin>
+                  <Outlet />
+                </RequireGlificAdmin>
+              ),
+              children: [
+                {
+                  index: true,
+                  lazy: async () => ({ Component: (await import("@/features/design-system")).DesignSystemPage }),
+                },
+              ],
+            },
             { path: "*", element: <NotFoundPage /> },
           ],
         },
@@ -45,19 +53,4 @@ export function createRoutes({ internalPages }: RouteOptions): RouteObject[] {
   ];
 }
 
-const internalRoutes: RouteObject[] = [
-  {
-    path: "design-system",
-    element: (
-      <RequireGlificAdmin>
-        <Outlet />
-      </RequireGlificAdmin>
-    ),
-    children: [
-      { index: true, lazy: async () => ({ Component: (await import("@/features/design-system")).DesignSystemPage }) },
-    ],
-  },
-  { path: "components", element: <Navigate to="/design-system" replace /> },
-];
-
-export const createRouter = () => createBrowserRouter(createRoutes({ internalPages: internalPagesEnabled() }));
+export const createRouter = () => createBrowserRouter(createRoutes());

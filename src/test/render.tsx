@@ -18,12 +18,9 @@ export function renderWithProviders(ui: ReactElement, options?: Omit<RenderOptio
   });
 }
 
-export function renderRoute(
-  path: string,
-  { internalPages = false, signedIn = true }: { internalPages?: boolean; signedIn?: boolean } = {},
-) {
+export function renderRoute(path: string, { signedIn = true }: { signedIn?: boolean } = {}) {
   if (signedIn) setSession(mockSession());
   else clearSession();
-  const router = createMemoryRouter(createRoutes({ internalPages }), { initialEntries: [path] });
+  const router = createMemoryRouter(createRoutes(), { initialEntries: [path] });
   return { router, ...renderWithProviders(<RouterProvider router={router} />) };
 }

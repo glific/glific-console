@@ -21,12 +21,8 @@ describe("router", () => {
     expect(screen.getByRole("link", { name: "Go to home" })).toHaveAttribute("href", "/");
   });
 
-  it("serves /design-system only on allowed hosts and only to Glific admins", async () => {
-    const { unmount } = renderRoute("/design-system");
-    expect(await screen.findByRole("heading", { level: 1, name: "Page not found" })).toBeVisible();
-    unmount();
-
-    renderRoute("/design-system", { internalPages: true });
+  it("serves /design-system to Glific admins", async () => {
+    renderRoute("/design-system");
     expect(await screen.findByRole("heading", { level: 1, name: "Design system" }, { timeout: 5000 })).toBeVisible();
     expect(screen.getByRole("link", { name: "Design system" })).toHaveAttribute("aria-current", "page");
   });
@@ -37,7 +33,7 @@ describe("router", () => {
         HttpResponse.json({ data: { currentUser: { user: { id: "2", name: "NGO admin", roles: ["Admin"] } } } }),
       ),
     );
-    renderRoute("/design-system", { internalPages: true });
+    renderRoute("/design-system");
     expect(await screen.findByRole("heading", { level: 1, name: "Page not found" }, { timeout: 5000 })).toBeVisible();
     expect(screen.queryByRole("link", { name: "Design system" })).toBeNull();
   });

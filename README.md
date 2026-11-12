@@ -32,7 +32,7 @@ phone number and the password `password`. The backend's websocket origin check e
 on another port need that origin added to the backend's `REQUEST_ORIGIN`.
 
 Environment variables are validated at startup (`src/lib/env.ts`); see `.env.example`. Dev defaults are in
-`.env.development`; put local overrides in `.env.local`. On Vercel, set `VITE_DESIGN_SYSTEM_HOSTS=prod.glific.com`.
+`.env.development`; put local overrides in `.env.local`.
 
 ## Commands
 

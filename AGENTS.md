@@ -29,7 +29,7 @@ src/components/ai/     Glific AI: AiMark, PromptBox, ThinkingIndicator, PromptSu
 src/components/data-table/  DataTable (TanStack Table v9): sorting, selection, client/server pagination
 src/features/<name>/   feature code: components, hooks, api.ts, types.ts, tests, index.ts (public surface)
 src/features/design-system/  the /design-system brandbook page: check it before building anything new
-                       (internal: served only on hosts in VITE_DESIGN_SYSTEM_HOSTS, prod.glific.com in production)
+                       (internal: Glific admins only)
 src/routes/            route tree (router.tsx), layout, pages, 404, error boundary
 src/lib/               api-client, query-client, env/config, i18n, storage, utils (cn)
 src/styles/tokens.css  ALL design tokens; tokens.ts is the manifest the design-system page reads

@@ -81,7 +81,6 @@ describe("backendOrigin", () => {
     VITE_BACKEND_URL: null,
     VITE_API_SUBDOMAIN: "api",
     VITE_ENABLE_MOCKS: false,
-    VITE_DESIGN_SYSTEM_HOSTS: [],
     VITE_SENTRY_DSN: null,
     VITE_POSTHOG_KEY: null,
     VITE_POSTHOG_HOST: "https://us.i.posthog.com",

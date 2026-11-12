@@ -5,8 +5,6 @@ export interface Env {
   readonly VITE_BACKEND_URL: string | null;
   readonly VITE_API_SUBDOMAIN: string;
   readonly VITE_ENABLE_MOCKS: boolean;
-  /** Hosts that serve /design-system. Every NGO runs the same build on its own subdomain, so it is per host. */
-  readonly VITE_DESIGN_SYSTEM_HOSTS: readonly string[];
   readonly VITE_SENTRY_DSN: string | null;
   readonly VITE_POSTHOG_KEY: string | null;
   readonly VITE_POSTHOG_HOST: string;
@@ -43,22 +41,12 @@ function optionalBoolean(raw: RawEnv, key: keyof Env, problems: string[]): boole
   return false;
 }
 
-function optionalList(raw: RawEnv, key: keyof Env): string[] {
-  const value = raw[key];
-  if (typeof value !== "string") return [];
-  return value
-    .split(",")
-    .map((item) => item.trim().toLowerCase())
-    .filter(Boolean);
-}
-
 export function parseEnv(raw: RawEnv): Env {
   const problems: string[] = [];
   const env: Env = {
     VITE_BACKEND_URL: optionalUrl(raw, "VITE_BACKEND_URL", problems),
     VITE_API_SUBDOMAIN: optionalString(raw, "VITE_API_SUBDOMAIN") ?? "api",
     VITE_ENABLE_MOCKS: optionalBoolean(raw, "VITE_ENABLE_MOCKS", problems),
-    VITE_DESIGN_SYSTEM_HOSTS: optionalList(raw, "VITE_DESIGN_SYSTEM_HOSTS"),
     VITE_SENTRY_DSN: optionalUrl(raw, "VITE_SENTRY_DSN", problems),
     VITE_POSTHOG_KEY: optionalString(raw, "VITE_POSTHOG_KEY"),
     VITE_POSTHOG_HOST: optionalUrl(raw, "VITE_POSTHOG_HOST", problems) ?? "https://us.i.posthog.com",
