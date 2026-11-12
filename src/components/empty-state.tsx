@@ -4,9 +4,7 @@ import { cn } from "@/lib/utils";
 interface EmptyStateProps extends Omit<ComponentProps<"section">, "title"> {
   title: ReactNode;
   description?: ReactNode;
-  /** Decorative icon, e.g. a lucide icon element. Hidden from assistive tech. */
   icon?: ReactNode;
-  /** Primary call to action, usually a <Button>. */
   action?: ReactNode;
   /** Heading level for the title; use 1 when the empty state is the whole page. */
   headingLevel?: 1 | 2 | 3;

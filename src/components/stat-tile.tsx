@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 interface StatTileProps {
   label: string;
   value: ReactNode;
-  /** Secondary line under the value, e.g. "of 1,204 contacts". */
   sub?: ReactNode;
   icon?: LucideIcon;
   /** Change versus the previous period, e.g. 12 or -3 (percent). */
@@ -14,7 +13,6 @@ interface StatTileProps {
   className?: string;
 }
 
-/** A big number with a label (prototype StatTile), for dashboards and analytics. */
 export function StatTile({ label, value, sub, icon: Icon, trend, className }: StatTileProps) {
   return (
     <Card size="sm" className={className} data-slot="stat-tile">

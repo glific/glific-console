@@ -7,7 +7,6 @@ import { RootLayout } from "./root-layout";
 import { RouteErrorBoundary } from "./route-error";
 
 interface RouteOptions {
-  /** Serve the internal /design-system page (Glific team host only, see internalPagesEnabled). */
   internalPages: boolean;
 }
 
@@ -34,8 +33,9 @@ export function createRoutes({ internalPages }: RouteOptions): RouteObject[] {
 const internalRoutes: RouteObject[] = [
   {
     path: "design-system",
-    // Lazy: the design system pulls in every component (charts, emoji, calendar) and must not weigh on the app bundle.
-    lazy: async () => ({ Component: (await import("@/features/design-system")).DesignSystemPage }),
+    lazy: async () => ({
+      Component: (await import("@/features/design-system")).DesignSystemPage,
+    }),
   },
   { path: "components", element: <Navigate to="/design-system" replace /> },
 ];

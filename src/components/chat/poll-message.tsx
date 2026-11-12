@@ -4,11 +4,9 @@ import { cn } from "@/lib/utils";
 interface PollMessageProps {
   question: string;
   options: string[];
-  /** Whether more than one option can be picked. */
   multiple?: boolean;
 }
 
-/** A WhatsApp poll as it appears in the chat (live app PollMessage), shown inside a MessageBubble. */
 export function PollMessage({ question, options, multiple }: PollMessageProps) {
   const { t } = useTranslation();
   return (

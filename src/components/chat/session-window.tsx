@@ -12,7 +12,6 @@ function formatHours(hours: number): string {
   return `${Math.max(1, Math.round(hours * 60))}m`;
 }
 
-/** How long staff can still message freely (live app Timer). Turns amber in the last 3 hours, muted when closed. */
 export function SessionWindow({ hoursLeft, className }: SessionWindowProps) {
   const { t } = useTranslation();
   const state =

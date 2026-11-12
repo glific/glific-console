@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 
 export type MessageStatus = "pending" | "sent" | "delivered" | "read" | "error";
 
-/** WhatsApp delivery ticks: clock, one tick, two ticks, two blue ticks, or an error mark. */
 export function MessageStatusIcon({ status, className }: { status: MessageStatus; className?: string }) {
   const { t } = useTranslation();
   const label = t(`chat.status.${status}`);

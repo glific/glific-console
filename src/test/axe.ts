@@ -1,10 +1,7 @@
 import axe from "axe-core";
 import { expect } from "vitest";
 
-/**
- * Runs axe against `container` (default: whole document, so portalled dialogs/menus are included)
- * and fails with a readable list of violations.
- */
+// Defaults to the whole document so portalled dialogs and menus are included.
 export async function expectNoA11yViolations(container: Element | Document = document): Promise<void> {
   const results = await axe.run(container, {
     resultTypes: ["violations"],

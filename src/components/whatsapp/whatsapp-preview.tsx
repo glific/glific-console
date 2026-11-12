@@ -5,7 +5,6 @@ import { ContactAvatar } from "@/components/chat/contact-avatar";
 import { cn } from "@/lib/utils";
 
 interface WhatsAppPreviewProps {
-  /** Business name shown in the phone's header. */
   businessName: string;
   children: ReactNode;
   className?: string;

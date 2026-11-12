@@ -2,16 +2,13 @@ import { cn } from "@/lib/utils";
 import css from "@/styles/tokens.css?raw";
 
 export interface PaletteColour {
-  /** Primitive name, e.g. "brand-700". */
   name: string;
   value: string;
-  /** Semantic tokens that point at this colour. */
   tokens: string[];
 }
 
 export type ColourFamily = "Brand" | "Neutrals" | "Status" | "Glific AI" | "Charts" | "WhatsApp chat";
 
-/** Reads tokens.css and groups semantic tokens by the primitive colour they use, so each colour appears once. */
 export function paletteColours(): PaletteColour[] {
   const [primitives = "", rest = ""] = css.split("/* 2. Semantic tokens */");
   const semantic = rest.split("/* 3.")[0] ?? "";
@@ -127,7 +124,6 @@ function Chip({ colour, large }: { colour: PaletteColour; large?: boolean }) {
   );
 }
 
-/** Brand colours, large: the brand book's greens. */
 export function BrandColours() {
   const brand = paletteColours().filter((colour) => familyOf(colour) === "Brand");
   return (
@@ -139,7 +135,6 @@ export function BrandColours() {
   );
 }
 
-/** Every colour once, grouped by family, compact. */
 export function Palette() {
   const colours = paletteColours();
   return (

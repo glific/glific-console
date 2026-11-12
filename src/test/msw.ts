@@ -19,5 +19,4 @@ const emojiHandlers = [
   http.all("*/emojibase-data*/en/messages.json", () => HttpResponse.json(emojiMessages)),
 ];
 
-/** Shared worker for component tests. Override per test with `worker.use(...)`. */
 export const worker = setupWorker(...handlers, ...emojiHandlers);

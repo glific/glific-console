@@ -7,9 +7,7 @@ import { cn } from "@/lib/utils";
 interface ErrorStateProps extends Omit<ComponentProps<"section">, "title"> {
   title?: ReactNode;
   description?: ReactNode;
-  /** When provided, renders a "Try again" button that calls it. */
   onRetry?: () => void;
-  /** Extra actions rendered after the retry button. */
   action?: ReactNode;
 }
 

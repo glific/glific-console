@@ -16,11 +16,9 @@ interface SearchInputProps
   > {
   value: string
   onValueChange: (value: string) => void
-  /** Accessible name; defaults to the placeholder or "Search". */
   label?: string
 }
 
-/** Search box with a magnifier and a clear button (prototype SearchInput, live app SearchBar). */
 export function SearchInput({
   value,
   onValueChange,

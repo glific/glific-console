@@ -7,7 +7,6 @@ export function initialsOf(name: string): string {
   return (first + last).toUpperCase() || "?";
 }
 
-/** Avatar with initials for a contact or group. */
 export function ContactAvatar({ name, size = "default" }: { name: string; size?: "sm" | "default" | "lg" }) {
   return (
     <Avatar size={size}>

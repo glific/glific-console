@@ -16,7 +16,6 @@ const spinnerVariants = cva("animate-spin text-muted-foreground", {
 });
 
 interface SpinnerProps extends Omit<ComponentProps<"svg">, "children">, VariantProps<typeof spinnerVariants> {
-  /** Accessible name; defaults to "Loading". */
   label?: string;
 }
 

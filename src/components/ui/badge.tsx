@@ -19,7 +19,6 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
-        // Status tones (prototype Tag): soft fill, readable text.
         neutral: "bg-muted text-muted-foreground",
         success: "bg-success-soft text-success",
         warning: "bg-warning-soft text-warning",

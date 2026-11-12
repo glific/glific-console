@@ -23,7 +23,6 @@ interface StatusDotProps extends Omit<ComponentProps<"span">, "children">, Varia
   label?: string;
 }
 
-/** Small coloured status marker (prototype StatusDot, live app PresenceIndicator). */
 export function StatusDot({ tone, pulse, label, className, ...props }: StatusDotProps) {
   return (
     <span

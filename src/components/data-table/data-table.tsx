@@ -43,12 +43,9 @@ interface DataTableProps<TData extends RowData> {
   columns: DataTableColumn<TData>[];
   data: TData[];
   getRowId: (row: TData) => string;
-  /** Accessible table name. */
   label: string;
   isLoading?: boolean;
-  /** Shown when there are no rows (usually an EmptyState). */
   empty?: ReactNode;
-  /** Adds a checkbox column. */
   selectable?: boolean;
   rowSelection?: RowSelectionState;
   onRowSelectionChange?: (selection: RowSelectionState) => void;
@@ -66,7 +63,6 @@ interface DataTableProps<TData extends RowData> {
   className?: string;
 }
 
-/** Sortable, selectable, paginated table (shadcn data-table pattern on TanStack Table v9). */
 export function DataTable<TData extends RowData>({
   columns,
   data,

@@ -59,6 +59,8 @@ docs/adr/ docs/specs/  decisions and feature specs
 - No `radix-ui` / `@radix-ui/*` imports outside `src/components/ui`. Import `cn` from `@/lib/utils`, never from `cn`.
 - Every screen handles **loading, empty, error** (Skeleton/Spinner, EmptyState, ErrorState).
 - All user-facing text goes through `t()` (`useTranslation`) with keys in `src/locales/en.json`.
+- Comments only explain a non-obvious **why** (an a11y fix, a perf trap, a deliberate deviation). No comments that
+  restate a name, a prop or what the code does; prefer a clearer name.
 
 ## Tokens
 

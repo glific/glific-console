@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 interface PageHeaderProps extends Omit<ComponentProps<"header">, "title"> {
   title: ReactNode;
   description?: ReactNode;
-  /** Page-level actions, aligned to the end. */
   actions?: ReactNode;
 }
 

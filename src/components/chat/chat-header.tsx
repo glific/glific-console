@@ -9,16 +9,13 @@ import { SessionWindow } from "./session-window";
 interface ChatHeaderProps {
   name: string;
   phone: string;
-  /** Contact group / collection, shown as a chip next to the name. */
   group?: string;
   hoursLeft?: number | null;
   onInfo?: () => void;
   onClose?: () => void;
-  /** Extra actions, e.g. a contact options DropdownMenu. */
   actions?: ReactNode;
 }
 
-/** Top of an open conversation: who, their number, the message window, and actions. */
 export function ChatHeader({ name, phone, group, hoursLeft, onInfo, onClose, actions }: ChatHeaderProps) {
   const { t } = useTranslation();
   return (

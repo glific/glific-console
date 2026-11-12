@@ -5,16 +5,14 @@ import { cn } from "@/lib/utils"
 
 interface FileDropzoneProps {
   onFiles: (files: File[]) => void
-  /** Same format as the input accept attribute, e.g. ".csv" or "image/*". */
   accept?: string
   multiple?: boolean
   disabled?: boolean
-  /** Short hint shown under the title, e.g. "CSV up to 5 MB". */
   hint?: string
   className?: string
 }
 
-/** Drag-and-drop or browse file picker (live app CsvUpload / FileUpload). The whole zone is the label of the input. */
+// The whole zone is the <label> of the file input, so click, keyboard and screen readers all work without extra handlers.
 export function FileDropzone({
   onFiles,
   accept,

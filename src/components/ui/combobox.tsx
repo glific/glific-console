@@ -21,7 +21,6 @@ import { cn } from "@/lib/utils"
 export interface ComboboxOption {
   value: string
   label: string
-  /** Optional group heading, e.g. a folder or language. */
   group?: string
   disabled?: boolean
 }
@@ -61,10 +60,6 @@ function groupOptions(options: ComboboxOption[]) {
   return [...groups.entries()]
 }
 
-/**
- * Searchable single or multi select (Popover + Command), the shadcn combobox pattern on Radix.
- * Replaces the live app's AutoComplete and searchable pickers.
- */
 function Combobox(props: ComboboxProps) {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)

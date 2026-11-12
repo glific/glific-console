@@ -22,19 +22,14 @@ interface ChatComposerProps {
   /** WhatsApp's 24-hour window has closed: free text is blocked, templates only. */
   windowClosed?: boolean;
   quickReplies?: QuickReply[];
-  /** Items for the "More options" menu: templates, start a flow, interactive message, poll (DropdownMenuItems). */
+  /** DropdownMenuItems for the "More options" menu. */
   moreMenu?: ReactNode;
   onAttach?: () => void;
   onRecord?: () => void;
-  /** Emoji data URL for the picker; see EmojiPicker. */
   emojibaseUrl?: string;
   className?: string;
 }
 
-/**
- * The message box under a conversation (prototype Conversations reply box, live app ChatInput):
- * more options, attach, text, voice note, emoji, send. Typing "/" lists quick replies.
- */
 export function ChatComposer({
   value,
   onValueChange,

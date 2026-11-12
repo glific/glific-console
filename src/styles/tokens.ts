@@ -1,8 +1,4 @@
-/**
- * Machine-readable manifest of the semantic tokens defined in tokens.css.
- * The component catalog reads this; tokens.test.ts keeps it in sync with the CSS.
- * Primitive --palette-* values are intentionally not listed: nothing outside tokens.css may use them.
- */
+// Primitive --palette-* values are deliberately not listed: nothing outside tokens.css may use them.
 
 export type TokenGroup = "color" | "chart" | "sidebar" | "radius" | "font" | "typography" | "spacing";
 
@@ -11,7 +7,6 @@ export interface TokenDefinition {
   readonly name: string;
   readonly group: TokenGroup;
   readonly description: string;
-  /** Tailwind utility stem this token is exposed as, e.g. `bg-primary` / `text-primary`. */
   readonly utility?: string;
 }
 

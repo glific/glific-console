@@ -85,7 +85,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 
 export interface CatalogSection {
   id: string;
-  /** Table-of-contents group. */
   group?: "Foundations" | "Components" | "Glific patterns";
   title: string;
   description: string;

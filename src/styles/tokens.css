@@ -1,23 +1,12 @@
 /*
- * Design tokens.
- *
- * Three layers, in this order:
- *   1. Primitive palette (--palette-*): the ONLY place raw colour values are allowed.
- *   2. Semantic tokens (:root): what components use. They only reference primitives. Light theme only.
- *   3. @theme inline: exposes semantic tokens to Tailwind (bg-primary, text-warning, bg-chat-outbound, ...).
- *
- * Values come from the Glific 2.0 prototype (karan26796/glific-redesign, src/design/tokens.js):
- * Glific's 2026 brand-book greens, HeroUI v3's zinc neutrals and status tones, and WhatsApp's chat colours.
- *
- * Keep src/styles/tokens.ts in sync: it is the manifest the component catalog reads.
- * A test (tokens.test.ts) fails if the two drift.
+ * The only file with raw colour values. Values from the 2.0 prototype (src/design/tokens.js).
+ * Keep tokens.ts in sync (tokens.test.ts checks). The numbered markers are parsed by the design-system page.
  */
 
 /* 1. Primitive palette */
 :root {
   --palette-white: #ffffff;
 
-  /* zinc neutrals (HeroUI) */
   --palette-zinc-100: #f5f5f5;
   --palette-zinc-250: #e4e4e7;
   --palette-zinc-300: #d4d4d8;
@@ -30,7 +19,6 @@
   --palette-brand-700: #11452b;
   --palette-brand-900: #063f24;
 
-  /* status (HeroUI tones: soft fill, readable text, bright) */
   --palette-red-100: #ffe1e2;
   --palette-red-700: #ab2c30;
   --palette-amber-100: #fef2de;
@@ -43,7 +31,6 @@
   --palette-violet-400: #7e6bb5;
   --palette-violet-700: #5b4b8a;
 
-  /* WhatsApp chat */
   --palette-wa-wallpaper: #f8f6f2;
   --palette-wa-bubble-out: #d9fdd3;
   /* WhatsApp uses #667781; darkened so timestamps pass AA on the green bubble */
@@ -114,7 +101,6 @@
 
   --radius: 0.75rem;
 
-  /* Devanagari is in the stack because much of Glific's content is Hindi or Marathi. */
   --font-family-sans:
     "Google Sans Flex Variable", "Noto Sans Devanagari Variable", -apple-system, "Segoe UI", sans-serif;
   --font-family-mono: "SF Mono", ui-monospace, Menlo, monospace;
@@ -189,7 +175,6 @@
   --font-heading: var(--font-family-sans);
   --font-mono: var(--font-family-mono);
 
-  /* Typography scale (prototype: 30 / 24 / 18 / 16 / 14 / 12 / 11 px) */
   --text-display: 1.875rem;
   --text-display--line-height: 2.25rem;
   --text-display--font-weight: 600;
@@ -209,7 +194,6 @@
   --text-caption: 0.6875rem;
   --text-caption--line-height: 1rem;
 
-  /* Spacing conventions (prototype layout: page edge 40, section 24, stack 16, inline 8) */
   --spacing-page: 2.5rem;
   --spacing-section: 1.5rem;
   --spacing-stack: 1rem;

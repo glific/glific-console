@@ -16,7 +16,6 @@ interface EmojiPickerProps {
   size?: React.ComponentProps<typeof IconButton>["size"]
 }
 
-/** Emoji button that opens a searchable picker (frimousse), for the message box and editors. */
 function EmojiPicker({
   onEmojiSelect,
   emojibaseUrl,

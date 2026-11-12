@@ -12,10 +12,8 @@ type IconButtonProps = Omit<
   "children" | "size"
 > & {
   icon: LucideIcon
-  /** Accessible name; also shown as the tooltip. Required, because the button has no visible text. */
   label: string
   size?: "xs" | "sm" | "default" | "lg"
-  /** Set false where a tooltip would be noise (e.g. inside a menu that already labels it). */
   tooltip?: boolean
 }
 
@@ -26,7 +24,6 @@ const sizeMap = {
   lg: "icon-lg",
 } as const
 
-/** Icon-only button with a required label, shown as a tooltip (prototype IconButton). */
 function IconButton({
   icon: Icon,
   label,

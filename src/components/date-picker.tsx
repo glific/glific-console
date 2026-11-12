@@ -11,7 +11,6 @@ interface DatePickerProps {
   value: Date | undefined;
   onValueChange: (date: Date | undefined) => void;
   placeholder?: string;
-  /** Dates before this can't be picked, e.g. today for scheduling. */
   fromDate?: Date;
   id?: string;
   disabled?: boolean;
@@ -19,7 +18,6 @@ interface DatePickerProps {
   "aria-label"?: string;
 }
 
-/** Date field that opens a calendar (live app Calendar / DateTimePicker), for triggers, broadcasts and filters. */
 export function DatePicker({
   value,
   onValueChange,

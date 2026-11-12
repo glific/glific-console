@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
-/** Glific AI's mark: violet, never the brand green, so AI output can't be mistaken for live state. */
 export function AiMark({ size = "default", className }: { size?: "sm" | "default"; className?: string }) {
   const { t } = useTranslation();
   return (
@@ -29,12 +28,10 @@ interface PromptBoxProps {
   onValueChange: (value: string) => void;
   onSubmit: (prompt: string) => void;
   placeholder?: string;
-  /** While the AI is answering: the box stays editable but can't submit. */
   busy?: boolean;
   className?: string;
 }
 
-/** The box that asks Glific AI something (prototype AskBox / PromptInput). Enter sends, Shift+Enter adds a line. */
 export function PromptBox({ value, onValueChange, onSubmit, placeholder, busy, className }: PromptBoxProps) {
   const { t } = useTranslation();
   const canSubmit = !busy && value.trim().length > 0;
@@ -75,7 +72,6 @@ export function PromptBox({ value, onValueChange, onSubmit, placeholder, busy, c
   );
 }
 
-/** "Thinking…" indicator while Glific AI works (prototype Thinking / ChatLoader). */
 export function ThinkingIndicator({ label }: { label?: string }) {
   const { t } = useTranslation();
   return (
@@ -95,7 +91,6 @@ export function ThinkingIndicator({ label }: { label?: string }) {
   );
 }
 
-/** Starter prompts the user can pick (prototype PromptSuggestions). */
 export function PromptSuggestions({
   suggestions,
   onPick,
@@ -122,7 +117,6 @@ export function PromptSuggestions({
   );
 }
 
-/** A Glific AI reply in a conversation or panel (prototype ChatAssistant). */
 export function AiMessage({ children, actions }: { children: ReactNode; actions?: ReactNode }) {
   return (
     <div data-slot="ai-message" className="flex gap-inline">

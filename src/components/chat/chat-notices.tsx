@@ -2,7 +2,6 @@ import { CheckIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/** Centred date pill between messages ("Today", "12 Nov"). */
 export function DayDivider({ children }: { children: ReactNode }) {
   return (
     <div className="my-4 flex justify-center" data-slot="day-divider">
@@ -19,7 +18,6 @@ interface SystemNoticeProps {
   icon?: ReactNode;
 }
 
-/** Centred event in the conversation: "Flow restarted", "Ticket #123 raised", "Window closed". */
 export function SystemNotice({ children, tone = "neutral", icon }: SystemNoticeProps) {
   return (
     <div className="my-3 flex justify-center" data-slot="system-notice">

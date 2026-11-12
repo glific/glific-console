@@ -9,14 +9,12 @@ interface ConversationListItemProps {
   preview: string;
   time: string;
   unread?: number;
-  /** Problem / waiting marker shown on the avatar. */
   tone?: "danger" | "warning" | "success";
   toneLabel?: string;
   selected?: boolean;
   onSelect: () => void;
 }
 
-/** One row in the chats list: avatar, name, last message, time, unread count. */
 export function ConversationListItem({
   name,
   preview,

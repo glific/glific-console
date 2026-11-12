@@ -7,12 +7,10 @@ import { cn } from "@/lib/utils";
 interface SelectionBarProps {
   count: number;
   onClear: () => void;
-  /** Bulk actions for the selected rows, usually small Buttons. */
   children?: ReactNode;
   className?: string;
 }
 
-/** Bar shown while list rows are ticked: how many, bulk actions, clear (prototype SelectionBar). */
 export function SelectionBar({ count, onClear, children, className }: SelectionBarProps) {
   const { t } = useTranslation();
   if (count === 0) return null;

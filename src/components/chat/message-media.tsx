@@ -6,18 +6,14 @@ export type MediaKind = "image" | "video" | "audio" | "document" | "location" | 
 
 interface MessageMediaProps {
   kind: MediaKind;
-  /** Media URL (image, video, audio, document, sticker). */
   url?: string;
-  /** File name for documents; alt text for images. */
+  /** File name for documents, alt text for images. */
   name?: string;
-  /** e.g. "2:14" for audio/video, "1.2 MB · PDF" for documents. */
   detail?: string;
-  /** Location coordinates, rendered as a link to a map. */
   location?: { latitude: number; longitude: number; label?: string };
   className?: string;
 }
 
-/** Media inside a message bubble: image, video, voice note, document, location or sticker (live app ChatMessageType). */
 export function MessageMedia({ kind, url, name, detail, location, className }: MessageMediaProps) {
   const { t } = useTranslation();
   const label = name ?? t(`chat.media.${kind}`);

@@ -1,4 +1,4 @@
-/** localStorage access that never throws (private mode, blocked storage, SSR-like test envs). */
+// localStorage throws in private mode and when storage is blocked; preferences just aren't persisted then.
 export const safeStorage = {
   get(key: string): string | null {
     try {
@@ -10,8 +10,6 @@ export const safeStorage = {
   set(key: string, value: string): void {
     try {
       globalThis.localStorage?.setItem(key, value);
-    } catch {
-      // Storage unavailable or full: the preference simply isn't persisted.
-    }
+    } catch {}
   },
 };

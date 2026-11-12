@@ -26,7 +26,6 @@ function formatLine(line: string, lineKey: number): ReactNode[] {
   return out;
 }
 
-/** Renders text with WhatsApp's formatting markers, safely (no HTML injection), keeping line breaks. */
 export function WhatsAppText({ children }: { children: string }) {
   const lines = children.split("\n");
   return (

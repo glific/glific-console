@@ -33,16 +33,13 @@ function Meta({ time }: { time?: string }) {
 
 interface TemplateMessageProps {
   header?: string;
-  /** Body text with {{1}}-style variables already filled, or shown as-is. WhatsApp formatting supported. */
   body: string;
   footer?: string;
   buttons?: TemplateButton[];
-  /** A media header (image URL) instead of a text header. */
   mediaUrl?: string;
   time?: string;
 }
 
-/** An HSM template as the contact sees it: header, body, footer and buttons (live app HSM preview). */
 export function TemplateMessage({ header, body, footer, buttons = [], mediaUrl, time }: TemplateMessageProps) {
   return (
     <Card
@@ -81,7 +78,6 @@ interface QuickReplyMessageProps {
   time?: string;
 }
 
-/** Interactive quick-reply message: text with up to three reply buttons (live app QuickReplyTemplate). */
 export function QuickReplyMessage({ body, options, time }: QuickReplyMessageProps) {
   return (
     <div className="flex w-full max-w-64 flex-col gap-1 self-start">
@@ -105,15 +101,12 @@ export function QuickReplyMessage({ body, options, time }: QuickReplyMessageProp
 
 interface ListMessageProps {
   body: string;
-  /** Text on the button that opens the list. */
   buttonText?: string;
   sections: { title: string; items: { title: string; description?: string }[] }[];
-  /** Show the list as opened (WhatsApp's bottom sheet), as in the live app's preview. */
   expanded?: boolean;
   time?: string;
 }
 
-/** Interactive list message: text plus a button that opens sections of options (live app ListReplyTemplate). */
 export function ListMessage({ body, buttonText, sections, expanded, time }: ListMessageProps) {
   const { t } = useTranslation();
   return (
@@ -151,7 +144,6 @@ export function ListMessage({ body, buttonText, sections, expanded, time }: List
   );
 }
 
-/** Location request message: text plus WhatsApp's "Send location" button (live app LocationRequestTemplate). */
 export function LocationRequestMessage({ body, time }: { body: string; time?: string }) {
   const { t } = useTranslation();
   return (

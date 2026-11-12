@@ -11,28 +11,20 @@ export type MessageDirection = "inbound" | "outbound";
 interface MessageBubbleProps {
   /** inbound: from the contact (left, white). outbound: sent by a flow or staff (right, green). */
   direction: MessageDirection;
-  /** Message text; WhatsApp formatting (*bold*, _italic_) is rendered. */
   text?: string;
-  /** Media, poll or interactive content shown above the text. */
   children?: ReactNode;
   time: string;
   /** Delivery status, outbound only. */
   status?: MessageStatus;
-  /** Sender name in group chats. */
   sender?: string;
-  /** Quick-reply button labels attached to the message. */
   buttons?: string[];
-  /** Why delivery failed; makes the bubble an error and shows a clickable explanation. */
   error?: string;
   onErrorClick?: () => void;
-  /** Small line under the bubble, e.g. the flow and step that sent it. */
   meta?: ReactNode;
-  /** Shown beside the bubble on hover/focus, e.g. a "Save as quick reply" menu. */
   actions?: ReactNode;
   className?: string;
 }
 
-/** One chat message as WhatsApp shows it (prototype Conversations, live app ChatMessage). */
 export function MessageBubble({
   direction,
   text,

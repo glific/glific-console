@@ -6,11 +6,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 
 interface HelpTipProps {
   children: ReactNode;
-  /** Accessible name of the trigger, e.g. "About keywords". */
   label?: string;
 }
 
-/** Small info icon that explains a field or setting in a popover (live app HelpIcon). Works on touch and keyboard. */
 export function HelpTip({ children, label }: HelpTipProps) {
   const { t } = useTranslation();
   const name = label ?? t("common.help");
