@@ -16,6 +16,7 @@
   },
   "common": {
     "loading": "Loading",
+    "close": "Close",
     "retry": "Try again",
     "goHome": "Go to home"
   },
