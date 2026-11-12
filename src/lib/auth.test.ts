@@ -90,8 +90,15 @@ describe("backendOrigin", () => {
     return { protocol: u.protocol, hostname: u.hostname, host: u.host, origin: u.origin };
   };
 
-  it("uses api.<host> for NGO subdomains, the page origin locally, and the override when set", () => {
+  it("uses api.<shortcode> for <shortcode> and console.<shortcode> hosts, the page origin locally, and the override", () => {
     expect(backendOrigin(place("https://pratham.glific.com/chats"), overrides)).toBe("https://api.pratham.glific.com");
+    expect(backendOrigin(place("https://console.prod.glific.com/contacts"), overrides)).toBe(
+      "https://api.prod.glific.com",
+    );
+    expect(backendOrigin(place("https://console.pratham.glific.com:8443/"), overrides)).toBe(
+      "https://api.pratham.glific.com:8443",
+    );
+    expect(backendOrigin(place("https://consoleapp.glific.com/"), overrides)).toBe("https://api.consoleapp.glific.com");
     expect(backendOrigin(place("http://localhost:5173/"), overrides)).toBe("http://localhost:5173");
     expect(
       backendOrigin(place("https://pratham.glific.com/"), {
