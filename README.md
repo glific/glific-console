@@ -31,8 +31,8 @@ GLIFIC_DEV_PORT=3001 pnpm dev          # run beside the current app, which also 
 phone number and the password `password`. The backend's websocket origin check expects port 3000, so live updates
 on another port need that origin added to the backend's `REQUEST_ORIGIN`.
 
-Environment variables are validated at startup (`src/lib/env.ts`); see `.env.example`. Non-secret defaults for
-dev and test are in `.env.development` and `.env.test`; put local overrides in `.env.local`.
+Environment variables are validated at startup (`src/lib/env.ts`); see `.env.example`. Dev defaults are in
+`.env.development`; put local overrides in `.env.local`. On Vercel, set `VITE_DESIGN_SYSTEM_HOSTS=prod.glific.com`.
 
 ## Commands
 
