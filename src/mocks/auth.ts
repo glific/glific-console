@@ -22,8 +22,9 @@ export const authHandlers = [
     }
     return HttpResponse.json({ data: mockSession() });
   }),
+  // Any token renews: a real session left by the current app on the same origin must not sign you out in mock mode.
   http.post("*/api/v1/session/renew", ({ request }) =>
-    request.headers.get("authorization")?.startsWith("renewal-")
+    request.headers.get("authorization")
       ? HttpResponse.json({ data: mockSession() })
       : HttpResponse.json({ error: { status: 401, message: "Invalid token" } }, { status: 401 }),
   ),

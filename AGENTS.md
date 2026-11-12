@@ -5,18 +5,18 @@ TanStack Query, i18next. Single app, pnpm. Stack rationale: `docs/adr/0001-stack
 
 ## Commands
 
-| Command                            | What it does                                                                                            |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `pnpm dev`                         | Dev server on https://glific.test:3000 with MSW mocks (`.env.development`); `GLIFIC_DEV_PORT` to change |
-| `pnpm check`                       | typecheck + lint + DS lint + unit/component tests. **Must pass before you say you're done.**            |
-| `pnpm typecheck`                   | `tsc -b`                                                                                                |
-| `pnpm lint` / `pnpm lint:fix`      | Biome check (format, lint, imports, DS rules)                                                           |
-| `pnpm lint:ds`                     | Design-system rules only, plus the fixture self-test proving each rule fires                            |
-| `pnpm test` / `pnpm test:coverage` | Vitest Browser Mode (Chromium). Coverage gate: 80% on `src/components`                                  |
-| `pnpm test:e2e`                    | Playwright flows + axe a11y (starts its own dev server)                                                 |
-| `pnpm test:visual`                 | Visual regression. Baselines come only from `pnpm test:visual:update` (runs in Docker)                  |
-| `pnpm build` / `pnpm size`         | Production build / bundle budgets (`.size-limit.js`: initial load and total)                            |
-| `pnpm changeset`                   | Record a user-facing change                                                                             |
+| Command                            | What it does                                                                                                            |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                         | Dev server on https://glific.test:3000 against the local backend; `pnpm dev:mock` uses MSW; `GLIFIC_DEV_PORT` to change |
+| `pnpm check`                       | typecheck + lint + DS lint + unit/component tests. **Must pass before you say you're done.**                            |
+| `pnpm typecheck`                   | `tsc -b`                                                                                                                |
+| `pnpm lint` / `pnpm lint:fix`      | Biome check (format, lint, imports, DS rules)                                                                           |
+| `pnpm lint:ds`                     | Design-system rules only, plus the fixture self-test proving each rule fires                                            |
+| `pnpm test` / `pnpm test:coverage` | Vitest Browser Mode (Chromium). Coverage gate: 80% on `src/components`                                                  |
+| `pnpm test:e2e`                    | Playwright flows + axe a11y (starts its own dev server)                                                                 |
+| `pnpm test:visual`                 | Visual regression. Baselines come only from `pnpm test:visual:update` (runs in Docker)                                  |
+| `pnpm build` / `pnpm size`         | Production build / bundle budgets (`.size-limit.js`: initial load and total)                                            |
+| `pnpm changeset`                   | Record a user-facing change                                                                                             |
 
 ## Layout
 
@@ -84,7 +84,7 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
   Backend schema changed? `pnpm schema:pull` (needs the `glific` repo at `../glific` or `GLIFIC_BACKEND_DIR`).
 - REST (auth only) goes through `apiClient`. Never call `fetch` from components.
 - Add an MSW handler for every operation (`glificApi.query("Name", ...)` in `src/mocks/handlers.ts`) so dev and tests
-  work offline. Dev sign-in with MSW: any phone, password `password`.
+  work offline. In `pnpm dev:mock`, sign in with any phone and password `password`.
 - Pages are lazy routes in `src/routes/router.tsx` (`lazy: () => import(...)`), so the first load stays small.
 - List screens use `ListPage` (`src/components/list-page.tsx`): search, filters, server pagination and all states.
 - Env vars: add to `src/lib/env.ts` (typed + validated) and `.env.example`. Never read `import.meta.env` elsewhere.
