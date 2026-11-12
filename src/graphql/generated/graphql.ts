@@ -68,6 +68,11 @@ export type SortOrder =
   | 'ASC'
   | 'DESC';
 
+export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentUserQuery = { currentUser: { user: { id: string | null, name: string | null, roles: Array<unknown> | null } | null } | null };
+
 export type ContactsQueryVariables = Exact<{
   filter?: ContactFilter | null | undefined;
   opts?: Opts | null | undefined;
@@ -95,6 +100,17 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
+export const CurrentUserDocument = new TypedDocumentString(`
+    query CurrentUser {
+  currentUser {
+    user {
+      id
+      name
+      roles
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<CurrentUserQuery, CurrentUserQueryVariables>;
 export const ContactsDocument = new TypedDocumentString(`
     query Contacts($filter: ContactFilter, $opts: Opts) {
   contacts(filter: $filter, opts: $opts) {

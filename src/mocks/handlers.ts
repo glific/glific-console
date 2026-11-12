@@ -13,6 +13,12 @@ export const glificApi = graphql.link("*/api");
 
 export const handlers = [
   ...authHandlers,
+  // Glific admin in mock mode, so the internal /design-system page is reachable while developing.
+  glificApi.query("CurrentUser", () =>
+    HttpResponse.json({
+      data: { currentUser: { user: { id: "1", name: "Glific Team", roles: ["Glific_admin"] } } },
+    }),
+  ),
   glificApi.query("Contacts", ({ variables }) => {
     const filter = (variables.filter ?? {}) as { term?: string };
     const opts = (variables.opts ?? {}) as { limit?: number; offset?: number };

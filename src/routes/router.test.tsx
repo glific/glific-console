@@ -1,6 +1,9 @@
 import { screen } from "@testing-library/react";
+import { HttpResponse } from "msw";
 import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
+import { glificApi } from "@/mocks/handlers";
+import { worker } from "@/test/msw";
 import { renderRoute } from "@/test/render";
 
 describe("router", () => {
@@ -18,13 +21,24 @@ describe("router", () => {
     expect(screen.getByRole("link", { name: "Go to home" })).toHaveAttribute("href", "/");
   });
 
-  it("serves /design-system only where internal pages are enabled", async () => {
+  it("serves /design-system only on allowed hosts and only to Glific admins", async () => {
     const { unmount } = renderRoute("/design-system");
     expect(await screen.findByRole("heading", { level: 1, name: "Page not found" })).toBeVisible();
-    expect(screen.queryByRole("link", { name: "Design system" })).toBeNull();
     unmount();
+
     renderRoute("/design-system", { internalPages: true });
     expect(await screen.findByRole("heading", { level: 1, name: "Design system" }, { timeout: 5000 })).toBeVisible();
     expect(screen.getByRole("link", { name: "Design system" })).toHaveAttribute("aria-current", "page");
+  });
+
+  it("hides /design-system from users who are not Glific admins", async () => {
+    worker.use(
+      glificApi.query("CurrentUser", () =>
+        HttpResponse.json({ data: { currentUser: { user: { id: "2", name: "NGO admin", roles: ["Admin"] } } } }),
+      ),
+    );
+    renderRoute("/design-system", { internalPages: true });
+    expect(await screen.findByRole("heading", { level: 1, name: "Page not found" }, { timeout: 5000 })).toBeVisible();
+    expect(screen.queryByRole("link", { name: "Design system" })).toBeNull();
   });
 });

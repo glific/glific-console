@@ -1,5 +1,6 @@
-import { createBrowserRouter, Navigate, type RouteObject } from "react-router";
+import { createBrowserRouter, Navigate, Outlet, type RouteObject } from "react-router";
 import { RequireAuth } from "@/features/auth/require-auth";
+import { RequireGlificAdmin } from "@/features/auth/require-glific-admin";
 import { internalPagesEnabled } from "@/lib/internal-pages";
 import { HomePage } from "./home";
 import { NotFoundPage } from "./not-found";
@@ -47,9 +48,14 @@ export function createRoutes({ internalPages }: RouteOptions): RouteObject[] {
 const internalRoutes: RouteObject[] = [
   {
     path: "design-system",
-    lazy: async () => ({
-      Component: (await import("@/features/design-system")).DesignSystemPage,
-    }),
+    element: (
+      <RequireGlificAdmin>
+        <Outlet />
+      </RequireGlificAdmin>
+    ),
+    children: [
+      { index: true, lazy: async () => ({ Component: (await import("@/features/design-system")).DesignSystemPage }) },
+    ],
   },
   { path: "components", element: <Navigate to="/design-system" replace /> },
 ];

@@ -2,6 +2,7 @@ import { LogOutIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink, Outlet } from "react-router";
 import { Button } from "@/components/ui/button";
+import { useIsGlificAdmin } from "@/features/auth/current-user";
 import { internalPagesEnabled } from "@/lib/internal-pages";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +15,8 @@ const internalNavItems = [{ to: "/design-system", key: "nav.designSystem", end: 
 
 export function RootLayout({ internalPages = internalPagesEnabled() }: { internalPages?: boolean }) {
   const { t } = useTranslation();
-  const items = internalPages ? [...navItems, ...internalNavItems] : navItems;
+  const { isGlificAdmin } = useIsGlificAdmin();
+  const items = internalPages && isGlificAdmin ? [...navItems, ...internalNavItems] : navItems;
   return (
     <div className="flex min-h-svh flex-col">
       <a
