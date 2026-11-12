@@ -64,6 +64,8 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: pnpm
+      # The container runs as root over a checkout owned by the runner user; git (used by lefthook in `prepare`) refuses that.
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - run: pnpm install --frozen-lockfile
       - name: E2E and a11y
         run: pnpm test:e2e
