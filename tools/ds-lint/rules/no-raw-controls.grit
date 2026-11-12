@@ -1,0 +1,22 @@
+// ds/no-raw-controls: native controls and new button/input/modal-like components outside src/components/ui.
+// Composing a feature dialog (CreateContactDialog built from @/components/ui/dialog) is fine; re-implementing a primitive is not.
+language js
+
+or {
+  `$el` where {
+    $el <: or {
+      JsxOpeningElement(name=$tag),
+      JsxSelfClosingElement(name=$tag)
+    },
+    $tag <: r"button|input|select|textarea|dialog",
+    register_diagnostic(span=$el, message="[ds/no-raw-controls] Native <button>/<input>/<select>/<textarea>/<dialog>. Use the component from @/components/ui instead.", severity="error")
+  },
+  `$decl` where {
+    $decl <: or {
+      JsFunctionDeclaration(id=$id),
+      JsVariableDeclarator(id=$id)
+    },
+    $id <: r"[A-Z][A-Za-z0-9]*(?:Button|Input|Textarea|Checkbox|Switch|Modal)",
+    register_diagnostic(span=$id, message="[ds/no-raw-controls] New button/input/dialog-like component outside src/components/ui. Extend the variants of the existing ui component instead, or propose a new ui component.", severity="error")
+  }
+}

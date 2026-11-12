@@ -1,0 +1,13 @@
+// ds/no-arbitrary-tailwind: arbitrary values like p-[13px], bg-[#fff], text-[15px].
+// Arbitrary variants such as [&_svg]: or data-[state=open]: are allowed; they are selectors, not values.
+language js
+
+`$s` where {
+  $s <: or {
+    JsStringLiteralExpression(),
+    JsxString(),
+    JsTemplateChunkElement()
+  },
+  $s <: r"(?s)(?:.*[\s`'\x22])?[!-]?[a-z][a-z0-9-]*-\[[^\]\s]+\](?:/[0-9]+)?(?:[\s`'\x22].*)?",
+  register_diagnostic(span=$s, message="[ds/no-arbitrary-tailwind] Arbitrary Tailwind value. Use the token scale (p-4, text-body, bg-muted); if a value is missing, add a token to src/styles/tokens.css.", severity="error")
+}

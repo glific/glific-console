@@ -4,6 +4,8 @@ coverage
 .env
 .env.*
 !.env.example
+!.env.development
+!.env.test
 *.local
 .DS_Store
 node_modules/.tmp
@@ -12,3 +14,6 @@ playwright-report
 blob-report
 .vitest-attachments
 src/**/__screenshots__
+
+# Temporary copies made by tools/ds-lint/fixtures.test.ts
+**/__ds-lint-fixtures__/

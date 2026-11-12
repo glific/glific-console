@@ -1,0 +1,66 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "includes": ["**", "!public/mockServiceWorker.js", "!tools/ds-lint/fixtures", "!.changeset/*.md"]
+  },
+  "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2, "lineWidth": 120 },
+  "javascript": { "formatter": { "quoteStyle": "double", "semicolons": "always" } },
+  "css": { "parser": { "tailwindDirectives": true } },
+  "assist": { "enabled": true, "actions": { "source": { "organizeImports": "on" } } },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "correctness": { "noUnusedImports": "error", "noUnusedVariables": "error" },
+      "style": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "cn": "Import cn from @/lib/utils; it is configured with our typography and spacing tokens."
+            },
+            "patterns": [
+              {
+                "group": ["@radix-ui/*", "radix-ui"],
+                "message": "[ds/no-radix-outside-ui] Radix is wrapped by src/components/ui. Import from @/components/ui instead."
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "plugins": [
+    {
+      "path": "./tools/ds-lint/rules/no-raw-color.grit",
+      "includes": ["src/**", "!src/styles/tokens.css", "!src/styles/tokens.ts"]
+    },
+    { "path": "./tools/ds-lint/rules/no-raw-color-css.grit", "includes": ["src/**/*.css", "!src/styles/tokens.css"] },
+    { "path": "./tools/ds-lint/rules/no-arbitrary-tailwind.grit", "includes": ["src/**", "!src/components/ui/**"] },
+    {
+      "path": "./tools/ds-lint/rules/no-inline-style.grit",
+      "includes": ["src/**", "!src/components/ui/**"]
+    },
+    { "path": "./tools/ds-lint/rules/no-raw-controls.grit", "includes": ["src/**", "!src/components/ui/**"] }
+  ],
+  "overrides": [
+    {
+      "includes": ["src/components/ui/**"],
+      "formatter": { "lineWidth": 80 },
+      "javascript": { "formatter": { "semicolons": "asNeeded" } },
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": { "level": "error", "options": { "paths": { "cn": "Import cn from @/lib/utils." } } }
+          },
+          "a11y": { "useSemanticElements": "off" }
+        }
+      }
+    },
+    {
+      "includes": ["src/lib/utils.ts"],
+      "linter": { "rules": { "style": { "noRestrictedImports": "off" } } }
+    }
+  ]
+}

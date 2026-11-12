@@ -1,0 +1,9 @@
+// ds/no-raw-color: colour literals in CSS outside src/styles/tokens.css.
+language css
+
+or {
+  `$c` where { $c <: CssColor() },
+  `$f` where { $f <: CssFunction(name=$n), $n <: r"(?i)(?:rgba?|hsla?|oklch|oklab|lab|lch|hwb|color)" }
+} as $hit where {
+  register_diagnostic(span=$hit, message="[ds/no-raw-color] Raw colour literal in CSS. Reference a semantic token (var(--primary)); raw values live only in src/styles/tokens.css.", severity="error")
+}

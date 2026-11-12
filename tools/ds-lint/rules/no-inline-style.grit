@@ -1,0 +1,8 @@
+// ds/no-inline-style: style={...} props outside src/components/ui (see allowlist in biome.json).
+language js
+
+`$attr` where {
+  $attr <: JsxAttribute(name=$name),
+  $name <: `style`,
+  register_diagnostic(span=$attr, message="[ds/no-inline-style] Inline style prop. Use Tailwind classes with semantic tokens; if you genuinely need a dynamic value, add the file to the documented allowlist in biome.json.", severity="error")
+}

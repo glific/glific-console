@@ -1,0 +1,12 @@
+// ds/no-raw-color: colour literals in TS/TSX strings (class names, style objects, chart configs).
+language js
+
+`$s` where {
+  $s <: or {
+    JsStringLiteralExpression(),
+    JsxString(),
+    JsTemplateChunkElement()
+  },
+  $s <: r"(?s).*(?:#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch|oklab|lab|lch|hwb|color)\().*",
+  register_diagnostic(span=$s, message="[ds/no-raw-color] Raw colour literal. Use a semantic token class (bg-primary, text-muted-foreground, ...). Raw values live only in src/styles/tokens.css.", severity="error")
+}

@@ -1,0 +1,7 @@
+.banner {
+  /* @expect ds/no-raw-color */
+  color: #0f766e;
+  /* @expect ds/no-raw-color */
+  background: oklch(0.6 0.15 160);
+  border-color: var(--border);
+}
