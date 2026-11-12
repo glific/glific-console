@@ -4,7 +4,10 @@
  * Three layers, in this order:
  *   1. Primitive palette (--palette-*): the ONLY place raw colour values are allowed.
  *   2. Semantic tokens (:root): what components use. They only reference primitives. Light theme only.
- *   3. @theme inline: exposes semantic tokens to Tailwind (bg-primary, text-warning-foreground, ...).
+ *   3. @theme inline: exposes semantic tokens to Tailwind (bg-primary, text-warning, bg-chat-outbound, ...).
+ *
+ * Values come from the Glific 2.0 prototype (karan26796/glific-redesign, src/design/tokens.js):
+ * Glific's 2026 brand-book greens, HeroUI v3's zinc neutrals and status tones, and WhatsApp's chat colours.
  *
  * Keep src/styles/tokens.ts in sync: it is the manifest the component catalog reads.
  * A test (tokens.test.ts) fails if the two drift.
@@ -12,85 +15,115 @@
 
 /* 1. Primitive palette */
 :root {
-  --palette-white: oklch(1 0 0);
+  --palette-white: #ffffff;
 
-  --palette-neutral-50: oklch(0.985 0 0);
-  --palette-neutral-100: oklch(0.97 0 0);
-  --palette-neutral-200: oklch(0.922 0 0);
-  --palette-neutral-600: oklch(0.439 0 0);
-  --palette-neutral-900: oklch(0.205 0 0);
-  --palette-neutral-950: oklch(0.145 0 0);
+  /* zinc neutrals (HeroUI) */
+  --palette-zinc-100: #f5f5f5;
+  --palette-zinc-150: #f4f4f5;
+  --palette-zinc-250: #e4e4e7;
+  --palette-zinc-300: #d4d4d8;
+  --palette-zinc-600: #52525b;
+  --palette-zinc-900: #18181b;
 
-  /* BRAND placeholder: replace --palette-brand-* with the real primary (<#HEX>) and its tints. */
-  --palette-brand-500: oklch(0.6 0.15 160);
-  --palette-brand-600: oklch(0.52 0.13 160);
-  --palette-brand-700: oklch(0.44 0.11 160);
+  /* brand book greens: #063F24 · #11452B · #23995B · #CCE6D0 */
+  --palette-brand-100: #e7ecea;
+  --palette-brand-500: #23995b;
+  --palette-brand-700: #11452b;
+  --palette-brand-900: #063f24;
 
-  --palette-red-700: oklch(0.505 0.213 27.518);
-  --palette-green-700: oklch(0.527 0.154 150.069);
-  --palette-amber-500: oklch(0.769 0.188 70.08);
-  --palette-amber-950: oklch(0.279 0.077 45.635);
-  --palette-blue-500: oklch(0.623 0.214 259.815);
-  --palette-blue-600: oklch(0.546 0.245 262.881);
-  --palette-violet-500: oklch(0.606 0.25 292.717);
-  --palette-cyan-500: oklch(0.715 0.143 215.221);
+  /* status (HeroUI tones: soft fill, readable text, bright) */
+  --palette-red-100: #ffe1e2;
+  --palette-red-700: #ab2c30;
+  --palette-amber-100: #fef2de;
+  --palette-amber-500: #f5a524;
+  --palette-amber-800: #8e6320;
+  --palette-blue-100: #d9edfe;
+  --palette-blue-500: #0485f7;
+  --palette-blue-700: #0a64b5;
+  --palette-violet-100: #ebe9f1;
+  --palette-violet-400: #7e6bb5;
+  --palette-violet-700: #5b4b8a;
+
+  /* WhatsApp chat */
+  --palette-wa-wallpaper: #f8f6f2;
+  --palette-wa-bubble-out: #d9fdd3;
+  --palette-wa-meta: #667781;
+  --palette-wa-read: #53bdeb;
+  --palette-wa-green: #25d366;
 }
 
 /* 2. Semantic tokens */
 :root {
   --background: var(--palette-white);
-  --foreground: var(--palette-neutral-950);
+  --foreground: var(--palette-zinc-900);
+  --shell: var(--palette-zinc-100);
   --card: var(--palette-white);
-  --card-foreground: var(--palette-neutral-950);
+  --card-foreground: var(--palette-zinc-900);
   --popover: var(--palette-white);
-  --popover-foreground: var(--palette-neutral-950);
-  --primary: var(--palette-brand-600);
-  --primary-hover: var(--palette-brand-700);
+  --popover-foreground: var(--palette-zinc-900);
+  --primary: var(--palette-brand-700);
+  --primary-hover: var(--palette-brand-900);
   --primary-foreground: var(--palette-white);
-  --secondary: var(--palette-neutral-100);
-  --secondary-foreground: var(--palette-neutral-900);
-  --muted: var(--palette-neutral-100);
-  --muted-foreground: var(--palette-neutral-600);
-  --accent: var(--palette-neutral-100);
-  --accent-foreground: var(--palette-neutral-900);
+  --primary-soft: var(--palette-brand-100);
+  --secondary: var(--palette-zinc-100);
+  --secondary-foreground: var(--palette-brand-700);
+  --muted: var(--palette-zinc-100);
+  --muted-foreground: var(--palette-zinc-600);
+  --accent: var(--palette-zinc-150);
+  --accent-foreground: var(--palette-zinc-900);
   --destructive: var(--palette-red-700);
   --destructive-foreground: var(--palette-white);
-  --success: var(--palette-green-700);
+  --destructive-soft: var(--palette-red-100);
+  --success: var(--palette-brand-700);
   --success-foreground: var(--palette-white);
-  --warning: var(--palette-amber-500);
-  --warning-foreground: var(--palette-amber-950);
-  --info: var(--palette-blue-600);
+  --success-soft: var(--palette-brand-100);
+  --warning: var(--palette-amber-800);
+  --warning-foreground: var(--palette-white);
+  --warning-soft: var(--palette-amber-100);
+  --info: var(--palette-blue-700);
   --info-foreground: var(--palette-white);
-  --border: var(--palette-neutral-200);
-  --input: var(--palette-neutral-200);
-  --ring: var(--palette-brand-500);
+  --info-soft: var(--palette-blue-100);
+  --ai: var(--palette-violet-700);
+  --ai-foreground: var(--palette-white);
+  --ai-soft: var(--palette-violet-100);
+  --border: var(--palette-zinc-250);
+  --input: var(--palette-zinc-300);
+  --ring: var(--palette-brand-700);
 
-  --chart-1: var(--palette-brand-500);
+  --chat-surface: var(--palette-wa-wallpaper);
+  --chat-inbound: var(--palette-white);
+  --chat-outbound: var(--palette-wa-bubble-out);
+  --chat-meta: var(--palette-wa-meta);
+  --chat-read: var(--palette-wa-read);
+  --whatsapp: var(--palette-wa-green);
+
+  --chart-1: var(--palette-brand-700);
   --chart-2: var(--palette-blue-500);
   --chart-3: var(--palette-amber-500);
-  --chart-4: var(--palette-violet-500);
-  --chart-5: var(--palette-cyan-500);
+  --chart-4: var(--palette-violet-400);
+  --chart-5: var(--palette-brand-500);
 
-  --sidebar: var(--palette-neutral-50);
-  --sidebar-foreground: var(--palette-neutral-950);
-  --sidebar-primary: var(--palette-brand-600);
+  --sidebar: var(--palette-white);
+  --sidebar-foreground: var(--palette-zinc-900);
+  --sidebar-primary: var(--palette-brand-700);
   --sidebar-primary-foreground: var(--palette-white);
-  --sidebar-accent: var(--palette-neutral-100);
-  --sidebar-accent-foreground: var(--palette-neutral-900);
-  --sidebar-border: var(--palette-neutral-200);
-  --sidebar-ring: var(--palette-brand-500);
+  --sidebar-accent: var(--palette-brand-100);
+  --sidebar-accent-foreground: var(--palette-brand-700);
+  --sidebar-border: var(--palette-zinc-250);
+  --sidebar-ring: var(--palette-brand-700);
 
-  --radius: 0.625rem;
+  --radius: 0.75rem;
 
-  /* BRAND placeholder: replace FONT_NAME with the real font family. */
-  --font-family-sans: "FONT_NAME", ui-sans-serif, system-ui, sans-serif;
-  --font-family-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Devanagari is in the stack because much of Glific's content is Hindi or Marathi. */
+  --font-family-sans: "Google Sans Flex", -apple-system, "Segoe UI", "Noto Sans Devanagari", sans-serif;
+  --font-family-mono: "SF Mono", ui-monospace, Menlo, monospace;
 }
 
 /* 3. Tailwind exposure */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-shell: var(--shell);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -98,6 +131,7 @@
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -106,15 +140,28 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-soft: var(--destructive-soft);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-warning-soft: var(--warning-soft);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
+  --color-info-soft: var(--info-soft);
+  --color-ai: var(--ai);
+  --color-ai-foreground: var(--ai-foreground);
+  --color-ai-soft: var(--ai-soft);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-chat-surface: var(--chat-surface);
+  --color-chat-inbound: var(--chat-inbound);
+  --color-chat-outbound: var(--chat-outbound);
+  --color-chat-meta: var(--chat-meta);
+  --color-chat-read: var(--chat-read);
+  --color-whatsapp: var(--whatsapp);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -141,9 +188,9 @@
   --font-heading: var(--font-family-sans);
   --font-mono: var(--font-family-mono);
 
-  /* Typography scale: text-display, text-title, text-heading, text-subheading, text-body, text-body-sm, text-caption */
-  --text-display: 2.25rem;
-  --text-display--line-height: 2.75rem;
+  /* Typography scale (prototype: 30 / 24 / 18 / 16 / 14 / 12 / 11 px) */
+  --text-display: 1.875rem;
+  --text-display--line-height: 2.25rem;
   --text-display--font-weight: 600;
   --text-title: 1.5rem;
   --text-title--line-height: 2rem;
@@ -155,15 +202,15 @@
   --text-subheading--line-height: 1.5rem;
   --text-subheading--font-weight: 500;
   --text-body: 0.875rem;
-  --text-body--line-height: 1.25rem;
-  --text-body-sm: 0.8125rem;
+  --text-body--line-height: 1.375rem;
+  --text-body-sm: 0.75rem;
   --text-body-sm--line-height: 1.125rem;
-  --text-caption: 0.75rem;
+  --text-caption: 0.6875rem;
   --text-caption--line-height: 1rem;
 
-  /* Spacing conventions: p-page, gap-section, gap-stack, gap-inline (numeric scale still available) */
-  --spacing-page: 1.5rem;
-  --spacing-section: 2rem;
+  /* Spacing conventions (prototype layout: page edge 40, section 24, stack 16, inline 8) */
+  --spacing-page: 2.5rem;
+  --spacing-section: 1.5rem;
   --spacing-stack: 1rem;
   --spacing-inline: 0.5rem;
 }
