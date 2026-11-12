@@ -12,6 +12,7 @@
   "common": {
     "loading": "Loading",
     "close": "Close",
+    "more": "More",
     "retry": "Try again",
     "goHome": "Go to home"
   },
@@ -58,5 +59,17 @@
     "title": "Components",
     "description": "Everything available to build screens with: tokens, shadcn/ui components and our composed components.",
     "jumpTo": "Jump to section"
+  },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "previousPage": "Go to previous page",
+    "nextPage": "Go to next page",
+    "morePages": "More pages"
+  },
+  "command": {
+    "title": "Search",
+    "description": "Search for a command to run"
   }
 }
