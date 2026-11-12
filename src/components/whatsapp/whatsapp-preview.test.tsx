@@ -42,3 +42,18 @@ describe("WhatsApp preview", () => {
     await expectNoA11yViolations();
   });
 });
+
+describe("WhatsApp messages, minimal", () => {
+  it("renders a media template and collapsed list without optional parts", () => {
+    renderWithProviders(
+      <WhatsAppPreview businessName="Glific">
+        <TemplateMessage body="Your report" mediaUrl="/img/report.png" />
+        <ListMessage body="Pick one" sections={[{ title: "A", items: [{ title: "One" }] }]} />
+        <LocationRequestMessage body="Where are you?" time="09:00" />
+      </WhatsAppPreview>,
+    );
+    expect(document.querySelector("img[src='/img/report.png']")).not.toBeNull();
+    expect(screen.queryByText("One")).toBeNull();
+    expect(screen.getByText("09:00")).toBeVisible();
+  });
+});

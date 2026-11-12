@@ -32,6 +32,9 @@ export function DatePicker({
 }: DatePickerProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const text = value ? format(value, "d MMM yyyy") : (placeholder ?? t("datePicker.placeholder"));
+  // The accessible name must contain the visible text (WCAG 2.5.3), so the label is prefixed to it.
+  const name = props["aria-label"] ? `${props["aria-label"]}: ${text}` : undefined;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -40,12 +43,12 @@ export function DatePicker({
           type="button"
           variant="outline"
           disabled={disabled}
-          aria-label={props["aria-label"]}
+          aria-label={name}
           data-empty={!value || undefined}
           className={cn("w-full justify-start font-normal data-empty:text-muted-foreground", className)}
         >
           <CalendarIcon aria-hidden="true" data-icon="inline-start" />
-          {value ? format(value, "d MMM yyyy") : (placeholder ?? t("datePicker.placeholder"))}
+          {text}
         </Button>
       </PopoverTrigger>
       <PopoverContent

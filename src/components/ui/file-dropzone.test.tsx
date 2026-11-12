@@ -35,3 +35,71 @@ describe("FileDropzone", () => {
     expect(container.querySelector("input[type=file]")).toBeDisabled()
   })
 })
+
+describe("FileDropzone drag and drop", () => {
+  it("highlights while dragging and accepts dropped files", async () => {
+    const onFiles = vi.fn()
+    const { container } = renderWithProviders(
+      <FileDropzone onFiles={onFiles} multiple />,
+    )
+    const zone = container.querySelector(
+      "[data-slot=file-dropzone]",
+    ) as HTMLElement
+    const data = new DataTransfer()
+    data.items.add(new File(["a"], "a.csv"))
+    data.items.add(new File(["b"], "b.csv"))
+    zone.dispatchEvent(
+      new DragEvent("dragover", {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer: data,
+      }),
+    )
+    await expect.poll(() => zone.dataset.dragging).toBe("true")
+    zone.dispatchEvent(new DragEvent("dragleave", { bubbles: true }))
+    await expect.poll(() => zone.dataset.dragging).toBeUndefined()
+    zone.dispatchEvent(
+      new DragEvent("drop", {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer: data,
+      }),
+    )
+    expect(onFiles).toHaveBeenCalledOnce()
+    expect(onFiles.mock.calls[0]?.[0]).toHaveLength(2)
+  })
+
+  it("keeps one file when not multiple and ignores drops when disabled", () => {
+    const onFiles = vi.fn()
+    const { container, rerender } = renderWithProviders(
+      <FileDropzone onFiles={onFiles} />,
+    )
+    const drop = () => {
+      const data = new DataTransfer()
+      data.items.add(new File(["a"], "a.csv"))
+      data.items.add(new File(["b"], "b.csv"))
+      const zone = container.querySelector(
+        "[data-slot=file-dropzone]",
+      ) as HTMLElement
+      zone.dispatchEvent(
+        new DragEvent("dragover", {
+          bubbles: true,
+          cancelable: true,
+          dataTransfer: data,
+        }),
+      )
+      zone.dispatchEvent(
+        new DragEvent("drop", {
+          bubbles: true,
+          cancelable: true,
+          dataTransfer: data,
+        }),
+      )
+    }
+    drop()
+    expect(onFiles.mock.calls[0]?.[0]).toHaveLength(1)
+    rerender(<FileDropzone onFiles={onFiles} disabled />)
+    drop()
+    expect(onFiles).toHaveBeenCalledOnce()
+  })
+})

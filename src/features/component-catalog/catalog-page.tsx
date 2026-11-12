@@ -1,7 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/page-header";
 import { Separator } from "@/components/ui/separator";
-import { sections } from "./sections";
+import { moreSections } from "./more-sections";
+import { sections as baseSections } from "./sections";
+
+const sections = [...baseSections, ...moreSections];
 
 export function CatalogPage() {
   const { t } = useTranslation();

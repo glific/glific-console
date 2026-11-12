@@ -19,6 +19,19 @@ export default defineConfig(({ mode }) => {
     // Pre-bundle so Vitest never re-optimises mid-run (which loads a second React and breaks hooks).
     optimizeDeps: {
       include: [
+        "react",
+        "react-dom",
+        "react-dom/client",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+        "react-router",
+        "react-router/dom",
+        "react-i18next",
+        "i18next",
+        "@tanstack/react-query",
+        "class-variance-authority",
+        "cn",
+        "cn/config",
         "@tanstack/react-table",
         "cmdk",
         "date-fns",

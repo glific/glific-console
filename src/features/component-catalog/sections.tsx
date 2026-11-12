@@ -77,7 +77,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { colorTokens, spacingTokens, typographyTokens } from "@/styles/tokens";
+import { spacingTokens, typographyTokens } from "@/styles/tokens";
+import { Palette } from "./palette";
 
 /*
  * Internal catalog page. The sample copy below ("Rename flow", "Asha Kulkarni") is demo fixture data, not product
@@ -100,51 +101,6 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-// Tailwind only generates classes it can see as literal strings, so the swatch classes are spelled out.
-const swatchClass: Record<string, string> = {
-  background: "bg-background text-foreground",
-  foreground: "bg-foreground text-foreground",
-  shell: "bg-shell text-foreground",
-  card: "bg-card text-card-foreground",
-  "card-foreground": "bg-card-foreground text-card",
-  popover: "bg-popover text-popover-foreground",
-  "popover-foreground": "bg-popover-foreground text-popover",
-  primary: "bg-primary text-primary-foreground",
-  "primary-hover": "bg-primary-hover text-primary-foreground",
-  "primary-foreground": "bg-primary-foreground text-primary",
-  "primary-soft": "bg-primary-soft text-primary",
-  secondary: "bg-secondary text-secondary-foreground",
-  "secondary-foreground": "bg-secondary-foreground text-secondary",
-  muted: "bg-muted text-muted-foreground",
-  "muted-foreground": "bg-muted-foreground text-muted",
-  accent: "bg-accent text-accent-foreground",
-  "accent-foreground": "bg-accent-foreground text-accent",
-  destructive: "bg-destructive text-destructive-foreground",
-  "destructive-foreground": "bg-destructive-foreground text-destructive",
-  "destructive-soft": "bg-destructive-soft text-destructive",
-  success: "bg-success text-success-foreground",
-  "success-foreground": "bg-success-foreground text-success",
-  "success-soft": "bg-success-soft text-success",
-  warning: "bg-warning text-warning-foreground",
-  "warning-foreground": "bg-warning-foreground text-warning",
-  "warning-soft": "bg-warning-soft text-warning",
-  info: "bg-info text-info-foreground",
-  "info-foreground": "bg-info-foreground text-info",
-  "info-soft": "bg-info-soft text-info",
-  ai: "bg-ai text-ai-foreground",
-  "ai-foreground": "bg-ai-foreground text-ai",
-  "ai-soft": "bg-ai-soft text-ai",
-  border: "bg-border text-foreground",
-  input: "bg-input text-foreground",
-  ring: "bg-ring text-primary-foreground",
-  "chat-surface": "bg-chat-surface text-foreground",
-  "chat-inbound": "bg-chat-inbound text-foreground",
-  "chat-outbound": "bg-chat-outbound text-foreground",
-  "chat-meta": "bg-chat-meta text-primary-foreground",
-  "chat-read": "bg-chat-read text-foreground",
-  whatsapp: "bg-whatsapp text-foreground",
-};
-
 const typeClass: Record<string, string> = {
   "text-display": "text-display",
   "text-title": "text-title",
@@ -164,29 +120,15 @@ const spacingClass: Record<string, string> = {
 
 const buttonVariants = ["default", "secondary", "outline", "ghost", "destructive", "link"] as const;
 const badgeVariants = ["default", "secondary", "outline", "destructive", "ghost", "link"] as const;
+const badgeTones = ["neutral", "success", "warning", "danger", "info", "ai"] as const;
 
 export const sections: CatalogSection[] = [
   {
     id: "colours",
-    title: "Colour tokens",
+    title: "Colours",
     description:
-      "Semantic colours from src/styles/tokens.css. Use the token name as a class: bg-primary, text-muted-foreground.",
-    content: (
-      <div className="grid grid-cols-2 gap-stack sm:grid-cols-3 lg:grid-cols-5">
-        {colorTokens.map((token) => (
-          <div key={token.name} className="flex flex-col gap-1">
-            <div
-              className={`flex h-16 items-end rounded-lg border p-2 text-caption ${swatchClass[token.name] ?? ""}`}
-              aria-hidden="true"
-            >
-              Aa
-            </div>
-            <span className="font-mono text-caption">{token.name}</span>
-            <span className="text-caption text-muted-foreground">{token.description}</span>
-          </div>
-        ))}
-      </div>
-    ),
+      "Each colour once, from src/styles/tokens.css, with the semantic tokens that use it. Use the token as a class (bg-primary, text-muted-foreground), never the raw value.",
+    content: <Palette />,
   },
   {
     id: "typography",
@@ -266,13 +208,22 @@ export const sections: CatalogSection[] = [
     title: "Badge",
     description: "components/ui/badge",
     content: (
-      <Row label="Variants">
-        {badgeVariants.map((variant) => (
-          <Badge key={variant} variant={variant}>
-            {variant}
-          </Badge>
-        ))}
-      </Row>
+      <div className="flex flex-col gap-stack">
+        <Row label="Variants">
+          {badgeVariants.map((variant) => (
+            <Badge key={variant} variant={variant}>
+              {variant}
+            </Badge>
+          ))}
+        </Row>
+        <Row label="Status tones (tags, pills)">
+          {badgeTones.map((tone) => (
+            <Badge key={tone} variant={tone}>
+              {tone}
+            </Badge>
+          ))}
+        </Row>
+      </div>
     ),
   },
   {

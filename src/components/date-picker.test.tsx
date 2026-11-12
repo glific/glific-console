@@ -14,7 +14,7 @@ function Harness() {
 describe("DatePicker", () => {
   it("opens a calendar from the keyboard and picks a date", async () => {
     renderWithProviders(<Harness />);
-    const trigger = screen.getByRole("button", { name: "Send on" });
+    const trigger = screen.getByRole("button", { name: /^Send on:/ });
     expect(trigger.textContent).toContain("12 Nov 2026");
     await userEvent.tab();
     await userEvent.keyboard("{Enter}");
@@ -27,6 +27,6 @@ describe("DatePicker", () => {
 
   it("shows a placeholder when empty", () => {
     renderWithProviders(<DatePicker aria-label="Date" value={undefined} onValueChange={vi.fn()} />);
-    expect(screen.getByRole("button", { name: "Date" }).textContent).toContain("Pick a date");
+    expect(screen.getByRole("button", { name: /^Date:/ }).textContent).toContain("Pick a date");
   });
 });

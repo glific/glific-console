@@ -4,7 +4,10 @@ import { userEvent } from "vitest/browser";
 import { expectNoA11yViolations } from "@/test/axe";
 import { renderWithProviders } from "@/test/render";
 import { CatalogPage } from "./catalog-page";
-import { sections } from "./sections";
+import { moreSections } from "./more-sections";
+import { sections as baseSections } from "./sections";
+
+const sections = [...baseSections, ...moreSections];
 
 describe("CatalogPage", () => {
   it("renders every section with a heading and a jump link", async () => {

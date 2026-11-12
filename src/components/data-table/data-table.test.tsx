@@ -96,3 +96,36 @@ describe("DataTable", () => {
     expect(screen.getByText("No flows yet")).toBeVisible();
   });
 });
+
+describe("DataTable server mode and row clicks", () => {
+  it("delegates sorting and pagination to the server and opens rows", async () => {
+    const columns: DataTableColumn<Flow>[] = [{ accessorKey: "name", header: "Name" }];
+    const onSortingChange = vi.fn();
+    const onPaginationChange = vi.fn();
+    const onRowClick = vi.fn();
+    renderWithProviders(
+      <DataTable
+        label="Flows"
+        columns={columns}
+        data={rows.slice(0, 2)}
+        getRowId={(r) => r.id}
+        onRowClick={onRowClick}
+        server={{
+          rowCount: 6,
+          pagination: { pageIndex: 0, pageSize: 2 },
+          onPaginationChange,
+          sorting: [{ id: "name", desc: false }],
+          onSortingChange,
+        }}
+      />,
+    );
+    expect(screen.getByText("Page 1 of 3")).toBeVisible();
+    expect(screen.getByRole("columnheader", { name: /Name/ })).toHaveAttribute("aria-sort", "ascending");
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
+    expect(onPaginationChange).toHaveBeenCalledWith({ pageIndex: 1, pageSize: 2 });
+    await userEvent.click(screen.getByRole("button", { name: /Name/ }));
+    expect(onSortingChange).toHaveBeenCalled();
+    await userEvent.click(screen.getByText("Welcome"));
+    expect(onRowClick).toHaveBeenCalledWith(rows[0]);
+  });
+});

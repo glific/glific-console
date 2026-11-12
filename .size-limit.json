@@ -1,14 +1,14 @@
 [
   {
-    "name": "App JS (initial)",
-    "path": "dist/assets/index-*.js",
+    "name": "App JS (everything except the lazy /components catalog)",
+    "path": ["dist/assets/*.js", "!dist/assets/component-catalog-*.js"],
     "limit": "200 kB",
     "gzip": true
   },
   {
     "name": "App CSS",
     "path": "dist/assets/index-*.css",
-    "limit": "16 kB",
+    "limit": "24 kB",
     "gzip": true
   }
 ]

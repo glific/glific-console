@@ -45,12 +45,6 @@ function CommandDialog({
   const { t } = useTranslation()
   return (
     <Dialog {...props}>
-      <DialogHeader className="sr-only">
-        <DialogTitle>{title ?? t("command.title")}</DialogTitle>
-        <DialogDescription>
-          {description ?? t("command.description")}
-        </DialogDescription>
-      </DialogHeader>
       <DialogContent
         className={cn(
           "top-1/3 translate-y-0 overflow-hidden rounded-xl! p-0",
@@ -58,6 +52,13 @@ function CommandDialog({
         )}
         showCloseButton={showCloseButton}
       >
+        {/* Inside the content so Radix names and describes the dialog (upstream renders it outside). */}
+        <DialogHeader className="sr-only">
+          <DialogTitle>{title ?? t("command.title")}</DialogTitle>
+          <DialogDescription>
+            {description ?? t("command.description")}
+          </DialogDescription>
+        </DialogHeader>
         {children}
       </DialogContent>
     </Dialog>

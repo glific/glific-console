@@ -5,6 +5,7 @@ import { expectNoA11yViolations } from "@/test/axe"
 import { renderWithProviders } from "@/test/render"
 import {
   Command,
+  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -38,5 +39,23 @@ describe("Command", () => {
     expect(onSelect).toHaveBeenCalledWith("Contacts")
     await userEvent.keyboard("{Control>}a{/Control}zzz")
     await expect.element(screen.getByText("No results")).toBeVisible()
+  })
+})
+
+describe("CommandDialog", () => {
+  it("opens as a titled dialog with translated defaults", async () => {
+    renderWithProviders(
+      <CommandDialog open>
+        <Command>
+          <CommandInput placeholder="Go to" />
+          <CommandList>
+            <CommandItem>Flows</CommandItem>
+          </CommandList>
+        </Command>
+      </CommandDialog>,
+    )
+    const dialog = await screen.findByRole("dialog", { name: "Search" })
+    expect(dialog).toBeVisible()
+    await expectNoA11yViolations(dialog)
   })
 })

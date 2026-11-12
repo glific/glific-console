@@ -66,3 +66,27 @@ describe("ChatComposer", () => {
     expect(await screen.findByRole("menuitem", { name: "Send a template" })).toBeVisible();
   });
 });
+
+describe("ChatComposer quick replies", () => {
+  it("cycles with arrow keys, picks with the mouse and closes with Escape", async () => {
+    // The list opens upwards, so leave room above the box for it to be clickable.
+    renderWithProviders(
+      <div className="pt-64">
+        <Harness onSend={vi.fn()} />
+      </div>,
+    );
+    const box = screen.getByRole("textbox", { name: "Message" });
+    await userEvent.click(box);
+    await userEvent.keyboard("/{ArrowUp}");
+    expect(screen.getAllByRole("option")[1]).toHaveAttribute("aria-selected", "true");
+    await userEvent.keyboard("{Escape}");
+    expect(box).toHaveValue("");
+    await userEvent.click(box);
+    await userEvent.keyboard("/");
+    await userEvent.click(await screen.findByRole("option", { name: /hello/ }));
+    expect(box).toHaveValue("Hello! How can we help?");
+    await userEvent.clear(box);
+    await userEvent.keyboard("/help{Tab}");
+    expect(box).toHaveValue("Call 1800-123-456");
+  });
+});

@@ -27,3 +27,22 @@ describe("MessageMedia", () => {
     await expectNoA11yViolations();
   });
 });
+
+describe("MessageMedia with URLs", () => {
+  it("renders real image, sticker, video and audio elements", () => {
+    const { container } = renderWithProviders(
+      <>
+        <MessageMedia kind="image" url="/img/admit.png" name="Admit card" />
+        <MessageMedia kind="sticker" url="/img/sticker.webp" />
+        <MessageMedia kind="video" url="/media/intro.mp4" name="Intro video" />
+        <MessageMedia kind="audio" url="/media/note.ogg" />
+        <MessageMedia kind="location" />
+      </>,
+    );
+    expect(screen.getByRole("img", { name: "Admit card" })).toHaveAttribute("src", "/img/admit.png");
+    expect(screen.getByRole("img", { name: "Sticker" }).className).toContain("size-32");
+    expect(container.querySelector("video")).toHaveAttribute("aria-label", "Intro video");
+    expect(container.querySelector("audio")).toHaveAttribute("aria-label", "Voice note");
+    expect(screen.getByText("Location")).toBeInTheDocument();
+  });
+});

@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
 interface DataTablePaginationProps {
+  /** Name of the table, so several paginated tables on a page have distinct landmarks. */
+  label: string;
   pageIndex: number;
   pageCount: number;
   canPrevious: boolean;
@@ -12,6 +14,7 @@ interface DataTablePaginationProps {
 }
 
 export function DataTablePagination({
+  label,
   pageIndex,
   pageCount,
   canPrevious,
@@ -22,7 +25,7 @@ export function DataTablePagination({
   const { t } = useTranslation();
   if (pageCount <= 1) return null;
   return (
-    <nav aria-label={t("pagination.label")} className="flex items-center justify-end gap-inline">
+    <nav aria-label={`${label}: ${t("pagination.label")}`} className="flex items-center justify-end gap-inline">
       <span className="text-body-sm text-muted-foreground" aria-live="polite">
         {t("dataTable.pageOf", { page: pageIndex + 1, pages: pageCount })}
       </span>

@@ -221,6 +221,7 @@ export function DataTable<TData extends RowData>({
       </Table>
       {paginated && !isLoading ? (
         <DataTablePagination
+          label={label}
           pageIndex={table.state.pagination.pageIndex}
           pageCount={table.getPageCount()}
           canPrevious={table.getCanPreviousPage()}

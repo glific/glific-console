@@ -20,8 +20,12 @@ describe("ToggleGroup", () => {
         <ToggleGroupItem value="grid">Grid</ToggleGroupItem>
       </ToggleGroup>,
     )
-    await userEvent.tab()
-    await userEvent.keyboard("{ArrowRight}{Enter}")
+    screen.getByRole("radio", { name: "List" }).focus()
+    await userEvent.keyboard("{ArrowRight}")
+    await expect
+      .element(screen.getByRole("radio", { name: "Grid" }))
+      .toHaveFocus()
+    await userEvent.keyboard("{Enter}")
     expect(onValueChange).toHaveBeenLastCalledWith("grid")
     expect(screen.getByRole("radio", { name: "Grid" })).toHaveAttribute(
       "aria-checked",
