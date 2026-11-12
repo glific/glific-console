@@ -1,5 +1,7 @@
+import { LogOutIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
+import { Button } from "@/components/ui/button";
 import { internalPagesEnabled } from "@/lib/internal-pages";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +44,12 @@ export function RootLayout({ internalPages = internalPagesEnabled() }: { interna
             ))}
           </nav>
         </div>
+        <Button variant="ghost" size="sm" asChild>
+          <Link to="/logout">
+            <LogOutIcon data-icon="inline-start" aria-hidden="true" />
+            {t("auth.signOut")}
+          </Link>
+        </Button>
       </header>
       <main id="main" className="flex-1 p-page">
         <Outlet />

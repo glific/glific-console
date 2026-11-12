@@ -12,6 +12,7 @@ document.head.append(noMotion);
 beforeAll(() => worker.start({ onUnhandledFrame: "error", quiet: true }));
 afterEach(() => {
   cleanup();
+  localStorage.clear();
   worker.resetHandlers();
 });
 afterAll(() => worker.stop());

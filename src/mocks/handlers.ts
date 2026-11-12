@@ -1,5 +1,6 @@
 import { HttpResponse, http } from "msw";
+import { authHandlers } from "./auth";
 import { contacts } from "./data";
 
-/** Paths are matched against any origin, so handlers work whatever VITE_API_URL points at. */
-export const handlers = [http.get("*/contacts", () => HttpResponse.json(contacts))];
+// Any origin, so the handlers answer whichever backend host the app resolves to.
+export const handlers = [...authHandlers, http.get("*/api/contacts", () => HttpResponse.json(contacts))];

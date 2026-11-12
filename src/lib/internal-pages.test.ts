@@ -17,7 +17,7 @@ describe("internalPagesEnabled", () => {
   });
 
   it("is off everywhere when no hosts are configured", () => {
-    const none = parseEnv({ VITE_API_URL: "/api" }).VITE_DESIGN_SYSTEM_HOSTS;
+    const none = parseEnv({}).VITE_DESIGN_SYSTEM_HOSTS;
     expect(none).toEqual([]);
     expect(internalPagesEnabled("prod.glific.com", none)).toBe(false);
   });

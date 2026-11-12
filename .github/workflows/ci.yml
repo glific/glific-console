@@ -12,9 +12,6 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  VITE_API_URL: /api
-
 jobs:
   checks:
     name: Typecheck, lint, test, build, size

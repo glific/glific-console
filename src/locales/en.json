@@ -173,5 +173,22 @@
     "title": "Design system",
     "description": "Glific 2.0 brandbook: principles, brand, colour, type and every component, built from the real tokens.",
     "contents": "Contents"
+  },
+  "auth": {
+    "title": "Sign in to Glific",
+    "description": "Use the phone number and password for your Glific account.",
+    "phone": "Phone number",
+    "phoneHint": "With country code, e.g. 919876543210",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "errors": {
+      "required": "Enter your phone number and password.",
+      "generic": "Couldn't sign in. Check your connection and try again."
+    },
+    "signOut": "Sign out",
+    "signingOut": "Signing out…"
   }
 }

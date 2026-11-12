@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate, type RouteObject } from "react-router";
+import { LoginPage, LogoutPage, RequireAuth } from "@/features/auth";
 import { ContactsPage } from "@/features/contacts";
 import { internalPagesEnabled } from "@/lib/internal-pages";
 import { HomePage } from "./home";
@@ -12,8 +13,14 @@ interface RouteOptions {
 
 export function createRoutes({ internalPages }: RouteOptions): RouteObject[] {
   return [
+    { path: "login", element: <LoginPage />, errorElement: <RouteErrorBoundary /> },
+    { path: "logout", element: <LogoutPage /> },
     {
-      element: <RootLayout internalPages={internalPages} />,
+      element: (
+        <RequireAuth>
+          <RootLayout internalPages={internalPages} />
+        </RequireAuth>
+      ),
       errorElement: <RouteErrorBoundary />,
       children: [
         {
