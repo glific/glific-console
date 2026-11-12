@@ -1,5 +1,6 @@
 savePrefix: ""
 
-# lefthook's postinstall only installs git hooks; the "prepare" script already does that.
+# Neither postinstall is needed: lefthook's is done by "prepare", core-js's (via posthog-js) only prints a banner.
 allowBuilds:
   lefthook: false
+  core-js: false

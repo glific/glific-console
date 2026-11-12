@@ -1,62 +1,64 @@
 import { screen } from "@testing-library/react";
-import { delay, HttpResponse, http } from "msw";
+import { delay, HttpResponse } from "msw";
 import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
+import { glificApi } from "@/mocks/handlers";
 import { expectNoA11yViolations } from "@/test/axe";
 import { worker } from "@/test/msw";
-import { renderWithProviders } from "@/test/render";
-import { ContactsPage } from "./contacts-page";
+import { renderRoute } from "@/test/render";
+
+const firstName = () => screen.getAllByRole("row")[1]?.querySelectorAll("td")[0]?.textContent;
 
 describe("ContactsPage", () => {
-  it("shows a loading state, then the contacts table", async () => {
-    worker.use(
-      http.get("*/contacts", async () => {
-        await delay(100);
-        return HttpResponse.json([{ id: "1", name: "Asha Kulkarni", phone: "+919876500001", status: "valid" }]);
-      }),
-    );
-    renderWithProviders(<ContactsPage />);
-    expect(screen.getByRole("status", { name: "Loading" })).toBeVisible();
-    await expect.element(await screen.findByRole("cell", { name: "Asha Kulkarni" })).toBeVisible();
-    expect(screen.getByText("Opted in")).toBeVisible();
+  it("loads the first page of contacts over GraphQL", async () => {
+    renderRoute("/contacts");
+    await expect.poll(() => screen.queryAllByRole("row").length).toBe(26);
+    expect(screen.getByText("60 results")).toBeVisible();
+    expect(screen.getAllByText("Active").length).toBeGreaterThan(0);
     await expectNoA11yViolations();
   });
 
-  it("filters by name or phone and shows a no-results state", async () => {
-    renderWithProviders(<ContactsPage />);
-    const search = await screen.findByRole("searchbox", { name: "Search contacts" });
-    await userEvent.click(search);
-    await userEvent.keyboard("meera");
-    await expect.poll(() => screen.queryAllByRole("row")).toHaveLength(2);
-    expect(screen.getByRole("cell", { name: "Meera Iyer" })).toBeVisible();
-    await userEvent.clear(search);
-    await userEvent.keyboard("0000000");
-    await expect.element(await screen.findByText("No matching contacts")).toBeVisible();
+  it("searches on the server and pages through results", async () => {
+    renderRoute("/contacts");
+    await expect.poll(() => screen.queryAllByRole("row").length).toBe(26);
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
+    await expect.poll(() => screen.queryByText("Page 2 of 3")).not.toBeNull();
+    await userEvent.fill(screen.getByRole("searchbox", { name: "Search contacts" }), "meera");
+    await expect.poll(() => screen.queryByText("6 results")).not.toBeNull();
+    expect(firstName()).toContain("Meera");
+    await userEvent.fill(screen.getByRole("searchbox", { name: "Search contacts" }), "nobody");
+    expect(await screen.findByRole("heading", { name: "No matching contacts" })).toBeVisible();
   });
 
-  it("shows the empty state when there are no contacts", async () => {
-    worker.use(http.get("*/contacts", () => HttpResponse.json([])));
-    renderWithProviders(<ContactsPage />);
-    await expect.element(await screen.findByRole("heading", { name: "No contacts yet" })).toBeVisible();
-    await expectNoA11yViolations();
+  it("shows the empty state when the org has no contacts", async () => {
+    worker.use(glificApi.query("Contacts", () => HttpResponse.json({ data: { contacts: [], countContacts: 0 } })));
+    renderRoute("/contacts");
+    expect(await screen.findByRole("heading", { name: "No contacts yet" })).toBeVisible();
   });
 
-  it("shows an error state and recovers on retry", async () => {
+  it("shows a loading table, then an error with retry", async () => {
     let calls = 0;
     worker.use(
-      http.get("*/contacts", () => {
+      glificApi.query("Contacts", async () => {
         calls += 1;
-        return calls === 1
-          ? HttpResponse.json({ message: "boom" }, { status: 500 })
-          : HttpResponse.json([{ id: "9", name: "Rahul Verma", phone: "+919876500002", status: "invalid" }]);
+        if (calls === 1) {
+          await delay(150);
+          return HttpResponse.json({ errors: [{ message: "Internal error" }] });
+        }
+        return HttpResponse.json({
+          data: {
+            contacts: [
+              { id: "9", name: "Rahul Verma", maskedPhone: "9198******02", status: "VALID", lastMessageAt: null },
+            ],
+            countContacts: 1,
+          },
+        });
       }),
     );
-    renderWithProviders(<ContactsPage />);
-    const alert = await screen.findByRole("alert");
-    expect(alert.textContent).toContain("Couldn't load contacts");
-    await expectNoA11yViolations();
+    renderRoute("/contacts");
+    await expect.poll(() => document.querySelector("table[aria-busy=true]")).not.toBeNull();
+    expect((await screen.findByRole("alert")).textContent).toContain("Couldn't load contacts");
     await userEvent.click(screen.getByRole("button", { name: "Try again" }));
-    await expect.element(await screen.findByRole("cell", { name: "Rahul Verma" })).toBeVisible();
-    expect(screen.getByText("Opted out")).toBeVisible();
+    expect(await screen.findByText("Rahul Verma")).toBeVisible();
   });
 });

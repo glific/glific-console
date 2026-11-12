@@ -39,16 +39,20 @@
   },
   "contacts": {
     "title": "Contacts",
-    "description": "People who have messaged your WhatsApp number.",
+    "description": "Everyone who has messaged your WhatsApp number.",
     "search": "Search contacts",
     "columns": {
       "name": "Name",
       "phone": "Phone",
-      "status": "Status"
+      "status": "Status",
+      "lastMessage": "Last message"
     },
     "status": {
-      "valid": "Opted in",
-      "invalid": "Opted out"
+      "VALID": "Active",
+      "PROCESSING": "Processing",
+      "INVALID": "Invalid number",
+      "FAILED": "Failed",
+      "BLOCKED": "Blocked"
     },
     "empty": {
       "title": "No contacts yet",
@@ -173,5 +177,26 @@
     "title": "Design system",
     "description": "Glific 2.0 brandbook: principles, brand, colour, type and every component, built from the real tokens.",
     "contents": "Contents"
+  },
+  "auth": {
+    "title": "Sign in to Glific",
+    "description": "Use the phone number and password for your Glific account.",
+    "phone": "Phone number",
+    "phoneHint": "With country code, e.g. 919876543210",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "errors": {
+      "required": "Enter your phone number and password.",
+      "generic": "Couldn't sign in. Check your connection and try again."
+    },
+    "signOut": "Sign out",
+    "signingOut": "Signing out…"
+  },
+  "list": {
+    "total_one": "{{count}} result",
+    "total_other": "{{count}} results"
   }
 }

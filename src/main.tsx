@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router/dom";
 import { AppProviders } from "./app-providers";
 import { env } from "./lib/config";
+import { startMonitoring } from "./lib/monitoring";
 import { createRouter } from "./routes/router";
 import "./index.css";
 
@@ -24,3 +25,6 @@ createRoot(document.getElementById("root") as HTMLElement).render(
     </AppProviders>
   </StrictMode>,
 );
+
+const idle = globalThis.requestIdleCallback ?? ((callback: () => void) => setTimeout(callback, 1));
+idle(() => startMonitoring());

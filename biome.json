@@ -6,7 +6,13 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!public/mockServiceWorker.js", "!tools/ds-lint/fixtures", "!.changeset/*.md"]
+    "includes": [
+      "**",
+      "!public/mockServiceWorker.js",
+      "!tools/ds-lint/fixtures",
+      "!.changeset/*.md",
+      "!src/graphql/generated"
+    ]
   },
   "formatter": {
     "enabled": true,

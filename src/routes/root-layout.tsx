@@ -1,6 +1,8 @@
+import { LogOutIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { NavLink, Outlet } from "react-router";
-import { internalPagesEnabled } from "@/lib/internal-pages";
+import { Link, NavLink, Outlet } from "react-router";
+import { Button } from "@/components/ui/button";
+import { useIsGlificAdmin } from "@/features/auth/current-user";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -10,9 +12,10 @@ const navItems = [
 
 const internalNavItems = [{ to: "/design-system", key: "nav.designSystem", end: false }] as const;
 
-export function RootLayout({ internalPages = internalPagesEnabled() }: { internalPages?: boolean }) {
+export function RootLayout() {
   const { t } = useTranslation();
-  const items = internalPages ? [...navItems, ...internalNavItems] : navItems;
+  const { isGlificAdmin } = useIsGlificAdmin();
+  const items = isGlificAdmin ? [...navItems, ...internalNavItems] : navItems;
   return (
     <div className="flex min-h-svh flex-col">
       <a
@@ -42,6 +45,12 @@ export function RootLayout({ internalPages = internalPagesEnabled() }: { interna
             ))}
           </nav>
         </div>
+        <Button variant="ghost" size="sm" asChild>
+          <Link to="/logout">
+            <LogOutIcon data-icon="inline-start" aria-hidden="true" />
+            {t("auth.signOut")}
+          </Link>
+        </Button>
       </header>
       <main id="main" className="flex-1 p-page">
         <Outlet />

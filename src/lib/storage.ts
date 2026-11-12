@@ -12,4 +12,9 @@ export const safeStorage = {
       globalThis.localStorage?.setItem(key, value);
     } catch {}
   },
+  remove(key: string): void {
+    try {
+      globalThis.localStorage?.removeItem(key);
+    } catch {}
+  },
 };

@@ -1,0 +1,3915 @@
+schema {
+  subscription: RootSubscriptionType
+  mutation: RootMutationType
+  query: RootQueryType
+}
+
+type RootQueryType {
+  "get the details of one profile"
+  profile(id: ID!): ProfileResult
+
+  "Get a list of all profiles filtered by various criteria"
+  profiles(filter: ProfileFilter, opts: Opts): [Profile]
+
+  "get the details of one contact"
+  contact(id: ID!): ContactResult
+
+  "Get a contact information by phone"
+  contactByPhone(phone: String!): ContactResult
+
+  "Get a list of all contacts filtered by various criteria"
+  contacts(filter: ContactFilter, opts: Opts): [Contact]
+
+  "Get a count of all contacts filtered by various criteria"
+  countContacts(filter: ContactFilter): Int
+
+  "Get contact's current location"
+  contactLocation(id: ID!): Location
+
+  "Get a simulator contact for this user"
+  simulatorGet: Contact
+
+  "Release a simulator contact for this user"
+  simulatorRelease: Contact
+
+  "Get a list of all contacts histroy filtered by various criteria"
+  contactHistory(filter: ContactsHistoryFilter, opts: Opts): [ContactHistory]
+
+  "Get a count of all contacts histroy filtered by various criteria"
+  countContactHistory(filter: ContactsHistoryFilter): Int
+
+  "Get the contact with an identity on a channel; web identities are case-insensitive"
+  contactByIdentity(channel: MessageChannelEnum!, identifier: String!): ContactResult
+
+  "get the details of one language"
+  language(id: ID!): LanguageResult
+
+  "Get a list of all languages filtered by various criteria"
+  languages(opts: Opts, filter: LanguageFilter): [Language]
+
+  "Get a count of all languages"
+  countLanguages(filter: LanguageFilter): Int
+
+  "get the details of one message"
+  message(id: ID!): MessageResult
+
+  "Get a list of all messages filtered by various criteria"
+  messages(filter: MessageFilter, opts: Opts): [Message]
+
+  "Get a count of all messages filtered by various criteria"
+  countMessages(filter: MessageFilter): Int
+
+  "get the details of one message media"
+  messageMedia(id: ID!): MessageMediaResult
+
+  "Get a list of all message_media"
+  messagesMedia(opts: Opts): [MessageMedia]
+
+  "Get a count of all message media"
+  countMessagesMedia: Int
+
+  "Validate a media url"
+  validateMedia(url: String!, type: String!): Json
+
+  "get the details of one organization"
+  organization(id: ID): OrganizationResult
+
+  "Get a list of all organizations filtered by various criteria"
+  organizations(filter: OrganizationFilter, opts: Opts): [Organization]
+
+  "Get a count of all organizations filtered by various criteria"
+  countOrganizations(filter: OrganizationFilter): Int
+
+  "Checks if organization has an active cloud storage setup"
+  attachmentsEnabled: Boolean
+
+  "Tracks action (various high level clicks) done by org users"
+  tracker(event: String!): Boolean
+
+  "Get a list of all organizations services"
+  organizationServices: OrganizationServicesResult
+
+  "Export organization dynamic data"
+  organizationExportData(filter: ExportFilter): OrganizationExportResult
+
+  "Export organization config data"
+  organizationExportConfig: OrganizationExportResult
+
+  "Export organization stats data"
+  organizationExportStats(filter: ExportFilter): OrganizationExportResult
+
+  timezones: [String]
+
+  "Get a list of all organizations status"
+  organizationStatus: [OrganizationStatusEnum]
+
+  "Get daily app usage"
+  dailyAppUsage(fromDate: Date!, toDate: Date!): [DailyUsage]
+
+  "get the details of organization's one credential by shortcode"
+  credential(shortcode: String!): CredentialResult
+
+  "get the details of one provider"
+  provider(id: ID!): ProviderResult
+
+  "getting bsp balance"
+  bspbalance: Json
+
+  "Get a list of all providers filtered by various criteria"
+  providers(filter: ProviderFilter, opts: Opts): [Provider]
+
+  "Get a count of all providers filtered by various criteria"
+  countProviders(filter: ProviderFilter): Int
+
+  "Get quality rating details"
+  qualityRating: QualityRatingResult
+
+  whatsappHsmCategories: [String]
+
+  "get the details of one session_template"
+  sessionTemplate(id: ID!): SessionTemplateResult
+
+  "Get a list of all session_templates filtered by various criteria"
+  sessionTemplates(filter: SessionTemplateFilter, opts: Opts): [SessionTemplate]
+
+  "Get a count of all session_templates filtered by various criteria"
+  countSessionTemplates(filter: SessionTemplateFilter): Int
+
+  "Browse Meta's pre-approved WhatsApp template library, fetched live from the BSP partner API"
+  templateLibrary: [TemplateLibraryEntry]
+
+  "get the details of one tag"
+  tag(id: ID!): TagResult
+
+  "Get a list of all tags filtered by various criteria"
+  tags(filter: TagFilter, opts: Opts): [Tag]
+
+  "Get a count of all tags filtered by various criteria"
+  countTags(filter: TagFilter): Int
+
+  "get the details of one user"
+  user(id: ID!): UserResult
+
+  "Get a list of all users filtered by various criteria"
+  users(filter: UserFilter, opts: Opts): [User]
+
+  "Get a count of all users filtered by various criteria"
+  countUsers(filter: UserFilter): Int
+
+  "Get the details of current user"
+  currentUser: UserResult
+
+  "Get the count of sessions for a user"
+  fetchUserSessions(id: ID!): Int
+
+  "get the details of one group"
+  group(id: ID!): GroupResult
+
+  "get the stats of one group"
+  groupInfo(id: ID!): Json
+
+  "Get a list of all groups filtered by various criteria"
+  groups(filter: GroupFilter, opts: Opts): [Group]
+
+  organizationGroups(id: ID!, filter: GroupFilter, opts: Opts): [Group]
+
+  exportCollection(id: ID!): ExportCollectionResult
+
+  "Get a count of all groups filtered by various criteria"
+  countGroups(filter: GroupFilter): Int
+
+  "Search for conversations"
+  search(
+    saveSearch: Boolean
+
+    "Inputs to save a search"
+    saveSearchInput: SaveSearchInput
+
+    filter: SearchFilter!
+
+    messageOpts: Opts!
+
+    contactOpts: Opts!
+  ): [Conversation]
+
+  "New Search for messages + contacts + tags"
+  searchMulti(filter: SearchFilter!, messageOpts: Opts!, contactOpts: Opts!): SearchCup
+
+  "get the details of one saved search"
+  savedSearch(id: ID!): SavedSearchResult
+
+  "Get a list of all searches"
+  savedSearches(filter: SavedSearchFilter, opts: Opts): [SavedSearch]
+
+  "Get a count of all searches"
+  countSavedSearches(filter: SavedSearchFilter): Int
+
+  "Get a collection count for organization"
+  collectionStats(organizationId: ID!): Json
+
+  savedSearchCount(id: ID!, term: String): Int
+
+  "get the details of one flow"
+  flow(id: ID!): FlowResult
+
+  "Get a list of all flows"
+  flows(filter: FlowFilter, opts: Opts): [Flow]
+
+  "Get a count of all flows filtered by various criteria"
+  countFlows(filter: FlowFilter): Int
+
+  "Export flow details so that we can import it again"
+  exportFlow(id: ID!): ExportFlow
+
+  "Export flow localization so users can check and translate offline"
+  exportFlowLocalization(id: ID!, addTranslation: Boolean): ExportFlowLocalization
+
+  "Get a flow for this user"
+  flowGet(id: ID!, isForced: Boolean): FlowResult
+
+  "Release a flow for this user"
+  flowRelease: Flow
+
+  "Get broadcast flow stats"
+  broadcastStats(messageBroadcastId: ID!): Json
+
+  trigger(id: ID!): TriggerResult
+
+  triggers(filter: TriggerFilter, opts: Opts): [Trigger]
+
+  countTriggers(filter: TriggerFilter): Int
+
+  "Get a list of all webhook_logs filtered by various criteria"
+  webhookLogs(filter: WebhookLogFilter, opts: Opts): [WebhookLog]
+
+  "Get a count of all webhook_logs filtered by various criteria"
+  countWebhookLogs(filter: WebhookLogFilter): Int
+
+  "Get a list of all notifications filtered by various criteria"
+  notifications(filter: NotificationFilter, opts: Opts): [Notification]
+
+  "Get a count of all notifications filtered by various criteria"
+  countNotifications(filter: NotificationFilter): Int
+
+  "get the details of one location"
+  location(id: ID!): LocationResult
+
+  "Get a list of all location"
+  locations(opts: Opts): [Locations]
+
+  "get the details of one billing"
+  billing(id: ID!): BillingResult
+
+  "get customer portal link"
+  customerPortal: CustomerPortalResult
+
+  "get the details of active billing of organization"
+  getOrganizationBilling(organizationId: Gid): BillingResult
+
+  "get the details of promotion codes"
+  getCouponCode(code: String!): CouponCodeResult
+
+  "get the details of consulting hours"
+  consultingHour(id: ID!): ConsultingHourResult
+
+  "Get a list of all consulting hours filtered by various criteria"
+  consultingHours(filter: ConsultingHourFilter, opts: Opts): [ConsultingHour]
+
+  "Get a count of all consulting hours filtered by various criteria"
+  countConsultingHours(filter: ConsultingHourFilter): Int
+
+  "Fetches consulting hours between start_date and end_date"
+  fetchConsultingHours(filter: FetchConsultingHours): String
+
+  "get the details of one contacs field"
+  contactsField(id: ID!): ContactsFieldResult
+
+  "Get a list of all contacts fields filtered by various criteria"
+  contactsFields(filter: ContactsFieldFilter, opts: Opts): [ContactsField]
+
+  "Get a count of all contacts fields filtered by various criteria"
+  countContactsFields(filter: ContactsFieldFilter): Int
+
+  "get the details of one extension"
+  extension(id: ID!): ExtensionResult
+
+  "get the details of active extension of organization"
+  getOrganizationExtension(clientId: ID!): ExtensionResult
+
+  "get the details of one interactive template"
+  interactiveTemplate(id: ID!): InteractiveTemplateResult
+
+  "Get a list of all interactive templates filtered by various criteria"
+  interactiveTemplates(filter: InteractiveTemplateFilter, opts: Opts): [InteractiveTemplate]
+
+  "Get a count of all interactives filtered by various criteria"
+  countInteractiveTemplates(filter: InteractiveTemplateFilter): Int
+
+  "get the details of one flow label"
+  flowLabel(id: ID!): FlowLabelResult
+
+  "Get a list of all flow labels"
+  flowLabels(filter: FlowLabelFilter, opts: Opts): [FlowLabel]
+
+  "Get a count of all flow labels filtered by various criteria"
+  countFlowLabels(filter: FlowLabelFilter): Int
+
+  "get the details of one role"
+  accessRole(id: ID!): AccessRoleResult
+
+  "Get a list of all roles filtered by various criteria"
+  accessRoles(filter: AccessRoleFilter, opts: Opts): [AccessRole]
+
+  "Get a count of all access_roles filtered by various criteria"
+  countAccessRoles(filter: AccessRoleFilter): Int
+
+  "Get a list of all contact groups filtered by various criteria"
+  contactGroups(filter: ContactGroupFilter, opts: Opts): [ContactGroup]
+
+  "Get a count of all contact groups filtered by various criteria"
+  countContactGroups(filter: ContactGroupFilter): Int
+
+  "Get a list of all the contacts associated with the wa group"
+  listContactWaGroup(filter: ContactWaGroupFilter, opts: Opts): [ContactWaGroup]
+
+  "Get a count of all the contacts associated with the wa group"
+  countContactWaGroup(filter: ContactWaGroupFilter): Int
+
+  sheet(id: ID!): SheetResult
+
+  sheets(filter: SheetFilter, opts: Opts): [Sheet]
+
+  countSheets(filter: SheetFilter): Int
+
+  "get the details of one ticket"
+  ticket(id: ID!): TicketResult
+
+  "Get a list of all tickets"
+  tickets(filter: TicketFilter, opts: Opts): [Ticket]
+
+  "Get a count of all tickets filtered by various criteria"
+  countTickets(filter: TicketFilter): Int
+
+  "Fetches support tickets between start_date and end_date"
+  fetchSupportTickets(filter: FetchSupportTickets): String
+
+  "Get a list of all wa_managed_phones filtered by various criteria"
+  waManagedPhones(filter: WaManagedPhoneFilter, opts: Opts): [WaManagedPhone]
+
+  "Get a count of all wa_managed_phones filtered by various criteria"
+  countWaManagedPhones(filter: WaManagedPhoneFilter): Int
+
+  "Fetch the QR \/ login screen for a managed phone so an admin can reconnect it"
+  whatsappPhoneScreen(waManagedPhoneId: ID!): WaPhoneScreenResult
+
+  "Search for whatsapp group conversations"
+  waSearch(waMessageOpts: Opts!, waGroupOpts: Opts!, filter: WaSearchFilter): [WaConversation]
+
+  "New Search for wa_messages + wa_groups"
+  waSearchMulti(waMessageOpts: Opts!, waGroupOpts: Opts!, filter: WaSearchFilter): WaSearchCup
+
+  "get the details of one wa group"
+  waGroup(id: ID!): WaGroupResult
+
+  "Get a list of all wa groups filtered by various criteria"
+  waGroups(filter: WaGroupFilter, opts: Opts): [WaGroup]
+
+  waGroupsCount(filter: WaGroupFilter): Int
+
+  "Fetch the skipped-groups CSV for a completed collection primary-phone job. Admin-only."
+  waGroupCollectionPrimaryReport(userJobId: ID!): WaGroupCollectionReport
+
+  "Get Assistant"
+  assistant(id: ID!): AssistantResult
+
+  "List Assistants"
+  assistants(filter: AssistantFilter, opts: Opts): [Assistant]
+
+  "List Assistant Config Versions"
+  assistantConfigVersions: [AssistantConfigVersionForEvals]
+
+  "Get a count of all assistants filtered by various criteria"
+  countAssistants(filter: AssistantFilter): Int
+
+  "List all config versions for an assistant"
+  assistantVersions(assistantId: ID!): [AssistantConfigVersion]
+
+  "Get a knowledge base file's metadata and signed download URL"
+  getFile(fileId: String!): FileResult
+
+  "get the details of one whatsapp poll"
+  waPoll(id: ID!): WaPollResult
+
+  "Get a list of all wa polls filtered by various criteria"
+  waPolls(filter: WaPollFilter, opts: Opts): [WaPoll]
+
+  "Get a count of all wa polls filtered by various criteria"
+  countWaPolls(filter: WaPollFilter): Int
+
+  "Get Certificate template"
+  certificateTemplate(id: ID!): CertificateTemplateResult
+
+  "Get a list of all certificate templates filtered by various criteria"
+  certificateTemplates(filter: CertificateTemplateFilter, opts: Opts): [CertificateTemplate]
+
+  "Get a count of all certificate templates filtered by various criteria"
+  countCertificateTemplates(filter: CertificateTemplateFilter): Int
+
+  "Get a WhatsApp form by ID"
+  whatsappForm(id: ID!): WhatsappFormResult
+
+  "List all available WhatsApp form categories"
+  whatsappFormCategories: [String]
+
+  "Get a count of all whatsapp forms filtered by various criteria"
+  countWhatsappForms(filter: WhatsappFormFilter): Int
+
+  "Get a list of all whatsapp forms filtered by various criteria"
+  listWhatsappForms(filter: WhatsappFormFilter): [WhatsappForm]
+
+  "Get a specific WhatsApp form revision by ID"
+  whatsappFormRevision(id: ID!): WhatsappFormRevisionResult
+
+  "List revisions for a WhatsApp form (last 10 by default)"
+  listWhatsappFormRevisions(whatsappFormId: ID!, limit: Int): [WhatsappFormRevision]
+
+  "List AI Evaluations"
+  aiEvaluations(filter: AiEvaluationFilter, opts: Opts): [AiEvaluation]
+
+  "Count AI Evaluations"
+  countAiEvaluations(filter: AiEvaluationFilter): Int
+
+  "List Golden QAs"
+  goldenQas(filter: GoldenQaFilter, opts: Opts): [GoldenQa]
+
+  "Count Golden QAs"
+  countGoldenQas(filter: GoldenQaFilter): Int
+
+  "Get Evaluation Scores"
+  evaluationScores(id: ID!, exportFormat: String): EvaluationScoresResult
+
+  "Get Golden QA"
+  goldenQa(id: ID!, includeSignedUrl: Boolean): GoldenQaResult
+
+  "List active Kaapi models (openai only, for now)"
+  kaapiModels: [KaapiModel]
+
+  "List guardrail validator types and their config JSON schemas"
+  guardrailValidators: GuardrailValidatorsResult
+
+  askGlificConversations(limit: Int, lastId: String): AskGlificConversationsResult
+
+  askGlificMessages(conversationId: String!, limit: Int, firstId: String): AskGlificMessagesResult
+
+  "Fetch the status and result of a prompt generation request by id"
+  promptGeneration(id: ID!): PromptGenerationResult
+}
+
+type RootMutationType {
+  createProfile(input: ProfileInput!): ProfileResult
+
+  updateProfile(id: ID!, input: ProfileInput): ProfileResult
+
+  deleteProfile(id: ID!): ProfileResult
+
+  createContact(input: ContactInput!): ContactResult
+
+  updateContact(id: ID!, input: ContactInput): ContactResult
+
+  deleteContact(id: ID!): ContactResult
+
+  optinContact(phone: String!, name: String): ContactResult
+
+  moveContacts(type: ImportContactsTypeEnum, data: String!): ImportResult
+
+  importContacts(type: ImportContactsTypeEnum, groupLabel: String, data: String!): ImportResult
+
+  getContactUploadReport(userJobId: ID): ContactUploadReport
+
+  "Add an identity, such as a web username, to a contact"
+  addContactIdentity(contactId: ID!, channel: MessageChannelEnum!, identifier: String!): ContactResult
+
+  createContactTag(input: ContactTagInput!): ContactTagResult
+
+  updateContactTags(input: ContactTagsInput!): ContactTags
+
+  createLanguage(input: LanguageInput!): LanguageResult
+
+  updateLanguage(id: ID!, input: LanguageInput): LanguageResult
+
+  deleteLanguage(id: ID!): LanguageResult
+
+  createMessage(input: MessageInput!): MessageResult
+
+  createAndSendMessage(input: MessageInput!): MessageResult
+
+  createAndSendMessageToGroup(input: MessageInput!, groupId: ID!): GroupMessageResult
+
+  sendHsmMessage(templateId: ID!, parameters: [String], receiverId: ID!): MessageResult
+
+  sendHsmMessageToGroup(templateId: ID!, parameters: [String], groupId: ID!): GroupMessageResult
+
+  sendSessionMessage(id: ID!, receiverId: ID!): MessageResult
+
+  updateMessage(id: ID!, input: MessageInput): MessageResult
+
+  deleteMessage(id: ID!): MessageResult
+
+  clearMessages(contactId: ID!): ClearMessagesResult
+
+  sendMessageInWaGroup(input: WaMessageInput!): WaMessageResult
+
+  sendMessageToWaGroupCollection(input: CollectionWaMessageInput!, groupId: ID!): CollectionWaMessageResult
+
+  createMessageMedia(input: MessageMediaInput!): MessageMediaResult
+
+  updateMessageMedia(id: ID!, input: MessageMediaInput): MessageMediaResult
+
+  deleteMessageMedia(id: ID!): MessageMediaResult
+
+  createMessageTag(input: MessageTagInput!): MessageTagResult
+
+  updateMessageTags(input: MessageTagsInput!): MessageTags
+
+  createOrganization(input: OrganizationInput!): OrganizationResult
+
+  updateOrganization(id: ID!, input: OrganizationInput): OrganizationResult
+
+  deleteOrganizationTestData(id: ID!): OrganizationResult
+
+  deleteOrganization(id: ID!): OrganizationResult
+
+  updateOrganizationStatus(updateOrganizationId: ID!, status: OrganizationStatusEnum): OrganizationResult
+
+  resetOrganization(resetOrganizationId: ID!, isConfirmed: Boolean!): String
+
+  createCredential(input: CredentialInput!): CredentialResult
+
+  updateCredential(id: ID!, input: CredentialInput): CredentialResult
+
+  createProvider(input: ProviderInput!): ProviderResult
+
+  updateProvider(id: ID!, input: ProviderInput): ProviderResult
+
+  deleteProvider(id: ID!): ProviderResult
+
+  createSessionTemplate(input: SessionTemplateInput!): SessionTemplateResult
+
+  "sync hsm with bsp"
+  syncHsmTemplate: SyncHsmTemplates
+
+  updateSessionTemplate(id: ID!, input: SessionTemplateInput): SessionTemplateResult
+
+  editApprovedTemplate(id: ID!, input: EditApprovedTemplateInput): SessionTemplateResult
+
+  deleteSessionTemplate(id: ID!): SessionTemplateResult
+
+  createTemplateFormMessage(messageId: ID!, input: MessageToTemplateInput): SessionTemplateResult
+
+  importTemplates(data: String): ImportTemplatesResult
+
+  bulkApplyTemplates(data: String): BulkApplyTemplatesResult
+
+  reportToGupshup(templateId: ID!, cc: Json): ReportToGupshupResult
+
+  translateSessionTemplate(
+    templateId: ID!
+    languageId: ID!
+    body: String
+    footer: String
+    buttons: [String]
+  ): TranslateSessionTemplateResult
+
+  createTemplateTag(input: TemplateTagInput!): TemplateTagResult
+
+  updateTemplateTags(input: TemplateTagsInput!): TemplateTags
+
+  createTag(input: TagInput!): TagResult
+
+  updateTag(id: ID!, input: TagInput): TagResult
+
+  deleteTag(id: ID!): TagResult
+
+  "Remove unread tag from messages and returns"
+  markContactMessagesAsRead(contactId: Gid!): ID
+
+  updateCurrentUser(input: CurrentUserInput!): UserResult
+
+  deleteUser(id: ID!): UserResult
+
+  updateUser(id: ID!, input: UserInput!): UserResult
+
+  createGroup(input: GroupInput!): GroupResult
+
+  updateGroup(id: ID!, input: GroupInput): GroupResult
+
+  deleteGroup(id: ID!): GroupResult
+
+  createContactGroup(input: ContactGroupInput!): ContactGroupResult
+
+  updateGroupContacts(input: GroupContactsInput!): GroupContacts
+
+  updateContactGroups(input: ContactGroupsInput!): ContactGroups
+
+  createUserGroup(input: UserGroupInput!): UserGroupResult
+
+  updateGroupUsers(input: GroupUsersInput!): GroupUsers
+
+  updateUserGroups(input: UserGroupsInput!): UserGroups
+
+  createSavedSearch(input: SavedSearchInput!): SavedSearchResult
+
+  updateSavedSearch(id: ID!, input: SavedSearchInput): SavedSearchResult
+
+  deleteSavedSearch(id: ID!): SavedSearchResult
+
+  createFlow(input: FlowInput!): FlowResult
+
+  updateFlow(id: ID!, input: FlowInput): FlowResult
+
+  deleteFlow(id: ID!): FlowResult
+
+  publishFlow(uuid: UUID4!): PublishFlowResult
+
+  startContactFlow(flowId: ID!, contactId: ID!, defaultResults: Json, channel: MessageChannelEnum): CommonFlowResult
+
+  startWaGroupFlow(flowId: ID!, waGroupId: ID!): CommonFlowResult
+
+  resumeContactFlow(flowId: ID!, contactId: ID!, result: Json): CommonFlowResult
+
+  copyFlow(id: ID!, input: FlowInput): FlowResult
+
+  resetFlowCount(flowId: ID!): CommonFlowResult
+
+  terminateContactFlows(contactId: ID!): CommonFlowResult
+
+  startGroupFlow(flowId: ID!, groupId: ID!, defaultResults: Json): CommonFlowResult
+
+  startWaGroupCollectionFlow(flowId: ID!, groupId: ID!): CommonFlowResult
+
+  importFlow(flow: Json): ImportFlowResult
+
+  importFlowLocalization(localization: String, id: ID!): CommonFlowResult
+
+  inlineFlowLocalization(id: ID!): CommonFlowResult
+
+  createTrigger(input: TriggerInput!): TriggerResult
+
+  validateTrigger(input: TriggerInput!): ValidateTriggerResult
+
+  updateTrigger(id: ID!, input: TriggerInput!): TriggerResult
+
+  deleteTrigger(id: ID!): TriggerResult
+
+  createBilling(input: BillingInput!): BillingResult
+
+  createBillingSubscription(
+    stripePaymentMethodId: String
+    couponCode: String
+    billingPeriod: String
+  ): SubscriptionResult
+
+  updatePaymentMethod(stripePaymentMethodId: String!): BillingResult
+
+  updateBilling(id: ID!, input: BillingInput): BillingResult
+
+  deleteBilling(id: ID!): BillingResult
+
+  listBillingPeriod: [String]
+
+  "upload a media file and type"
+  uploadMedia(
+    media: Upload!
+
+    extension: String!
+
+    "reject anything larger, in kilobytes. Omitted means no limit."
+    maxSizeKb: Int
+
+    "file under <folder>\/<org id>\/<uuid>.<ext>. Omitted uses the attachment path."
+    folder: String
+  ): String
+
+  "upload a media blob encoded in base 64 and type"
+  uploadBlob(media: String!, extension: String!): String
+
+  createConsultingHour(input: ConsultingHourInput!): ConsultingHourResult
+
+  updateConsultingHour(id: ID!, input: ConsultingHourInput): ConsultingHourResult
+
+  deleteConsultingHour(id: ID!): ConsultingHourResult
+
+  markNotificationAsRead: Boolean
+
+  createContactsField(input: ContactsFieldInput!): ContactsFieldResult
+
+  updateContactsField(id: ID!, input: ContactsFieldInput): ContactsFieldResult
+
+  deleteContactsField(id: ID!, deleteAssoc: Boolean): ContactsFieldResult
+
+  mergeContactsField(id: ID!, input: ContactsFieldInput): ContactsFieldResult
+
+  createExtension(input: ExtensionInput!): ExtensionResult
+
+  updateOrganizationExtension(clientId: ID!, input: ExtensionInput): ExtensionResult
+
+  updateExtension(id: ID!, input: ExtensionInput): ExtensionResult
+
+  deleteExtension(id: ID!): ExtensionResult
+
+  createInteractiveTemplate(input: InteractiveTemplateInput!): InteractiveTemplateResult
+
+  updateInteractiveTemplate(id: ID!, input: InteractiveTemplateInput): InteractiveTemplateResult
+
+  deleteInteractiveTemplate(id: ID!): InteractiveTemplateResult
+
+  copyInteractiveTemplate(id: ID!, input: InteractiveTemplateInput): InteractiveTemplateResult
+
+  translateInteractiveTemplate(id: ID!): InteractiveTemplateResult
+
+  exportInteractiveTemplate(id: ID!, addTranslation: Boolean): ExportInteractiveTranslation
+
+  importInteractiveTemplate(id: ID!, translation: String): InteractiveTemplateResult
+
+  createAccessRole(input: AccessRoleInput!): AccessRoleResult
+
+  updateAccessRole(id: ID!, input: AccessRoleInput): AccessRoleResult
+
+  deleteAccessRole(id: ID!): AccessRoleResult
+
+  createSheet(input: SheetInput!): SheetResult
+
+  updateSheet(id: ID!, input: SheetInput!): SheetResult
+
+  syncSheet(id: ID!): SheetResult
+
+  deleteSheet(id: ID!): SheetResult
+
+  createTicket(input: TicketInput!): TicketResult
+
+  updateTicket(id: ID!, input: TicketInput): TicketResult
+
+  deleteTicket(id: ID!): TicketResult
+
+  updateBulkTicket(input: BulkTicketInput): BulkTicketResult
+
+  updateTicketStatusBasedOnTopic(input: UpdateTicketStatusBasedOnTopic): BulkTicketResult
+
+  createContactWaGroup(input: ContactWaGroupInput!): ContactWaGroupResult
+
+  updateContactWaGroups(input: UpdateContactWaGroupsInput!): UpdateContactWaGroupsResult
+
+  syncWaGroupContacts: SyncWaContacts
+
+  "Promote a managed phone to the group's primary. Admin-only. Demote-then-promote runs in a single transaction."
+  setPrimaryPhone(waGroupId: ID!, waManagedPhoneId: ID!): SetPrimaryPhoneResult
+
+  "Create a new WhatsApp group via Maytapi using the chosen managed phone as the creator. Admin-only."
+  createWaGroup(input: CreateWaGroupInput!): WaGroupResult
+
+  "Remove a contact from a WhatsApp group via Maytapi (group\/remove). Admin-only."
+  removeWaGroupContact(waGroupId: ID!, contactId: ID!): WaGroupResult
+
+  "Bulk-add members to a WhatsApp group from a CSV of phone numbers (a `phone` column). Processed in the background. Admin-only."
+  importWaGroupContacts(waGroupId: ID!, type: ImportContactsTypeEnum!, data: String!): ImportResult
+
+  "Set one managed phone as primary across every WhatsApp group in a collection. Runs in the background; returns a userJobId to poll for the skip report. Admin-only."
+  setPrimaryPhoneForCollection(collectionId: ID!, waManagedPhoneId: ID!): SetPrimaryPhoneCollectionResult
+
+  "Log a managed phone out of WhatsApp so Maytapi issues a fresh QR to reconnect"
+  reconnectWaManagedPhone(waManagedPhoneId: ID!): WaManagedPhoneResult
+
+  "Re-poll Maytapi and reconcile the stored status of every managed phone for the org"
+  syncWaManagedPhoneStatuses: WaPhoneStatusSyncResult
+
+  createWaGroupsCollection(input: WaGroupsCollectionInput!): WaGroupsCollectionResult
+
+  updateCollectionWaGroup(input: UpdateCollectionWaGroupInput!): CollectionWaGroupResult
+
+  updateWaGroupCollection(input: UpdateWaGroupsCollectionInput!): CollectionWaGroupResult
+
+  "Upload filesearch file"
+  uploadFilesearchFile(media: Upload!, targetFormat: String, callbackUrl: String): FileResult
+
+  "Create Assistant"
+  createAssistant(input: AssistantInput): KaapiAssistantResult
+
+  "Delete Assistant"
+  deleteAssistant(id: ID!): KaapiAssistantResult
+
+  "Create a Knowledge Base Version"
+  createKnowledgeBase(mediaInfo: [FileInfoInput!]!, id: ID): KnowledgeBaseResult
+
+  "Update Assistant"
+  updateAssistant(input: AssistantInput, id: ID!): AssistantResult
+
+  "Clone an existing Assistant"
+  cloneAssistant(id: ID!, versionId: ID): CloneResult
+
+  "Set a config version as the live version for an assistant"
+  setLiveVersion(assistantId: ID!, versionId: ID!): SetLiveVersionResult
+
+  createWaPoll(input: WaPollInput!): WaPollResult
+
+  deleteWaPoll(id: ID!): WaPollResult
+
+  copyWaPoll(id: ID!, input: WaPollInput): WaPollResult
+
+  "Create certificate template"
+  createCertificateTemplate(input: CertificateTemplateInput!): CertificateTemplateResult
+
+  "Update certificate template"
+  updateCertificateTemplate(input: CertificateTemplateInput!, id: ID!): CertificateTemplateResult
+
+  "Delete certificate template"
+  deleteCertificateTemplate(id: ID!): CertificateTemplateResult
+
+  "Create a WhatsApp form"
+  createWhatsappForm(input: WhatsappFormInput!): WhatsappFormResult
+
+  "Sync a WhatsApp form from Gupshup"
+  syncWhatsappForm: SyncWhatsappForm
+
+  "Update a WhatsApp form"
+  updateWhatsappForm(id: ID!, input: WhatsappFormInput!): WhatsappFormResult
+
+  "Publish a WhatsApp form to Meta"
+  publishWhatsappForm(id: ID!): WhatsappFormResult
+
+  "Deactivate a WhatsApp Form"
+  deactivateWhatsappForm(id: ID!): WhatsappFormResult
+
+  "Activate a WhatsApp Form"
+  activateWhatsappForm(id: ID!): WhatsappFormResult
+
+  "Delete a WhatsApp Form"
+  deleteWhatsappForm(id: ID!): WhatsappFormResult
+
+  "Save a WhatsApp form revision"
+  saveWhatsappFormRevision(input: WhatsappFormRevisionInput!): WhatsappFormRevisionResult
+
+  "Revert a WhatsApp form to a specific revision"
+  revertToWhatsappFormRevision(whatsappFormId: ID!, revisionId: ID!): WhatsappFormRevisionResult
+
+  "Create Golden QA"
+  createGoldenQa(input: GoldenQaInput!): GoldenQaResult
+
+  "Create AI Evaluation"
+  createEvaluation(input: EvaluationInput!): EvaluationResult
+
+  "Request a v2 (native-judge) prompt improvement for a completed evaluation"
+  improveEvaluationPrompt(evaluationId: ID!): ImprovePromptResult
+
+  askGlific(input: AskGlificInput!): AskGlificResult
+
+  askGlificFeedback(input: AskGlificFeedbackInput!): AskGlificFeedbackResult
+
+  "Initiate async generation of a WhatsApp chatbot system prompt via Kaapi"
+  generatePrompt(input: PromptGeneratorInput!): PromptGenerationResult
+
+  """
+  Send a chat message to the selected (default: live) config version of an assistant
+      via Kaapi. Returns a job_id immediately; the reply is delivered over the
+      assistant_chat_response subscription.
+  """
+  sendAssistantMessage(input: AssistantChatInput!): AssistantChatResult
+}
+
+type RootSubscriptionType {
+  receivedMessage(organizationId: ID!): Message
+
+  sentMessage(organizationId: ID!): Message
+
+  receivedWaGroupMessage(organizationId: ID!): WaMessage
+
+  sentWaGroupMessage(organizationId: ID!): WaMessage
+
+  receivedSimulatorMessage(organizationId: ID!): Message
+
+  sentSimulatorMessage(organizationId: ID!): Message
+
+  updateMessageStatus(organizationId: ID!): Message
+
+  updateWaMessageStatus(organizationId: ID!): WaMessage
+
+  sentGroupMessage(organizationId: ID!): Message
+
+  sentWaGroupCollectionMessage(organizationId: ID!): WaMessage
+
+  createdMessageTag(organizationId: ID!): MessageTag
+
+  deletedMessageTag(organizationId: ID!): MessageTag
+
+  simulatorRelease(organizationId: ID!): Json
+
+  bspBalance(organizationId: ID!): Json
+
+  collectionCount(organizationId: ID!): Json
+
+  askGlificResponse(organizationId: ID!): AskGlificResult
+
+  "Delivers the async reply to a send_assistant_message dispatch."
+  assistantChatResponse: AssistantChatResult
+
+  "Delivers the result of a v2 prompt-improvement request once Kaapi's callback arrives."
+  improvePromptUpdated: ImprovePromptUpdate
+
+  "Delivers an AI evaluation's status as it changes (e.g. once Kaapi's run completes)."
+  aiEvaluationUpdated: AiEvaluation
+
+  "Delivers an assistant config version's status as it changes (e.g. once Kaapi's sync completes)."
+  assistantConfigVersionUpdated: AssistantConfigVersion
+
+  "Delivers a knowledge base version's status as it changes (e.g. once Kaapi's indexing callback arrives)."
+  knowledgeBaseVersionUpdated: KnowledgeBaseVersionUpdate
+}
+
+type AskGlificResult {
+  answer: String
+  conversationId: String
+  conversationName: String
+  messageId: String
+  requestId: String
+  skill: String
+  errors: [InputError]
+}
+
+type AskGlificFeedbackResult {
+  success: Boolean
+}
+
+input AskGlificFeedbackInput {
+  messageId: String!
+  rating: String
+  content: String
+}
+
+input AskGlificInput {
+  query: String!
+  conversationId: String
+  pageUrl: String
+  requestId: String
+}
+
+type AskGlificMessage {
+  id: String
+  conversationId: String
+  query: String
+  answer: String
+  createdAt: Int
+  feedback: String
+}
+
+type AskGlificMessagesResult {
+  messages: [AskGlificMessage]
+  hasMore: Boolean
+  limit: Int
+}
+
+type AskGlificConversation {
+  id: String
+  name: String
+  status: String
+  createdAt: Int
+  updatedAt: Int
+}
+
+type AskGlificConversationsResult {
+  conversations: [AskGlificConversation]
+  hasMore: Boolean
+  limit: Int
+}
+
+input WhatsappFormRevisionInput {
+  whatsappFormId: ID!
+  definition: Json!
+}
+
+type WhatsappFormRevision {
+  id: ID
+  whatsappFormId: ID
+  definition: Json
+  revisionNumber: Int
+  userId: ID
+  isCurrent: Boolean
+  insertedAt: String
+  updatedAt: String
+}
+
+type WhatsappFormRevisionResult {
+  whatsappFormRevision: WhatsappFormRevision
+  errors: [InputError]
+}
+
+type WhatsappFormResponse {
+  id: ID
+  contactId: ID
+  rawResponse: Json
+  whatsappFormId: ID
+  submittedAt: String
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type WhatsappForm {
+  id: ID
+  name: String
+  status: WhatsappFormStatusEnum
+  description: String
+  metaFlowId: String
+  categories: [String]
+  sheetId: ID
+  revisionId: Int
+  insertedAt: String
+  updatedAt: String
+  errors: [InputError]
+  sheet: Sheet
+  revision: WhatsappFormRevision
+}
+
+type WhatsappFormResult {
+  whatsappForm: WhatsappForm
+  errors: [InputError]
+}
+
+type SyncWhatsappForm {
+  message: String
+  errors: [InputError]
+}
+
+input WhatsappFormInput {
+  name: String!
+  categories: [String]!
+  description: String
+  googleSheetUrl: String
+}
+
+"Filtering options for WhatsApp forms"
+input WhatsappFormFilter {
+  "Match the name"
+  name: String
+
+  "Match the meta flow id"
+  metaFlowId: String
+
+  "Match the status"
+  status: WhatsappFormStatusEnum
+}
+
+type CertificateTemplateResult {
+  certificateTemplate: CertificateTemplate
+  errors: [InputError]
+}
+
+type CertificateTemplate {
+  id: ID
+  label: String
+  url: String
+  type: CertificateTemplateTypeEnum
+  description: String
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+input CertificateTemplateInput {
+  label: String
+  url: String
+  description: String
+  type: CertificateTemplateTypeEnum
+}
+
+"Filtering options for Certificate templates"
+input CertificateTemplateFilter {
+  "Match the label"
+  label: String
+}
+
+type WaPoll {
+  id: ID
+  label: String
+  uuid: String
+  pollContent: Json
+  allowMultipleAnswer: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type WaPollResult {
+  waPoll: WaPoll
+  errors: [InputError]
+}
+
+"Filtering options for wa polls"
+input WaPollFilter {
+  "Match the label"
+  label: String
+
+  "Match the allow multiple answer"
+  allowMultipleAnswer: Boolean
+}
+
+input WaPollInput {
+  id: ID
+  label: String
+  pollContent: Json
+  allowMultipleAnswer: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type GuardrailValidator {
+  type: String
+
+  "JSON schema of the validator-specific config"
+  config: Json
+
+  "Documentation link for the validator"
+  link: String
+}
+
+type GuardrailValidatorsResult {
+  validators: [GuardrailValidator]
+}
+
+type ResultError {
+  message: String!
+}
+
+type AiEvalGoldenQa {
+  id: ID
+  name: String
+  duplicationFactor: Int
+}
+
+type AiEvalAssistant {
+  id: ID
+  name: String
+}
+
+type AiEvalConfigVersion {
+  id: ID
+  majorVersion: Int
+  minorVersion: Int
+  assistant: AiEvalAssistant
+}
+
+type AiEvaluation {
+  id: ID
+  name: String
+  status: AiEvaluationStatusEnum
+  failureReason: String
+  results: Json
+  duplicationFactor: Int
+  goldenQa: AiEvalGoldenQa
+  assistantConfigVersion: AiEvalConfigVersion
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+input AiEvaluationFilter {
+  name: String
+  goldenQaId: ID
+}
+
+input GoldenQaFilter {
+  name: String
+}
+
+input GoldenQaInput {
+  name: String!
+  file: Upload!
+  duplicationFactor: Int!
+}
+
+type GoldenQa {
+  id: ID
+  name: String
+  duplicationFactor: Int
+  datasetId: Int
+  fileName: String
+  signedUrl: String
+  totalItems: Int
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type GoldenQaResult {
+  goldenQa: GoldenQa
+  errors: [ResultError]
+}
+
+type EvaluationResult {
+  evaluation: CreateEvaluationResult
+  errors: [InputError]
+}
+
+type CreateEvaluationResult {
+  status: AiEvaluationStatusEnum
+}
+
+input EvaluationInput {
+  goldenQaId: ID!
+  evaluationName: String!
+  configId: ID!
+  duplicationFactor: Int
+}
+
+type EvaluationScoresResult {
+  scores: Json
+  errors: [ResultError]
+}
+
+type KaapiModel {
+  provider: String
+
+  modelName: String
+
+  completionType: [String]
+
+  config: Json
+
+  inputModalities: [String]
+
+  outputModalities: [String]
+
+  pricing: Json
+
+  "One of: recommended, all, to_be_deprecated"
+  category: String
+
+  badge: String
+}
+
+type ImprovePrompt {
+  status: String
+}
+
+type ImprovePromptResult {
+  improvePrompt: ImprovePrompt
+  errors: [ResultError]
+}
+
+type ImprovePromptUpdate {
+  status: String
+  configVersion: AssistantConfigVersion
+  error: String
+}
+
+type PromptGenerationResult {
+  promptGeneration: PromptGeneration
+  errors: [InputError]
+}
+
+type PromptGeneration {
+  id: ID
+
+  status: String
+
+  generatedPrompt: String
+
+  errorMessage: String
+
+  """
+  The submitted answers as a flexible JSON map (for pre-filling the wizard). Kept
+      as :json rather than a typed object so adding/removing questions only touches the
+      frontend + the generation meta-prompt, not this schema.
+  """
+  inputs: Json
+}
+
+"Input object for prompt generation — the 9-question NGO answers"
+input PromptGeneratorInput {
+  "Organization or chatbot name"
+  name: String
+
+  "Purpose or mission of the chatbot"
+  purpose: String
+
+  "Target audience"
+  audience: String
+
+  "Language policy (e.g. Hindi and English)"
+  language: String
+
+  "Desired tone (e.g. friendly, professional)"
+  tone: String
+
+  "Response format guidelines"
+  format: String
+
+  "Off-limits topics the chatbot must avoid"
+  offLimits: String
+
+  "Exact fallback message when the chatbot cannot answer"
+  fallback: String
+
+  "Escalation path (e.g. how to reach a human agent)"
+  escalation: String
+}
+
+"""
+Result of dispatching (or the async reply to) an assistant chat message.
+  `job_id` is only present on the dispatch ack; `answer` is only present on the
+  subscription payload delivered once Kaapi's callback arrives.
+"""
+type AssistantChatResult {
+  jobId: String
+
+  requestId: String
+
+  conversationId: String
+
+  answer: String
+
+  """
+  Guardrail stages, present on the subscription payload only when the org's
+      ai_guardrail flag is enabled: the text before/after the input guardrail, the text
+      before/after the output guardrail, and the validators that ran on each side.
+  """
+  inputFromUser: String
+
+  inputToLlm: String
+
+  outputFromLlm: String
+
+  outputToUser: String
+
+  inputGuardrail: Json
+
+  outputGuardrail: Json
+
+  errors: [InputError]
+}
+
+input AssistantChatInput {
+  assistantId: ID!
+
+  message: String!
+
+  conversationId: String
+
+  "Config version to chat with. Defaults to the assistant's live version."
+  configVersionId: ID
+}
+
+type KnowledgeBaseResult {
+  knowledgeBase: VectorStore
+  errors: [InputError]
+}
+
+type VectorStore {
+  id: ID
+  knowledgeBaseVersionId: String
+  vectorStoreId: String
+  name: String
+  files: [FileInfo]
+  size: String
+  status: String
+  legacy: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type FileInfo {
+  id: String
+  name: String
+  uploadedAt: String
+  fileSize: Int
+}
+
+type FileResult {
+  fileId: String
+  filename: String
+  uploadedAt: String
+  fileSize: Int
+  signedUrl: String
+  errors: [InputError]
+}
+
+type KaapiAssistantResult {
+  assistant: KaapiAssistant
+  errors: [InputError]
+}
+
+type KaapiAssistant {
+  id: ID
+  name: String
+  description: String
+  kaapiUuid: String
+  assistantDisplayId: String
+  assistantId: String
+  activeConfigVersionId: String
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type AssistantResult {
+  assistant: Assistant
+  errors: [InputError]
+}
+
+type AssistantConfigVersion {
+  id: ID
+  majorVersion: Int
+  minorVersion: Int
+  versionLabel: String
+  model: String
+  prompt: String
+  settings: Json
+  inputGuardrails: Json
+  outputGuardrails: Json
+  status: String
+  isLive: Boolean
+  description: String
+  vectorStore: VectorStore
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type SetLiveVersionResult {
+  assistant: LiveVersionAssistant
+  errors: [InputError]
+}
+
+type LiveVersionAssistant {
+  id: ID
+  activeConfigVersionId: ID
+  liveVersionLabel: String
+}
+
+type Assistant {
+  id: ID
+  assistantDisplayId: String
+  name: String
+  assistantId: String
+  model: String
+  instructions: String
+  temperature: Float
+  effort: String
+  settings: Json
+  inputGuardrails: Json
+  outputGuardrails: Json
+  status: String
+  newVersionInProgress: Boolean
+  liveVersionLabel: String
+  legacy: Boolean
+  cloneStatus: String
+  activeConfigVersionId: ID
+  lastEvaluationSummary: Json
+  vectorStore: VectorStore
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type CloneResult {
+  message: String
+  errors: [InputError]
+}
+
+input AssistantInput {
+  name: String
+  model: String
+  instructions: String
+  description: String
+  temperature: Float
+  effort: String
+  settings: Json
+  inputGuardrails: Json
+  outputGuardrails: Json
+  knowledgeBaseVersionId: String
+}
+
+input FileInfoInput {
+  fileId: String
+  filename: String
+  uploadedAt: String
+  fileSize: Int
+}
+
+"Filtering options for Assistants"
+input AssistantFilter {
+  "Match the name"
+  name: String
+
+  "Match the name or assistant display ID"
+  nameOrAssistantId: String
+}
+
+type KnowledgeBaseVersionUpdate {
+  id: ID
+  knowledgeBaseId: ID
+  versionNumber: Int
+  status: String
+  size: Int
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type AssistantConfigVersionForEvals {
+  id: ID
+  assistantId: ID
+  kaapiUuid: String
+  majorVersion: Int
+  minorVersion: Int
+  kaapiVersionNumber: Int
+  description: String
+  prompt: String
+  provider: String
+  model: String
+  settings: Json
+  inputGuardrails: Json
+  outputGuardrails: Json
+  status: String
+  assistantName: String
+  failureReason: String
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type WaGroupResult {
+  waGroup: WaGroup
+  errors: [InputError]
+}
+
+"Result of setPrimaryPhone. `warning` is set when the target phone's Maytapi status isn't 'active' so the UI can prompt for confirmation."
+type SetPrimaryPhoneResult {
+  primaryPhone: WaGroupPhone
+  warning: String
+  errors: [InputError]
+}
+
+"Result of setPrimaryPhoneForCollection. The bulk update runs in the background; poll `waGroupCollectionPrimaryReport` with `userJobId` for the skipped-groups CSV."
+type SetPrimaryPhoneCollectionResult {
+  status: String
+  userJobId: ID
+  errors: [InputError]
+}
+
+"CSV report of groups skipped during a collection primary-phone update (`Group,Reason`). `error` is set when the job isn't finished or doesn't exist."
+type WaGroupCollectionReport {
+  csvRows: String
+  error: String
+}
+
+"Membership row linking a WAManagedPhone to a WAGroup. Exactly one row per group has `isPrimary: true`."
+type WaGroupPhone {
+  id: ID
+  isPrimary: Boolean
+  isActive: Boolean
+  waManagedPhone: WaManagedPhone
+}
+
+type WaGroup {
+  id: ID
+
+  label: String
+
+  bspId: String
+
+  lastCommunicationAt: DateTime
+
+  fields: Json
+
+  "The managed phone currently marked is_primary + is_active for this group. Nil if no primary is set."
+  primaryPhone: WaManagedPhone
+
+  "All wa_groups_phones membership rows for this group (active + inactive)."
+  phones: [WaGroupPhone]
+
+  "Contacts that are members of this WhatsApp group."
+  contacts: [Contact]
+
+  groups: [Group]
+}
+
+"Filtering options for wa groups"
+input WaGroupFilter {
+  "Include wa_groups within these groups"
+  includeGroups: [ID]
+
+  "Exclude wa_groups within these groups"
+  excludeGroups: [ID]
+
+  "term for the search"
+  term: String
+
+  "Searches based on wa group label"
+  label: String
+}
+
+"""
+Input for createWaGroup. Members are supplied via `importData` (a CSV with a
+`phone` column plus an optional `name` column): its phones seed the group and a
+background job enriches the contacts.
+"""
+input CreateWaGroupInput {
+  name: String!
+  waManagedPhoneId: ID!
+  importData: String!
+}
+
+type WaGroupsCollectionResult {
+  waGroupsCollection: WaGroupsCollection
+  errors: [InputError]
+}
+
+type WaGroupsCollection {
+  id: ID
+  group: Group
+}
+
+input WaGroupsCollectionInput {
+  groupId: ID
+  waGroupId: ID
+}
+
+input UpdateCollectionWaGroupInput {
+  groupId: ID!
+  addWaGroupIds: [ID]!
+  deleteWaGroupIds: [ID]!
+}
+
+type CollectionWaGroupResult {
+  waGroupsDeleted: Int
+  collectionWaGroups: [WaGroupsCollection]
+}
+
+input UpdateWaGroupsCollectionInput {
+  waGroupId: ID!
+  addGroupIds: [ID]!
+  deleteGroupIds: [ID]!
+}
+
+type WaManagedPhoneResult {
+  waManagedPhone: WaManagedPhone
+  errors: [InputError]
+}
+
+type WaManagedPhone {
+  id: ID
+  phone: String
+  phoneId: Int
+  label: String
+  status: String
+  lastStatusCheckedAt: DateTime
+  insertedAt: DateTime
+  updatedAt: DateTime
+  contact: Contact
+  organization: Organization
+}
+
+"The QR \/ login screen for a managed phone, used to reconnect it from Glific"
+type WaPhoneScreen {
+  "The QR payload to render — a data-url \/ base64 image or Maytapi screen string"
+  code: String
+
+  "The phone's current Maytapi status at fetch time (e.g. qr-screen, active)"
+  status: String
+
+  "Hint for when the frontend should refresh the QR (Maytapi rotates it)"
+  expiresAt: DateTime
+}
+
+type WaPhoneScreenResult {
+  waPhoneScreen: WaPhoneScreen
+  errors: [InputError]
+}
+
+type WaPhoneStatusSyncResult {
+  message: String
+  errors: [InputError]
+}
+
+"Filtering options for wa_managed_phones"
+input WaManagedPhoneFilter {
+  "Match the label"
+  label: String
+
+  "Match the phone"
+  phone: String
+}
+
+type ContactWaGroupResult {
+  contactWaGroup: ContactWaGroup
+  errors: [InputError]
+}
+
+type ContactWaGroup {
+  id: ID
+  isAdmin: Boolean
+  contact: Contact
+  waGroup: WaGroup
+}
+
+type SyncWaContacts {
+  message: String
+  errors: [InputError]
+}
+
+input ContactWaGroupInput {
+  contactId: ID
+  waGroupId: ID
+  isAdmin: Boolean
+}
+
+input UpdateContactWaGroupsInput {
+  waGroupId: ID!
+  addWaContactIds: [ID]!
+  deleteWaContactIds: [ID]!
+}
+
+type UpdateContactWaGroupsResult {
+  numberDeleted: Int
+  waGroupContacts: [ContactWaGroup]
+}
+
+"Filtering options for messages"
+input ContactWaGroupFilter {
+  "Match the group id"
+  waGroupId: ID
+
+  "Date range which will apply on date column. Default is inserted at."
+  dateRange: DateRangeInput
+}
+
+type TicketResult {
+  ticket: Ticket
+  errors: [InputError]
+}
+
+type Ticket {
+  id: ID
+  body: String
+  topic: String
+  status: String
+  remarks: String
+  messageNumber: Int
+  contact: Contact
+  user: User
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+input TicketInput {
+  body: String
+  topic: String
+  status: String
+  remarks: String
+  contactId: ID
+  userId: ID
+}
+
+input BulkTicketInput {
+  status: String
+  updateIds: [ID]
+  userId: ID
+}
+
+input UpdateTicketStatusBasedOnTopic {
+  status: String
+  topic: String
+}
+
+type BulkTicketResult {
+  success: Boolean!
+  message: String!
+}
+
+input FetchSupportTickets {
+  startDate: Date
+  endDate: Date
+}
+
+"Filtering options for tickets"
+input TicketFilter {
+  "Match the body"
+  body: String
+
+  "Match the status"
+  status: String
+
+  "Match the contact id"
+  contactId: ID
+
+  "Match the user id"
+  userId: ID
+
+  "Match the contact name or phone"
+  nameOrPhoneOrBody: String
+
+  "Match the topic"
+  topic: String
+}
+
+type SheetResult {
+  sheet: Sheet
+  errors: [InputError]
+}
+
+type Sheet {
+  id: ID
+  label: String
+  url: String
+  type: String
+  isActive: Boolean
+  lastSyncedAt: DateTime
+  autoSync: Boolean
+  syncStatus: SheetSyncStatusEnum
+  failureReason: String
+  sheetDataCount: Int
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+"Filtering options for sheets"
+input SheetFilter {
+  "Match the label"
+  label: String
+
+  "Match isActive flag"
+  isActive: Boolean
+
+  "Match type flag"
+  type: String
+}
+
+input SheetInput {
+  label: String
+  url: String
+  isActive: Boolean
+  autoSync: Boolean
+  type: String
+}
+
+type AccessRoleResult {
+  accessRole: AccessRole
+  errors: [InputError]
+}
+
+type AccessRole {
+  id: ID
+  label: String
+  description: String
+  isReserved: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+"Filtering options for roles"
+input AccessRoleFilter {
+  "Match the label"
+  label: String
+
+  "Match the shortcode"
+  description: String
+
+  "Match the reserved flag"
+  isReserved: Boolean
+}
+
+input AccessRoleInput {
+  label: String
+  description: String
+  isReserved: Boolean
+}
+
+type FlowLabelResult {
+  flowLabel: FlowLabel
+  errors: [InputError]
+}
+
+type FlowLabel {
+  id: ID
+  uuid: UUID4
+  name: String
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+"Filtering options for flow labels"
+input FlowLabelFilter {
+  "Match the name"
+  name: String
+}
+
+type InteractiveTemplateResult {
+  interactiveTemplate: InteractiveTemplate
+  message: String
+  errors: [InputError]
+}
+
+type InteractiveTemplate {
+  id: ID
+  label: String
+  type: InteractiveMessageTypeEnum
+  interactiveContent: Json
+  sendWithTitle: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+  translations: Json
+  tag: Tag
+  language: Language
+}
+
+type ExportInteractiveTranslation {
+  exportData: String
+}
+
+"Filtering options for interactives"
+input InteractiveTemplateFilter {
+  "Match term with label and associated tag of template"
+  term: String
+
+  "Match the label"
+  label: String
+
+  "Match the tag_ids"
+  tagIds: [Int]
+
+  "Match the type of interactive"
+  type: InteractiveMessageTypeEnum
+
+  "Match a language"
+  language: String
+
+  "Match a language id"
+  languageId: Int
+
+  "Match a send interactive title field"
+  sendWithTitle: Boolean
+}
+
+input InteractiveTemplateInput {
+  label: String
+  type: InteractiveMessageTypeEnum
+  interactiveContent: Json
+  languageId: ID
+  tagId: ID
+  translations: Json
+  sendWithTitle: Boolean
+}
+
+type ExtensionResult {
+  extension: Extension
+  errors: [InputError]
+}
+
+type Extension {
+  id: ID
+  name: String
+  code: String
+  module: String
+  isValid: Boolean
+  isActive: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+  organization: Organization
+}
+
+input ExtensionInput {
+  code: String!
+  isActive: Boolean
+  name: String
+  clientId: ID!
+}
+
+type ContactsFieldResult {
+  contactsField: ContactsField
+  errors: [InputError]
+}
+
+type ContactsField {
+  id: ID
+  name: String
+  shortcode: String
+  variable: String
+  valueType: ContactFieldValueTypeEnum
+  scope: ContactFieldScopeEnum
+  insertedAt: DateTime
+  updatedAt: DateTime
+  organization: Organization
+}
+
+"Filtering options for contacts field"
+input ContactsFieldFilter {
+  "Match the name"
+  name: String
+
+  "Match the shortcode"
+  shortcode: String
+
+  "Scope of the contact field"
+  scope: ContactFieldScopeEnum
+}
+
+input ContactsFieldInput {
+  name: String
+  shortcode: String
+  valueType: ContactFieldValueTypeEnum
+  scope: ContactFieldScopeEnum
+}
+
+type ConsultingHourResult {
+  consultingHour: ConsultingHour
+  errors: [InputError]
+}
+
+type ConsultingHour {
+  id: ID
+  participants: String
+  organizationName: String
+  staff: String
+  content: String
+  when: DateTime
+  duration: Int
+  isBillable: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+  organization: Organization
+}
+
+input ConsultingHourInput {
+  participants: String
+  clientId: ID!
+  organizationName: String
+  staff: String
+  content: String
+  when: DateTime
+  duration: Int
+  isBillable: Boolean
+}
+
+input FetchConsultingHours {
+  clientId: ID!
+  startDate: Date
+  endDate: Date
+}
+
+"Filtering options for consulting hours"
+input ConsultingHourFilter {
+  "Match the organization name"
+  organizationName: String
+
+  "Match the participants name"
+  participants: String
+
+  "Match the staff name"
+  staff: String
+
+  "Match the billable flag"
+  isBillable: Boolean
+
+  "Match the start date"
+  startDate: Date
+
+  "Match the end date"
+  endDate: Date
+}
+
+type BillingResult {
+  billing: Billing
+  errors: [InputError]
+}
+
+type CouponCodeResult {
+  id: String
+  code: String
+  metadata: Json
+}
+
+type SubscriptionResult {
+  subscription: Json
+  errors: String
+}
+
+type CustomerPortalResult {
+  url: String
+  returnUrl: String
+}
+
+type Billing {
+  id: ID
+  name: String
+  email: String
+  currency: String
+  isActive: Boolean
+  deductTds: Boolean
+  tdsAmount: Float
+  stripeCustomerId: String
+  stripePaymentMethodId: String
+  stripeSubscriptionId: String
+  stripeSubscriptionItems: Json
+  stripeSubscriptionStatus: String
+  stripeLastUsageRecorded: DateTime
+  stripeCurrentPeriodStart: DateTime
+  stripeCurrentPeriodEnd: DateTime
+}
+
+input BillingInput {
+  organizationId: Gid
+  name: String
+  email: String
+  currency: String
+  deductTds: Boolean
+  tdsAmount: Float
+  stripeSubscriptionStatus: String
+  stripeSubscriptionId: String
+}
+
+type LocationResult {
+  location: Location
+  errors: [InputError]
+}
+
+type Locations {
+  id: ID
+  longitude: Float
+  latitude: Float
+}
+
+type Notification {
+  id: ID
+  category: String
+  entity: Json
+  message: String
+  severity: Json
+  isRead: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+  organization: Organization
+}
+
+"Filtering options for notifications"
+input NotificationFilter {
+  "Match the message"
+  message: String
+
+  "Match the category"
+  category: String
+
+  "Match is read status"
+  isRead: Boolean
+
+  "Match is severity"
+  severity: String
+}
+
+type WebhookLog {
+  id: ID
+  url: String
+  method: String
+  requestHeaders: Json
+  requestJson: Json
+  responseJson: Json
+  statusCode: Int
+  status: String
+  error: String
+  insertedAt: DateTime
+  updatedAt: DateTime
+  flow: Flow
+  contact: Contact
+}
+
+"Filtering options for webhook_logs"
+input WebhookLogFilter {
+  "Match the url"
+  url: String
+
+  "Match the status code"
+  statusCode: Int
+
+  "Match the phone"
+  contactPhone: String
+}
+
+type TriggerResult {
+  trigger: Trigger
+  errors: [InputError]
+}
+
+type ValidateTriggerResult {
+  success: Boolean
+  errors: [InputError]
+}
+
+type Trigger {
+  id: ID
+  name: String
+  startAt: DateTime
+  nextTriggerAt: DateTime
+  endDate: Date
+  isActive: Boolean
+  isRepeating: Boolean
+  frequency: String
+  groupType: String
+  days: [Int]
+  hours: [Int]
+  groups: [String]
+  waGroups: [String]
+  flow: Flow
+  roles: [AccessRole]
+}
+
+"Filtering options for triggers"
+input TriggerFilter {
+  "Match the flow"
+  flow: String
+
+  "Match the name"
+  name: String
+}
+
+input TriggerInput {
+  flowId: ID
+  groupIds: [Int]
+  isActive: Boolean
+  isRepeating: Boolean
+  frequency: [String]
+  days: [Int]
+  hours: [Int]
+  startDate: Date
+  startTime: Time
+  startAt: DateTime
+  endDate: Date
+  addRoleIds: [ID]
+  deleteRoleIds: [ID]
+  groupType: String
+}
+
+type FlowResult {
+  flow: Flow
+  errors: [InputError]
+}
+
+type CommonFlowResult {
+  success: Boolean
+  errors: [InputError]
+}
+
+type PublishFlowResult {
+  success: Boolean
+  errors: [PublishFlowError]
+}
+
+type PublishFlowError {
+  key: String!
+  message: String!
+  category: String!
+  blocking: Boolean!
+  nodeUuid: String
+}
+
+type ExportFlow {
+  exportData: Json
+  errors: [InputError]
+}
+
+type ExportFlowLocalization {
+  exportData: String
+}
+
+type ImportFlowResult {
+  status: [ImportFlowStatus]
+}
+
+type ImportFlowStatus {
+  flowName: String!
+  status: String!
+  assistantNodeUuids: [String]
+  invalidSheetNodeUuids: [String]
+}
+
+type Flow {
+  id: ID
+  uuid: UUID4
+  name: String
+  keywords: [String]
+  ignoreKeywords: Boolean
+  isActive: Boolean
+  isTemplate: Boolean
+  skipValidation: Boolean
+  versionNumber: String
+  flowType: FlowTypeEnum
+  channel: MessageChannelEnum
+  insertedAt: DateTime
+  updatedAt: DateTime
+  lastPublishedAt: DateTime
+  lastChangedAt: DateTime
+  isBackground: Boolean
+  description: String
+  roles: [AccessRole]
+  tag: Tag
+  isPinned: Boolean
+}
+
+input FlowInput {
+  name: String
+  channel: MessageChannelEnum
+  keywords: [String]
+  tagId: ID
+  ignoreKeywords: Boolean
+  isActive: Boolean
+  isBackground: Boolean
+  addRoleIds: [ID]
+  deleteRoleIds: [ID]
+  isPinned: Boolean
+  isTemplate: Boolean
+  skipValidation: Boolean
+  description: String
+}
+
+"Filtering options for flows"
+input FlowFilter {
+  "Match the name"
+  name: String
+
+  "Match the name or keyword or tags"
+  nameOrKeywordOrTags: String
+
+  "Match the tag_ids"
+  tagIds: [Int]
+
+  "Match the keyword"
+  keyword: String
+
+  "Match the uuid"
+  uuid: UUID4
+
+  "Match the status of flow revision"
+  status: String
+
+  "Match the channel the flow runs on"
+  channel: MessageChannelEnum
+
+  "Match the is_active flag of flow"
+  isActive: Boolean
+
+  "Match the is_template flag of flow"
+  isTemplate: Boolean
+
+  "Match the is_background flag of flow"
+  isBackground: Boolean
+
+  "Match the is_pinned flag of flow"
+  isPinned: Boolean
+}
+
+type SavedSearchResult {
+  savedSearch: SavedSearch
+  errors: [InputError]
+}
+
+type SavedSearch {
+  id: ID
+  label: String
+  shortcode: String
+  args: Json
+  isReserved: Boolean
+}
+
+type Conversation {
+  id: ID
+  contact: Contact
+  group: Group
+  messages: [Message]
+}
+
+type SearchCup {
+  contacts: [Contact]
+  messages: [Message]
+  tags: [Message]
+  labels: [Message]
+}
+
+type WaSearchCup {
+  waGroups: [WaGroup]
+  waMessages: [WaMessage]
+}
+
+type WaConversation {
+  id: ID
+  group: Group
+  waGroup: WaGroup
+  waMessages: [WaMessage]
+}
+
+input SavedSearchFilter {
+  label: String
+  shortcode: String
+  isReserved: Boolean
+}
+
+input SavedSearchInput {
+  label: String
+  shortcode: String
+  args: Json
+}
+
+input SaveSearchInput {
+  label: String
+  shortcode: String
+}
+
+input DateExpressionInput {
+  "Start date for the filter"
+  fromExpression: String
+
+  "End date for the filter"
+  toExpression: String
+}
+
+input DateInput {
+  "Start date for the filter"
+  from: Date
+
+  "End date for the filter"
+  to: Date
+}
+
+"Filtering options for search"
+input SearchFilter {
+  "Match one contact ID"
+  id: Gid
+
+  "Match multiple contact ids"
+  ids: [Gid]
+
+  "Should we return group conversations? If so we only examine include_groups"
+  searchGroup: Boolean
+
+  "Include conversations with these tags"
+  includeTags: [Gid]
+
+  "Include conversations with these labels"
+  includeLabels: [Gid]
+
+  "Include conversations with these groups"
+  includeGroups: [Gid]
+
+  "Include conversations by these users"
+  includeUsers: [Gid]
+
+  "term for saving the search"
+  term: String
+
+  "status of the message, this replaces the unread\/not responded tags"
+  status: String
+
+  "Only conversations that have a message on this channel"
+  channel: MessageChannelEnum
+
+  "a static date range input field which will apply on updated at column."
+  dateRange: DateInput
+
+  "a dynamic date expression input field"
+  dateExpression: DateExpressionInput
+
+  "It will use the save search filters"
+  savedSearchId: ID
+
+  "Searches based on group label"
+  groupLabel: String
+}
+
+"Filtering options for wa_search"
+input WaSearchFilter {
+  "Match one group ID"
+  id: Gid
+
+  "Match multiple group ids"
+  ids: [Gid]
+
+  "Match one or multiple wa_managed_phone ids"
+  waPhoneIds: [Gid]
+
+  "Match term for saving the search"
+  term: String
+
+  "match groups"
+  searchGroup: Boolean
+
+  "Searches based on group label"
+  groupLabel: String
+}
+
+type UserGroupResult {
+  userGroup: UserGroup
+  errors: [InputError]
+}
+
+type UserGroup {
+  id: ID
+  value: String
+  user: User
+  group: Group
+}
+
+input UserGroupInput {
+  userId: ID
+  groupId: ID
+}
+
+input GroupUsersInput {
+  groupId: ID!
+  addUserIds: [ID]!
+  deleteUserIds: [ID]!
+}
+
+type GroupUsers {
+  numberDeleted: Int
+  groupUsers: [UserGroup]
+}
+
+input UserGroupsInput {
+  userId: ID!
+  addGroupIds: [ID]!
+  deleteGroupIds: [ID]!
+}
+
+type UserGroups {
+  numberDeleted: Int
+  userGroups: [UserGroup]
+}
+
+type ContactGroupResult {
+  contactGroup: ContactGroup
+  errors: [InputError]
+}
+
+type ContactGroup {
+  id: ID
+  value: String
+  contact: Contact
+  group: Group
+}
+
+input ContactGroupInput {
+  contactId: ID
+  groupId: ID
+}
+
+input GroupContactsInput {
+  groupId: ID!
+  addContactIds: [ID]!
+  deleteContactIds: [ID]!
+}
+
+type GroupContacts {
+  numberDeleted: Int
+  groupContacts: [ContactGroup]
+}
+
+input ContactGroupsInput {
+  contactId: ID!
+  addGroupIds: [ID]!
+  deleteGroupIds: [ID]!
+}
+
+type ContactGroups {
+  numberDeleted: Int
+  contactGroups: [ContactGroup]
+}
+
+"Filtering options for messages"
+input ContactGroupFilter {
+  "Match the contact id"
+  contactId: ID
+
+  "Match the group id"
+  groupId: ID
+
+  "Date range which will apply on date column. Default is inserted at."
+  dateRange: DateRangeInput
+}
+
+type GroupResult {
+  group: Group
+  errors: [InputError]
+}
+
+type ExportCollectionResult {
+  status: String
+  errors: [InputError]
+}
+
+type Group {
+  id: ID
+  label: String
+  description: String
+  isRestricted: Boolean
+  lastCommunicationAt: DateTime
+  contacts: [Contact]
+  users: [User]
+  messages: [Message]
+  waGroups: [WaGroup]
+  contactsCount: Int
+  usersCount: Int
+  roles: [AccessRole]
+  waGroupsCount: Int
+}
+
+"Filtering options for groups"
+input GroupFilter {
+  "Match the label"
+  label: String
+
+  "Match the group_type"
+  groupType: String
+}
+
+input GroupInput {
+  groupType: String
+  label: String
+  description: String
+  isRestricted: Boolean
+  addRoleIds: [ID]
+  deleteRoleIds: [ID]
+}
+
+type UserResult {
+  user: User
+  errors: [InputError]
+}
+
+type User {
+  id: ID
+  name: String
+  phone: String
+  email: String
+  roles: [RoleLabel]
+  insertedAt: DateTime
+  updatedAt: DateTime
+  isRestricted: Boolean
+  contact: Contact
+  language: Language
+  groups: [Group]
+  accessRoles: [AccessRole]
+  organization: Organization
+}
+
+"Filtering options for users"
+input UserFilter {
+  "Match the name"
+  name: String
+
+  "Match the phone"
+  phone: String
+}
+
+input CurrentUserInput {
+  name: String
+  password: String
+  otp: String
+  languageId: ID
+  email: String
+}
+
+input UserInput {
+  name: String
+  email: String
+  roles: [RoleLabel]
+  groupIds: [ID]
+  isRestricted: Boolean
+  languageId: ID
+  addRoleIds: [ID]
+  deleteRoleIds: [ID]
+}
+
+type TagResult {
+  tag: Tag
+  errors: [InputError]
+}
+
+type Tag {
+  id: ID
+  label: String
+  shortcode: String
+  description: String
+  colorCode: String
+  isActive: Boolean
+  isReserved: Boolean
+  keywords: [String]
+  insertedAt: DateTime
+  updatedAt: DateTime
+  parent: Tag
+  language: Language
+}
+
+"Filtering options for tags"
+input TagFilter {
+  "Match the label"
+  label: String
+
+  "Match the shortcode"
+  shortcode: String
+
+  "Match the description"
+  description: String
+
+  "Match the parent"
+  parent: String
+
+  "Match the parent"
+  parentId: Int
+
+  "Match a language"
+  language: String
+
+  "Match a language id"
+  languageId: Int
+
+  "Match the active flag"
+  isActive: Boolean
+
+  "Match the reserved flag"
+  isReserved: Boolean
+}
+
+input TagInput {
+  label: String
+  shortcode: String
+  description: String
+  colorCode: String
+  isActive: Boolean
+  isReserved: Boolean
+  languageId: ID
+  parentId: ID
+  keywords: [String]
+}
+
+type TemplateTagResult {
+  templateTag: TemplateTag
+  errors: [InputError]
+}
+
+type TemplateTag {
+  id: ID
+  value: String
+  template: SessionTemplate
+  tag: Tag
+}
+
+type TemplateTags {
+  numberDeleted: Int
+  templateTags: [TemplateTag]
+}
+
+input TemplateTagInput {
+  templateId: ID
+  tagId: ID
+}
+
+input TemplateTagsInput {
+  templateId: ID!
+  addTagIds: [ID]!
+  deleteTagIds: [ID]!
+}
+
+type SessionTemplateResult {
+  sessionTemplate: SessionTemplate
+  errors: [InputError]
+}
+
+type ImportTemplatesResult {
+  status: String
+  errors: [InputError]
+}
+
+type BulkApplyTemplatesResult {
+  csvRows: String
+  errors: [InputError]
+}
+
+type SyncHsmTemplates {
+  message: String
+  errors: [InputError]
+}
+
+type ReportToGupshupResult {
+  message: String
+  errors: [InputError]
+}
+
+type TranslateSessionTemplateResult {
+  body: String
+  footer: String
+  buttons: [String]
+  sourceLanguage: Language
+  errors: [InputError]
+}
+
+type SessionTemplate {
+  id: ID
+  bspId: String
+  label: String
+  body: String
+  type: MessageTypeEnum
+  shortcode: String
+  isHsm: Boolean
+  status: String
+  numberParameters: Int
+  category: String
+  example: String
+  isReserved: Boolean
+  isActive: Boolean
+  isSource: Boolean
+  translations: Json
+  hasButtons: Boolean
+  buttonType: TemplateButtonTypeEnum
+  buttons: Json
+  reason: String
+  quality: String
+  footer: String
+  insertedAt: DateTime
+  updatedAt: DateTime
+  tag: Tag
+  language: Language
+  messageMedia: MessageMedia
+  parent: SessionTemplate
+}
+
+"Filtering options for session_templates"
+input SessionTemplateFilter {
+  "Match term with label and associated tag of template"
+  term: String
+
+  "Match the label"
+  label: String
+
+  "Match the tag_ids"
+  tagIds: [Int]
+
+  "Match the body of template"
+  body: String
+
+  "Match the shortcode of template"
+  shortcode: String
+
+  "Match the hsm template message"
+  isHsm: Boolean
+
+  "Match the category of the template"
+  category: String
+
+  "Match the parent"
+  parent: String
+
+  "Match the parent"
+  parentId: Int
+
+  "Match a language"
+  language: String
+
+  "Match a language id"
+  languageId: Int
+
+  "Match status of hsm"
+  status: String
+
+  "Match the active flag"
+  isActive: Boolean
+
+  "Match the reserved flag"
+  isReserved: Boolean
+
+  "a static date range input field which will apply on updated at column."
+  dateRange: DateRangeInput
+}
+
+input SessionTemplateInput {
+  label: String
+  body: String
+  type: MessageTypeEnum
+  shortcode: String
+  isHsm: Boolean
+  category: String
+  example: String
+  isActive: Boolean
+  isSource: Boolean
+  messageMediaId: ID
+  languageId: ID
+  tagId: ID
+  translations: Json
+  hasButtons: Boolean
+  buttonType: TemplateButtonTypeEnum
+  buttons: Json
+  footer: String
+}
+
+input EditApprovedTemplateInput {
+  content: String
+  example: String
+  templateYpe: String
+  enableSample: String
+  header: String
+  footer: String
+  category: String
+}
+
+input MessageToTemplateInput {
+  label: String
+  shortcode: String
+  languageId: ID
+}
+
+"An entry from Meta's pre-approved WhatsApp template library (Gupshup partner API passthrough). Read-only — not a persisted SessionTemplate."
+type TemplateLibraryEntry {
+  elementName: String
+  category: String
+  body: String
+  languageCode: String
+  industry: String
+  topic: String
+  usecase: String
+  containerMeta: Json
+}
+
+type ProviderResult {
+  provider: Provider
+  errors: [InputError]
+}
+
+type Provider {
+  id: ID
+  name: String
+  shortcode: String
+  group: String
+  description: String
+  keys: Json
+  secrets: Json
+  isRequired: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type QualityRatingResult {
+  currentLimit: String
+  previousLimit: String
+  event: String
+}
+
+"Filtering options for providers"
+input ProviderFilter {
+  "Match the name"
+  name: String
+
+  "Match the shortcode of provider"
+  shortcode: String
+}
+
+input ProviderInput {
+  name: String
+  shortcode: String
+  group: String
+  description: String
+  keys: Json
+  secrets: Json
+  isRequired: Boolean
+}
+
+type CredentialResult {
+  credential: Credential
+  errors: [InputError]
+}
+
+type Credential {
+  id: ID
+  keys: Json
+  secrets: Json
+  isActive: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+  provider: Provider
+}
+
+input CredentialInput {
+  shortcode: String
+  keys: Json
+  secrets: Json
+  isActive: Boolean
+}
+
+type MessageTagResult {
+  messageTag: MessageTag
+  errors: [InputError]
+}
+
+type MessageTag {
+  id: ID
+  value: String
+  message: Message
+  tag: Tag
+}
+
+type MessageTags {
+  numberDeleted: Int
+  messageTags: [MessageTag]
+}
+
+input MessageTagInput {
+  messageId: ID
+  tagId: ID
+}
+
+input MessageTagsInput {
+  messageId: ID!
+  addTagIds: [ID]!
+  deleteTagIds: [ID]!
+}
+
+type MessageMediaResult {
+  messageMedia: MessageMedia
+  errors: [InputError]
+}
+
+type MessageMedia {
+  id: ID
+  url: String
+  sourceUrl: String
+  thumbnail: String
+  gcsUrl: String
+  caption: String
+  isTemplateMedia: Boolean
+}
+
+input MessageMediaInput {
+  url: String
+  sourceUrl: String
+  thumbnail: String
+  caption: String
+  isTemplateMedia: Boolean
+}
+
+type MessageResult {
+  message: Message
+  errors: [InputError]
+}
+
+type WaMessageResult {
+  errors: [InputError]
+}
+
+type CollectionWaMessageResult {
+  success: Boolean
+  errors: [InputError]
+}
+
+type GroupMessageResult {
+  success: Boolean
+  contactIds: [ID]
+  errors: [InputError]
+}
+
+type ClearMessagesResult {
+  success: Boolean
+  errors: [InputError]
+}
+
+type Message {
+  id: ID
+  body: String
+  uuid: String
+  type: MessageTypeEnum
+  channel: MessageChannelEnum
+  flow: MessageFlowEnum
+  flowLabel: String
+  bspMessageId: String
+  status: String
+  errors: Json
+  messageNumber: Int
+  sendBy: String
+  isHsm: Boolean
+  templateId: Int
+  groupId: Int
+  params: [String]
+  bspStatus: MessageStatusEnum
+  insertedAt: DateTime
+  updatedAt: DateTime
+  sendAt: DateTime
+  interactiveContent: Json
+  contextId: String
+  messageBroadcastId: String
+  whatsappFormResponse: WhatsappFormResponse
+  contextMessage: Message
+  sender: Contact
+  receiver: Contact
+  contact: Contact
+  user: User
+  media: MessageMedia
+  location: Locations
+  tags: [Tag]
+}
+
+type WaMessage {
+  id: ID
+  body: String
+  type: MessageTypeEnum
+  flow: MessageFlowEnum
+  messageNumber: Int
+  bspId: String
+  bspStatus: MessageStatusEnum
+  sendAt: DateTime
+  status: String
+  errors: Json
+  isDm: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+  groupId: Int
+  contextId: String
+  pollContent: Json
+  contextMessage: WaMessage
+  contact: Contact
+  waManagedPhone: WaManagedPhone
+  media: MessageMedia
+  waGroup: WaGroup
+  location: Locations
+  poll: WaPoll
+}
+
+"Filtering options for messages"
+input MessageFilter {
+  "Match the name body"
+  body: String
+
+  "Match the sender"
+  sender: String
+
+  "Match the receiver"
+  receiver: String
+
+  "Match the message types"
+  types: [MessageTypeEnum]
+
+  "Match the phone with either the sender or receiver"
+  either: String
+
+  "Match the user"
+  user: String
+
+  "Match the status"
+  bspStatus: MessageStatusEnum
+
+  "Match the tags included"
+  tagsIncluded: [ID]
+
+  "Match the tags excluded"
+  tagsExcluded: [ID]
+
+  "a static date range input field which will apply on updated at column."
+  dateRange: DateRangeInput
+
+  "Match the flow id"
+  flowId: ID
+}
+
+input MessageInput {
+  body: String
+
+  type: MessageTypeEnum
+
+  "The channel to send on. Defaults to whatsapp."
+  channel: MessageChannelEnum
+
+  flow: MessageFlowEnum
+
+  senderId: ID
+
+  receiverId: ID
+
+  mediaId: ID
+
+  sendAt: DateTime
+
+  isHsm: Boolean
+
+  templateId: Int
+
+  interactiveTemplateId: Int
+
+  params: [String]
+}
+
+input WaMessageInput {
+  message: String
+  type: MessageTypeEnum
+  mediaId: ID
+  waManagedPhoneId: ID
+  waGroupId: ID
+  pollId: Int
+}
+
+input CollectionWaMessageInput {
+  message: String
+  type: MessageTypeEnum
+  mediaId: ID
+}
+
+type Language {
+  id: ID
+  label: String
+  labelLocale: String
+  locale: String
+  isActive: Boolean
+  localized: Boolean
+}
+
+"Filtering options for languages"
+input LanguageFilter {
+  "Match the label"
+  label: String
+
+  "Match the locale"
+  locale: String
+
+  "Match the localized"
+  localized: Boolean
+}
+
+input LanguageInput {
+  label: String!
+  labelLocale: String!
+  locale: String!
+  isActive: Boolean
+  isReserved: Boolean
+  localized: Boolean
+}
+
+type LanguageResult {
+  language: Language
+  errors: [InputError]
+}
+
+"An error encountered trying to persist input"
+type InputError {
+  key: String!
+  message: String!
+}
+
+"Lets collapse sort order, limit and offset into its own little groups"
+input Opts {
+  order: SortOrder
+  orderWith: String
+  limit: Int
+  offset: Int
+}
+
+"A generic date range filter where from and to both are inclusive"
+input DateRangeInput {
+  "Start date for the filter"
+  from: DateTime
+
+  "End date for the filter"
+  to: DateTime
+
+  "column name where we apply the date range. Default is inserted_at."
+  column: String
+}
+
+"""
+The `gid` scalar appears in JSON as a String. The string appears to
+the glific backend as an integer
+"""
+scalar Gid
+
+"A generic json type so return the results as json object"
+scalar Json
+
+"""
+The `UUID4` scalar type represents UUID4 compliant string data, represented as UTF-8
+character sequences. The UUID4 type is most often used to represent unique
+human-readable ID strings.
+"""
+scalar UUID4
+
+"Convert a string\/atom to label (camel case)"
+scalar RoleLabel
+
+"The Contact Field Scope Types enum"
+enum ContactFieldScopeEnum {
+  CONTACT
+  GLOBALS
+  WA_GROUP
+}
+
+"The Contact Field Value Types enum"
+enum ContactFieldValueTypeEnum {
+  TEXT
+  INTEGER
+  NUMBER
+  BOOLEAN
+  DATE
+}
+
+"The Contact Status enum"
+enum ContactStatusEnum {
+  BLOCKED
+  FAILED
+  INVALID
+  PROCESSING
+  VALID
+}
+
+"The Contact Provider Status enum"
+enum ContactProviderStatusEnum {
+  NONE
+  SESSION
+  SESSION_AND_HSM
+  HSM
+}
+
+"The Flow Type enum"
+enum FlowTypeEnum {
+  MESSAGE
+}
+
+"The Message Channel enum"
+enum MessageChannelEnum {
+  WHATSAPP
+  WEB
+}
+
+"The Message Flow enum"
+enum MessageFlowEnum {
+  INBOUND
+  OUTBOUND
+}
+
+"The Message Status enum"
+enum MessageStatusEnum {
+  SENT
+  DELIVERED
+  ENQUEUED
+  ERROR
+  READ
+  RECEIVED
+  CONTACT_OPT_OUT
+  REACHED
+  SEEN
+  PLAYED
+  DELETED
+}
+
+"The Message Types enum"
+enum MessageTypeEnum {
+  AUDIO
+  CONTACT
+  DOCUMENT
+  HSM
+  IMAGE
+  LOCATION
+  LIST
+  QUICK_REPLY
+  TEXT
+  VIDEO
+  STICKER
+  LOCATION_REQUEST_MESSAGE
+  POLL
+  WHATSAPP_FORM_RESPONSE
+}
+
+"The Template Button Type enum"
+enum TemplateButtonTypeEnum {
+  CALL_TO_ACTION
+  QUICK_REPLY
+  OTP
+  WHATSAPP_FORM
+}
+
+"The Organization Status enum"
+enum OrganizationStatusEnum {
+  INACTIVE
+  APPROVED
+  ACTIVE
+  SUSPENDED
+  READY_TO_DELETE
+  FORCED_SUSPENSION
+}
+
+"The Interactive Message Types enum"
+enum InteractiveMessageTypeEnum {
+  LIST
+  QUICK_REPLY
+  LOCATION_REQUEST_MESSAGE
+}
+
+"The Import Contact Types enum"
+enum ImportContactsTypeEnum {
+  FILE_PATH
+  URL
+  DATA
+}
+
+"Enum for ordering results"
+enum SortOrder {
+  ASC
+  DESC
+}
+
+"The Certificate template Types enum"
+enum CertificateTemplateTypeEnum {
+  SLIDES
+}
+
+"The sheet sync status enum"
+enum SheetSyncStatusEnum {
+  SUCCESS
+  FAILED
+}
+
+"The WhatsApp Form Status enum"
+enum WhatsappFormStatusEnum {
+  DRAFT
+  PUBLISHED
+  INACTIVE
+}
+
+"The AI Evaluation Status enum"
+enum AiEvaluationStatusEnum {
+  CREATE_IN_PROGRESS
+  PROCESSING
+  FAILED
+  COMPLETED
+}
+
+type ContactTagResult {
+  contactTag: ContactTag
+  errors: [InputError]
+}
+
+type ContactTag {
+  id: ID
+  value: String
+  contact: Contact
+  tag: Tag
+}
+
+type ContactTags {
+  numberDeleted: Int
+  contactTags: [ContactTag]
+}
+
+input ContactTagInput {
+  contactId: ID
+  tagId: ID
+}
+
+input ContactTagsInput {
+  contactId: ID!
+  addTagIds: [ID]!
+  deleteTagIds: [ID]!
+}
+
+"A contact's identity on a channel"
+type ContactIdentity {
+  id: ID
+  channel: MessageChannelEnum
+  identifier: String
+  insertedAt: DateTime
+}
+
+type ContactResult {
+  contact: Contact
+  errors: [InputError]
+}
+
+type ImportResult {
+  status: String
+  errors: [InputError]
+}
+
+type ContactUploadReport {
+  csvRows: String
+  error: String
+}
+
+type Contact {
+  id: ID
+
+  name: String
+
+  maskedPhone: String
+
+  phone: String
+
+  status: ContactStatusEnum
+
+  bspStatus: ContactProviderStatusEnum
+
+  """
+  Whether the contact currently has a web channel socket open. Resolved at query time from
+  ephemeral presence state, so it is as of the last fetch rather than live, and it is always
+  false for an organization that does not use the web channel.
+  """
+  isWebOnline: Boolean
+
+  "The contact's identities on each channel; always empty for a staff user"
+  identities: [ContactIdentity]
+
+  activeProfile: Profile
+
+  isOrgRead: Boolean
+
+  isOrgReplied: Boolean
+
+  isContactReplied: Boolean
+
+  lastMessageNumber: Int
+
+  optinTime: DateTime
+
+  optoutTime: DateTime
+
+  optinMethod: String
+
+  optoutMethod: String
+
+  fields: Json
+
+  settings: Json
+
+  lastMessageAt: DateTime
+
+  lastCommunicationAt: DateTime
+
+  insertedAt: DateTime
+
+  updatedAt: DateTime
+
+  language: Language
+
+  tags: [Tag]
+
+  groups: [Group]
+
+  waGroups: [WaGroup]
+
+  history: [ContactHistory]
+}
+
+type Location {
+  longitude: Float
+  latitude: Float
+}
+
+type ContactHistory {
+  id: ID
+  channel: MessageChannelEnum
+  eventType: String
+  eventLabel: String
+  eventMeta: Json
+  eventDatetime: DateTime
+  insertedAt: DateTime
+  updatedAt: DateTime
+  profile: Profile
+}
+
+"Filtering options for contacts"
+input ContactFilter {
+  "Match the name or phone, or the start of a web username (never for a staff user)"
+  term: String
+
+  "Match the name"
+  name: String
+
+  "Match the phone"
+  phone: String
+
+  "Match the status"
+  status: ContactStatusEnum
+
+  "Match the bsp provider status"
+  bspStatus: ContactProviderStatusEnum
+
+  "Include contacts with these tags"
+  includeTags: [ID]
+
+  "Include contacts with in these groups"
+  includeGroups: [ID]
+
+  "Include contacts with in these wa_groups"
+  includeWaGroups: [ID]
+
+  "Exclude contacts with in these groups"
+  excludeGroups: [ID]
+
+  "Exclude contacts with in these wa_groups"
+  excludeWaGroups: [ID]
+
+  "a static date range input field which will apply on updated at column."
+  dateRange: DateRangeInput
+}
+
+input ContactInput {
+  name: String
+
+  phone: String
+
+  status: ContactStatusEnum
+
+  bspStatus: ContactProviderStatusEnum
+
+  languageId: ID
+
+  activeProfileId: ID
+
+  fields: Json
+
+  settings: Json
+
+  "The channel the contact is created on when creating a contact; defaults to WHATSAPP, which needs a phone"
+  channel: MessageChannelEnum
+
+  "The username to log in with, required when creating a WEB contact: letters, digits, _, @ and ., stored lowercase, 1 to 255 characters"
+  identifier: String
+}
+
+"Filtering options for contacts history"
+input ContactsHistoryFilter {
+  "contact id"
+  contactId: ID
+
+  "Match the event type"
+  eventType: String
+
+  "Match the event label"
+  eventLabel: String
+
+  "Match the channel the event came from"
+  channel: MessageChannelEnum
+
+  "profile id"
+  profileId: ID
+}
+
+type ProfileResult {
+  profile: Profile
+  errors: [InputError]
+}
+
+type Profile {
+  id: ID
+  name: String
+  type: String
+  fields: Json
+  isActive: Boolean
+  isDefault: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+  language: Language
+  contact: Contact
+}
+
+input ProfileInput {
+  name: String
+  type: String
+  fields: Json
+  languageId: ID
+  contactId: ID
+}
+
+input ProfileFilter {
+  "Search by organization id"
+  organizationId: ID
+
+  "Search by contact id"
+  contactId: ID
+
+  "search profile by name"
+  name: String
+
+  "filter by active status"
+  isActive: Boolean
+}
+
+type OrganizationResult {
+  organization: Organization
+  errors: [InputError]
+}
+
+type OrganizationServicesResult {
+  bigquery: Boolean
+  googleCloudStorage: Boolean
+  dialogflow: Boolean
+  funWithFlags: Boolean
+  flowUuidDisplay: Boolean
+  rolesAndPermission: Boolean
+  contactProfileEnabled: Boolean
+  ticketingEnabled: Boolean
+  autoTranslationEnabled: Boolean
+  whatsappGroupEnabled: Boolean
+  certificateEnabled: Boolean
+  askGlificEnabled: Boolean
+  errors: [InputError]
+  whatsappFormsEnabled: Boolean
+  assistantConfigVersionsEnabled: Boolean
+  supersetEnabled: Boolean
+  promptGeneratorEnabled: Boolean
+  templateV2Enabled: Boolean
+  templateLibraryEnabled: Boolean
+  glificAiEnabled: Boolean
+  webChannelEnabled: Boolean
+  bulkContactUpdateEnabled: Boolean
+  bulkFlowResultsEnabled: Boolean
+  aiGuardrailEnabled: Boolean
+}
+
+type OrganizationExportResult {
+  data: Json
+  errors: [InputError]
+}
+
+type EnabledDay {
+  id: Int
+  enabled: Boolean
+}
+
+type OutOfOffice {
+  enabled: Boolean
+  startTime: Time
+  endTime: Time
+  enabledDays: [EnabledDay]
+  flowId: ID
+  defaultFlowId: ID
+}
+
+type Setting {
+  reportFrequency: String
+  runFlowEachTime: Boolean
+  lowBalanceThreshold: String
+  criticalBalanceThreshold: String
+  sendWarningMail: Boolean
+  allowBotNumberUpdate: Boolean
+}
+
+type RegxFlow {
+  flowId: ID
+  regx: String
+  regxOpt: String
+}
+
+type Organization {
+  id: ID
+  name: String
+  shortcode: String
+  email: String
+  fields: Json
+  bsp: Provider
+  contact: Contact
+  defaultLanguage: Language
+  outOfOffice: OutOfOffice
+  setting: Setting
+  regxFlow: RegxFlow
+  newcontactFlowId: ID
+  optinFlowId: ID
+  isActive: Boolean
+  isApproved: Boolean
+  status: OrganizationStatusEnum
+  timezone: String
+  sessionLimit: Int
+  lastCommunicationAt: DateTime
+  activeLanguages: [Language]
+  signaturePhrase: String
+  isSuspended: Boolean
+  suspendedUntil: DateTime
+  isFlowUuidDisplay: Boolean
+  isRolesAndPermission: Boolean
+  isContactProfileEnabled: Boolean
+  isTicketingEnabled: Boolean
+  isAutoTranslationEnabled: Boolean
+  isWhatsappGroupEnabled: Boolean
+  isCertificateEnabled: Boolean
+  isWhatsappFormsEnabled: Boolean
+  isTrialOrg: Boolean
+  trialExpirationDate: DateTime
+  assistantConfigVersionsEnabled: Boolean
+  isPromptGeneratorEnabled: Boolean
+  isTemplateV2Enabled: Boolean
+  isTemplateLibraryEnabled: Boolean
+  glificAiEnabled: Boolean
+  webChannelEnabled: Boolean
+  bulkContactUpdateEnabled: Boolean
+  bulkFlowResultsEnabled: Boolean
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type DailyUsage {
+  date: String
+  cumulativeBill: Float
+  discount: Float
+  fep: Int
+  ftc: Int
+  gupshupCap: Float
+  gupshupFees: Float
+  incomingMsg: Int
+  outgoingMsg: Int
+  outgoingMediaMsg: Int
+  marketing: Int
+  service: Int
+  utility: Int
+  templateMsg: Int
+  templateMediaMsg: Int
+  totalFees: Float
+  whatsappFees: Float
+  totalMsg: Int
+}
+
+"Filtering options for organizations"
+input OrganizationFilter {
+  "Match the shortcode"
+  shortcode: String
+
+  "Match the display name"
+  name: String
+
+  "Match the email"
+  email: String
+
+  "Match the provider"
+  provider: String
+
+  "Match the default language"
+  defaultLanguage: String
+}
+
+input EnabledDayInput {
+  id: Int!
+  enabled: Boolean!
+}
+
+input OutOfOfficeInput {
+  enabled: Boolean
+  startTime: Time
+  endTime: Time
+  enabledDays: [EnabledDayInput]
+  flowId: ID
+  defaultFlowId: ID
+}
+
+input SettingInput {
+  reportFrequency: String
+  runFlowEachTime: Boolean
+  lowBalanceThreshold: String
+  criticalBalanceThreshold: String
+  sendWarningMail: Boolean
+}
+
+input RegxFlowInput {
+  flowId: ID
+  regx: String
+  regxOpt: String
+}
+
+input OrganizationInput {
+  name: String
+  shortcode: String
+  email: String
+  phone: String
+  bspId: ID
+  contactId: ID
+  defaultLanguageId: ID
+  outOfOffice: OutOfOfficeInput
+  setting: SettingInput
+  regxFlow: RegxFlowInput
+  newcontactFlowId: ID
+  optinFlowId: ID
+  isActive: Boolean
+  status: OrganizationStatusEnum
+  timezone: String
+  sessionLimit: Int
+  activeLanguageIds: [ID]
+  signaturePhrase: String
+  lastCommunicationAt: DateTime
+  fields: Json
+}
+
+input ExportFilter {
+  startTime: DateTime
+  endTime: DateTime
+  limit: Int
+  offset: Int
+  tables: [String]
+}
+
+"Represents an uploaded file."
+scalar Upload
+
+"""
+The `DateTime` scalar type represents a date and time in the UTC
+timezone. The DateTime appears in a JSON response as an ISO8601 formatted
+string, including UTC timezone ("Z"). The parsed date and time string will
+be converted to UTC if there is an offset.
+"""
+scalar DateTime
+
+"""
+The `Date` scalar type represents a date. The Date appears in a JSON
+response as an ISO8601 formatted string, without a time component.
+"""
+scalar Date
+
+"""
+The `Time` scalar type represents a time. The Time appears in a JSON
+response as an ISO8601 formatted string, without a date component.
+"""
+scalar Time
