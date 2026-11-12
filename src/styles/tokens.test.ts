@@ -12,7 +12,6 @@ function blocks(selector: string): string {
 }
 
 const light = declaredIn(blocks(":root"));
-const dark = declaredIn(blocks(".dark"));
 const theme = declaredIn(blocks("@theme inline"));
 
 describe("token manifest", () => {
@@ -29,15 +28,14 @@ describe("token manifest", () => {
     for (const name of semantic) expect(listed, `--${name} missing from tokens.ts`).toContain(name);
   });
 
-  it("defines a dark value for every themable colour and exposes it to Tailwind", () => {
+  it("exposes every colour to Tailwind", () => {
     for (const token of tokens.filter((t) => ["color", "chart", "sidebar"].includes(t.group))) {
-      expect(dark, `--${token.name} has no .dark value`).toContain(token.name);
       expect(theme, `--color-${token.name} missing from @theme`).toContain(`color-${token.name}`);
     }
   });
 
   it("keeps semantic tokens free of raw colour values", () => {
-    const semanticBlocks = `${blocks(".dark")}\n${css.split("/* 2a.")[1]?.split("/* 2b.")[0] ?? ""}`;
+    const semanticBlocks = css.split("/* 2. Semantic tokens */")[1]?.split("/* 3.")[0] ?? "";
     expect(semanticBlocks).not.toMatch(/#[0-9a-f]{3,8}\b|oklch\(|rgb\(|hsl\(/i);
   });
 });

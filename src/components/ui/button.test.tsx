@@ -62,6 +62,12 @@ describe("Button", () => {
     expect(screen.getByRole("button", { name: "Disabled" })).not.toHaveFocus()
   })
 
+  it("keeps AA contrast while hovered", async () => {
+    renderWithProviders(<Button>Publish</Button>)
+    await userEvent.hover(screen.getByRole("button", { name: "Publish" }))
+    await expectNoA11yViolations()
+  })
+
   it("renders as its child with asChild", async () => {
     renderWithProviders(
       <Button asChild>

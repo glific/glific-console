@@ -22,10 +22,10 @@ TanStack Query, i18next. Single app, pnpm. Stack rationale: `docs/adr/0001-stack
 
 ```
 src/components/ui/     shadcn components: owned code, customised in place
-src/components/        app-level composed components (EmptyState, ErrorState, PageHeader, Spinner, ThemeToggle)
+src/components/        app-level composed components (EmptyState, ErrorState, PageHeader, Spinner)
 src/features/<name>/   feature code: components, hooks, api.ts, types.ts, tests, index.ts (public surface)
 src/routes/            route tree (router.tsx), layout, pages, 404, error boundary
-src/lib/               api-client, query-client, env/config, i18n, theme, storage, utils (cn)
+src/lib/               api-client, query-client, env/config, i18n, storage, utils (cn)
 src/styles/tokens.css  ALL design tokens; tokens.ts is the manifest the catalog reads
 src/locales/en.json    UI strings
 src/mocks/             MSW handlers (dev + tests)
@@ -55,8 +55,9 @@ docs/adr/ docs/specs/  decisions and feature specs
 
 ## Tokens
 
-Add or change tokens in `src/styles/tokens.css` (primitive → semantic light/dark → `@theme inline`) **and**
-`src/styles/tokens.ts`. `src/styles/tokens.test.ts` fails if they drift or a colour lacks a dark value.
+Add or change tokens in `src/styles/tokens.css` (primitive → semantic → `@theme inline`) **and**
+`src/styles/tokens.ts`. `src/styles/tokens.test.ts` fails if they drift. The app is light-only (the 2.0 designs
+have no dark theme); ignore shadcn's `dark:` classes rather than adding `.dark` tokens.
 
 ## shadcn components are owned code
 
@@ -78,7 +79,7 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
   `userEvent` from `vitest/browser`, and `expectNoA11yViolations()` (scope it to the open overlay for modals).
   Cover: render, variants, keyboard interaction, axe.
 - Feature tests: drive states with `worker.use(http.get(...))` from `@/test/msw`.
-- E2E: `e2e/flows` for user journeys, `e2e/a11y` for axe per page and theme, `e2e/visual` tagged `@visual`.
+- E2E: `e2e/flows` for user journeys, `e2e/a11y` for axe per page, `e2e/visual` tagged `@visual`.
 
 ## Verifying a change
 

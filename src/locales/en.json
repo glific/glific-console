@@ -6,13 +6,8 @@
   "nav": {
     "label": "Main",
     "home": "Home",
-    "contacts": "Contacts"
-  },
-  "theme": {
-    "toggle": "Change theme",
-    "light": "Light",
-    "dark": "Dark",
-    "system": "System"
+    "contacts": "Contacts",
+    "components": "Components"
   },
   "common": {
     "loading": "Loading",
@@ -58,5 +53,10 @@
     "error": {
       "title": "Couldn't load contacts"
     }
+  },
+  "catalog": {
+    "title": "Components",
+    "description": "Everything available to build screens with: tokens, shadcn/ui components and our composed components.",
+    "jumpTo": "Jump to section"
   }
 }

@@ -26,6 +26,14 @@ describe("Toaster", () => {
     await expect
       .element(await screen.findByText("Couldn't publish"))
       .toBeVisible()
+    // Wait until sonner has finished mounting both toasts so axe doesn't measure them mid-transition.
+    await expect
+      .poll(
+        () =>
+          document.querySelectorAll("[data-sonner-toast][data-mounted=true]")
+            .length,
+      )
+      .toBe(2)
     await expectNoA11yViolations()
     toast.dismiss()
   })

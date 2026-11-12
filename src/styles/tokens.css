@@ -3,7 +3,7 @@
  *
  * Three layers, in this order:
  *   1. Primitive palette (--palette-*): the ONLY place raw colour values are allowed.
- *   2. Semantic tokens (:root and .dark): what components use. They only reference primitives.
+ *   2. Semantic tokens (:root): what components use. They only reference primitives. Light theme only.
  *   3. @theme inline: exposes semantic tokens to Tailwind (bg-primary, text-warning-foreground, ...).
  *
  * Keep src/styles/tokens.ts in sync: it is the manifest the component catalog reads.
@@ -13,47 +13,30 @@
 /* 1. Primitive palette */
 :root {
   --palette-white: oklch(1 0 0);
-  --palette-black: oklch(0 0 0);
 
   --palette-neutral-50: oklch(0.985 0 0);
   --palette-neutral-100: oklch(0.97 0 0);
   --palette-neutral-200: oklch(0.922 0 0);
-  --palette-neutral-300: oklch(0.87 0 0);
-  --palette-neutral-400: oklch(0.708 0 0);
-  --palette-neutral-500: oklch(0.556 0 0);
   --palette-neutral-600: oklch(0.439 0 0);
-  --palette-neutral-700: oklch(0.371 0 0);
-  --palette-neutral-800: oklch(0.269 0 0);
   --palette-neutral-900: oklch(0.205 0 0);
   --palette-neutral-950: oklch(0.145 0 0);
 
   /* BRAND placeholder: replace --palette-brand-* with the real primary (<#HEX>) and its tints. */
-  --palette-brand-100: oklch(0.95 0.05 160);
-  --palette-brand-300: oklch(0.82 0.12 160);
   --palette-brand-500: oklch(0.6 0.15 160);
   --palette-brand-600: oklch(0.52 0.13 160);
-  --palette-brand-700: oklch(0.45 0.11 160);
+  --palette-brand-700: oklch(0.44 0.11 160);
 
-  --palette-red-500: oklch(0.637 0.237 25.331);
-  --palette-red-600: oklch(0.577 0.245 27.325);
-  --palette-red-400: oklch(0.704 0.191 22.216);
   --palette-red-700: oklch(0.505 0.213 27.518);
-  --palette-green-500: oklch(0.723 0.219 149.579);
-  --palette-green-600: oklch(0.627 0.194 149.214);
   --palette-green-700: oklch(0.527 0.154 150.069);
-  --palette-amber-400: oklch(0.828 0.189 84.429);
   --palette-amber-500: oklch(0.769 0.188 70.08);
   --palette-amber-950: oklch(0.279 0.077 45.635);
-  --palette-blue-400: oklch(0.707 0.165 254.624);
   --palette-blue-500: oklch(0.623 0.214 259.815);
   --palette-blue-600: oklch(0.546 0.245 262.881);
   --palette-violet-500: oklch(0.606 0.25 292.717);
   --palette-cyan-500: oklch(0.715 0.143 215.221);
-  --palette-overlay-light: oklch(1 0 0 / 10%);
-  --palette-overlay-medium: oklch(1 0 0 / 15%);
 }
 
-/* 2a. Semantic tokens: light (default) */
+/* 2. Semantic tokens */
 :root {
   --background: var(--palette-white);
   --foreground: var(--palette-neutral-950);
@@ -62,6 +45,7 @@
   --popover: var(--palette-white);
   --popover-foreground: var(--palette-neutral-950);
   --primary: var(--palette-brand-600);
+  --primary-hover: var(--palette-brand-700);
   --primary-foreground: var(--palette-white);
   --secondary: var(--palette-neutral-100);
   --secondary-foreground: var(--palette-neutral-900);
@@ -103,50 +87,6 @@
   --font-family-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
-/* 2b. Semantic tokens: dark */
-.dark {
-  --background: var(--palette-neutral-950);
-  --foreground: var(--palette-neutral-50);
-  --card: var(--palette-neutral-900);
-  --card-foreground: var(--palette-neutral-50);
-  --popover: var(--palette-neutral-900);
-  --popover-foreground: var(--palette-neutral-50);
-  --primary: var(--palette-brand-300);
-  --primary-foreground: var(--palette-neutral-950);
-  --secondary: var(--palette-neutral-800);
-  --secondary-foreground: var(--palette-neutral-50);
-  --muted: var(--palette-neutral-800);
-  --muted-foreground: var(--palette-neutral-400);
-  --accent: var(--palette-neutral-800);
-  --accent-foreground: var(--palette-neutral-50);
-  --destructive: var(--palette-red-400);
-  --destructive-foreground: var(--palette-neutral-950);
-  --success: var(--palette-green-500);
-  --success-foreground: var(--palette-neutral-950);
-  --warning: var(--palette-amber-400);
-  --warning-foreground: var(--palette-amber-950);
-  --info: var(--palette-blue-400);
-  --info-foreground: var(--palette-neutral-950);
-  --border: var(--palette-overlay-light);
-  --input: var(--palette-overlay-medium);
-  --ring: var(--palette-brand-300);
-
-  --chart-1: var(--palette-brand-300);
-  --chart-2: var(--palette-blue-400);
-  --chart-3: var(--palette-amber-400);
-  --chart-4: var(--palette-violet-500);
-  --chart-5: var(--palette-cyan-500);
-
-  --sidebar: var(--palette-neutral-900);
-  --sidebar-foreground: var(--palette-neutral-50);
-  --sidebar-primary: var(--palette-brand-300);
-  --sidebar-primary-foreground: var(--palette-neutral-950);
-  --sidebar-accent: var(--palette-neutral-800);
-  --sidebar-accent-foreground: var(--palette-neutral-50);
-  --sidebar-border: var(--palette-overlay-light);
-  --sidebar-ring: var(--palette-brand-300);
-}
-
 /* 3. Tailwind exposure */
 @theme inline {
   --color-background: var(--background);
@@ -156,6 +96,7 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);

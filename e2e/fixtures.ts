@@ -1,16 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { test as base, expect, type Page } from "@playwright/test";
-
-export type Theme = "light" | "dark";
-
-/** Pin the theme before the app boots (the app reads it from localStorage). */
-export async function useTheme(page: Page, theme: Theme): Promise<void> {
-  await page.addInitScript((value) => {
-    try {
-      localStorage.setItem("glific-console:theme", value);
-    } catch {}
-  }, theme);
-}
+import { test as base, expect } from "@playwright/test";
 
 export const test = base.extend<{ checkA11y: () => Promise<void> }>({
   checkA11y: async ({ page }, use) => {

@@ -5,15 +5,13 @@ import { AppProviders } from "@/app-providers";
 import { createQueryClient } from "@/lib/query-client";
 import { routes } from "@/routes/router";
 
-/** Render a component with all app providers (i18n, theme, query client, tooltips). */
+/** Render a component with all app providers (i18n, query client, tooltips). */
 export function renderWithProviders(ui: ReactElement, options?: Omit<RenderOptions, "wrapper">) {
   const queryClient = createQueryClient();
   queryClient.setDefaultOptions({ queries: { ...queryClient.getDefaultOptions().queries, retry: false } });
   return render(ui, {
     wrapper: ({ children }: { children: ReactNode }) => (
-      <AppProviders defaultTheme="light" queryClient={queryClient}>
-        {children}
-      </AppProviders>
+      <AppProviders queryClient={queryClient}>{children}</AppProviders>
     ),
     ...options,
   });

@@ -3,6 +3,8 @@
 @import "shadcn/tailwind.css";
 @import "./styles/tokens.css";
 
+/* Light only (the 2.0 designs have no dark theme). Kept so shadcn's `dark:` classes stay inert
+   instead of following the OS setting via Tailwind's default media query. */
 @custom-variant dark (&:is(.dark *));
 
 @layer base {

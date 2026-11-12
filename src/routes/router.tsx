@@ -1,4 +1,5 @@
 import { createBrowserRouter, type RouteObject } from "react-router";
+import { CatalogPage } from "@/features/component-catalog";
 import { ContactsPage } from "@/features/contacts";
 import { HomePage } from "./home";
 import { NotFoundPage } from "./not-found";
@@ -15,6 +16,7 @@ export const routes: RouteObject[] = [
         children: [
           { index: true, element: <HomePage /> },
           { path: "contacts", element: <ContactsPage /> },
+          { path: "components", element: <CatalogPage /> },
           { path: "*", element: <NotFoundPage /> },
         ],
       },

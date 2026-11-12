@@ -1,0 +1,575 @@
+import { CopyIcon, InboxIcon, MoreHorizontalIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import type { ReactNode } from "react";
+import { toast } from "sonner";
+import { EmptyState } from "@/components/empty-state";
+import { ErrorState } from "@/components/error-state";
+import { PageHeader } from "@/components/page-header";
+import { Spinner } from "@/components/spinner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { colorTokens, spacingTokens, typographyTokens } from "@/styles/tokens";
+
+/*
+ * Internal catalog page. The sample copy below ("Rename flow", "Asha Kulkarni") is demo fixture data, not product
+ * UI, so it is intentionally not routed through i18n.
+ */
+
+export interface CatalogSection {
+  id: string;
+  title: string;
+  description: string;
+  content: ReactNode;
+}
+
+function Row({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-caption text-muted-foreground">{label}</span>
+      <div className="flex flex-wrap items-center gap-inline">{children}</div>
+    </div>
+  );
+}
+
+// Tailwind only generates classes it can see as literal strings, so the swatch classes are spelled out.
+const swatchClass: Record<string, string> = {
+  background: "bg-background text-foreground",
+  foreground: "bg-foreground text-background",
+  card: "bg-card text-card-foreground",
+  "card-foreground": "bg-card-foreground text-card",
+  popover: "bg-popover text-popover-foreground",
+  "popover-foreground": "bg-popover-foreground text-popover",
+  primary: "bg-primary text-primary-foreground",
+  "primary-hover": "bg-primary-hover text-primary-foreground",
+  "primary-foreground": "bg-primary-foreground text-primary",
+  secondary: "bg-secondary text-secondary-foreground",
+  "secondary-foreground": "bg-secondary-foreground text-secondary",
+  muted: "bg-muted text-muted-foreground",
+  "muted-foreground": "bg-muted-foreground text-muted",
+  accent: "bg-accent text-accent-foreground",
+  "accent-foreground": "bg-accent-foreground text-accent",
+  destructive: "bg-destructive text-destructive-foreground",
+  "destructive-foreground": "bg-destructive-foreground text-destructive",
+  success: "bg-success text-success-foreground",
+  "success-foreground": "bg-success-foreground text-success",
+  warning: "bg-warning text-warning-foreground",
+  "warning-foreground": "bg-warning-foreground text-warning",
+  info: "bg-info text-info-foreground",
+  "info-foreground": "bg-info-foreground text-info",
+  border: "bg-border text-foreground",
+  input: "bg-input text-foreground",
+  ring: "bg-ring text-foreground",
+};
+
+const typeClass: Record<string, string> = {
+  "text-display": "text-display",
+  "text-title": "text-title",
+  "text-heading": "text-heading",
+  "text-subheading": "text-subheading",
+  "text-body": "text-body",
+  "text-body-sm": "text-body-sm",
+  "text-caption": "text-caption",
+};
+
+const spacingClass: Record<string, string> = {
+  page: "w-page",
+  section: "w-section",
+  stack: "w-stack",
+  inline: "w-inline",
+};
+
+const buttonVariants = ["default", "secondary", "outline", "ghost", "destructive", "link"] as const;
+const badgeVariants = ["default", "secondary", "outline", "destructive", "ghost", "link"] as const;
+
+export const sections: CatalogSection[] = [
+  {
+    id: "colours",
+    title: "Colour tokens",
+    description:
+      "Semantic colours from src/styles/tokens.css. Use the token name as a class: bg-primary, text-muted-foreground.",
+    content: (
+      <div className="grid grid-cols-2 gap-stack sm:grid-cols-3 lg:grid-cols-5">
+        {colorTokens.map((token) => (
+          <div key={token.name} className="flex flex-col gap-1">
+            <div
+              className={`flex h-16 items-end rounded-lg border p-2 text-caption ${swatchClass[token.name] ?? ""}`}
+              aria-hidden="true"
+            >
+              Aa
+            </div>
+            <span className="font-mono text-caption">{token.name}</span>
+            <span className="text-caption text-muted-foreground">{token.description}</span>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "typography",
+    title: "Typography",
+    description: "The type scale. Use text-title for page titles, text-body for UI text.",
+    content: (
+      <div className="flex flex-col gap-stack">
+        {typographyTokens.map((token) => (
+          <div key={token.name} className="flex flex-wrap items-baseline gap-stack">
+            <span className="w-32 shrink-0 font-mono text-caption text-muted-foreground">{token.name}</span>
+            <span className={typeClass[token.name]}>Send a welcome message</span>
+            <span className="text-caption text-muted-foreground">{token.description}</span>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "spacing",
+    title: "Spacing",
+    description: "Named spacing for layout. The numeric Tailwind scale (gap-2, p-4) is still available.",
+    content: (
+      <div className="flex flex-col gap-stack">
+        {spacingTokens.map((token) => (
+          <div key={token.name} className="flex items-center gap-stack">
+            <span className="w-32 shrink-0 font-mono text-caption text-muted-foreground">{token.utility}</span>
+            <div
+              className={`h-4 rounded-sm bg-primary ${spacingClass[token.utility ?? ""] ?? ""}`}
+              aria-hidden="true"
+            />
+            <span className="text-caption text-muted-foreground">{token.description}</span>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "button",
+    title: "Button",
+    description: "components/ui/button. Add a variant here instead of creating a new button component.",
+    content: (
+      <div className="flex flex-col gap-stack">
+        <Row label="Variants">
+          {buttonVariants.map((variant) => (
+            <Button key={variant} variant={variant}>
+              {variant}
+            </Button>
+          ))}
+        </Row>
+        <Row label="Sizes">
+          <Button size="xs">Extra small</Button>
+          <Button size="sm">Small</Button>
+          <Button>Default</Button>
+          <Button size="lg">Large</Button>
+          <Button size="icon" aria-label="Add">
+            <PlusIcon />
+          </Button>
+        </Row>
+        <Row label="With icon, loading, disabled">
+          <Button>
+            <PlusIcon data-icon="inline-start" />
+            New flow
+          </Button>
+          <Button disabled>
+            <Spinner size="sm" label="Saving" />
+            Saving
+          </Button>
+          <Button disabled variant="outline">
+            Disabled
+          </Button>
+        </Row>
+      </div>
+    ),
+  },
+  {
+    id: "badge",
+    title: "Badge",
+    description: "components/ui/badge",
+    content: (
+      <Row label="Variants">
+        {badgeVariants.map((variant) => (
+          <Badge key={variant} variant={variant}>
+            {variant}
+          </Badge>
+        ))}
+      </Row>
+    ),
+  },
+  {
+    id: "form",
+    title: "Form controls",
+    description: "Input, Textarea, Select, Checkbox, Switch, RadioGroup, composed with Field for labels and errors.",
+    content: (
+      <FieldGroup className="max-w-md">
+        <Field>
+          <FieldLabel htmlFor="catalog-name">Flow name</FieldLabel>
+          <Input id="catalog-name" placeholder="Welcome flow" />
+          <FieldDescription>Shown to your team only.</FieldDescription>
+        </Field>
+        <Field data-invalid>
+          <FieldLabel htmlFor="catalog-keyword">Keyword</FieldLabel>
+          <Input id="catalog-keyword" aria-invalid defaultValue="hi there" aria-describedby="catalog-keyword-error" />
+          <FieldError id="catalog-keyword-error" errors={[{ message: "Keywords can't contain spaces" }]} />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="catalog-message">Message</FieldLabel>
+          <Textarea id="catalog-message" placeholder="Hi! Reply 1 for English, 2 for Hindi." />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="catalog-language">Language</FieldLabel>
+          <Select>
+            <SelectTrigger id="catalog-language">
+              <SelectValue placeholder="Choose a language" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en">English</SelectItem>
+              <SelectItem value="hi">Hindi</SelectItem>
+              <SelectItem value="mr">Marathi</SelectItem>
+            </SelectContent>
+          </Select>
+        </Field>
+        <Field orientation="horizontal">
+          <Checkbox id="catalog-optin" defaultChecked />
+          <FieldLabel htmlFor="catalog-optin">Only opted-in contacts</FieldLabel>
+        </Field>
+        <Field orientation="horizontal">
+          <Switch id="catalog-notify" />
+          <FieldLabel htmlFor="catalog-notify">Notify me when it fails</FieldLabel>
+        </Field>
+        <RadioGroup defaultValue="now" aria-label="Send time">
+          {[
+            { value: "now", label: "Send now" },
+            { value: "later", label: "Schedule for later" },
+          ].map((option) => (
+            <div key={option.value} className="flex items-center gap-inline">
+              <RadioGroupItem id={`catalog-${option.value}`} value={option.value} />
+              <Label htmlFor={`catalog-${option.value}`}>{option.label}</Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </FieldGroup>
+    ),
+  },
+  {
+    id: "card",
+    title: "Card",
+    description: "components/ui/card",
+    content: (
+      <Card className="max-w-sm">
+        <CardHeader>
+          <CardTitle>Messages today</CardTitle>
+          <CardDescription>Across all active flows</CardDescription>
+          <CardAction>
+            <Badge variant="secondary">+12%</Badge>
+          </CardAction>
+        </CardHeader>
+        <CardContent className="text-display">1,204</CardContent>
+        <CardFooter className="text-caption text-muted-foreground">Updated just now</CardFooter>
+      </Card>
+    ),
+  },
+  {
+    id: "tabs",
+    title: "Tabs",
+    description: "components/ui/tabs, default and line variants",
+    content: (
+      <div className="flex flex-col gap-section">
+        {(["default", "line"] as const).map((variant) => (
+          <Tabs key={variant} defaultValue="flows">
+            <TabsList variant={variant} aria-label={`Library (${variant})`}>
+              <TabsTrigger value="flows">Flows</TabsTrigger>
+              <TabsTrigger value="templates">Templates</TabsTrigger>
+              <TabsTrigger value="forms">WhatsApp Forms</TabsTrigger>
+            </TabsList>
+            <TabsContent value="flows" className="text-body text-muted-foreground">
+              Flows tab ({variant})
+            </TabsContent>
+            <TabsContent value="templates" className="text-body text-muted-foreground">
+              Templates tab
+            </TabsContent>
+            <TabsContent value="forms" className="text-body text-muted-foreground">
+              WhatsApp Forms tab
+            </TabsContent>
+          </Tabs>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "table",
+    title: "Table",
+    description: "components/ui/table",
+    content: (
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Flow</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead className="text-right">Runs</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {[
+            { name: "Welcome", status: "Published", runs: "8,412" },
+            { name: "Registration", status: "Draft", runs: "0" },
+          ].map((row) => (
+            <TableRow key={row.name}>
+              <TableCell className="font-medium">{row.name}</TableCell>
+              <TableCell>
+                <Badge variant={row.status === "Published" ? "secondary" : "outline"}>{row.status}</Badge>
+              </TableCell>
+              <TableCell className="text-right">{row.runs}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    ),
+  },
+  {
+    id: "avatar",
+    title: "Avatar, Skeleton, Separator",
+    description: "Display primitives",
+    content: (
+      <div className="flex flex-col gap-stack">
+        <Row label="Avatar sizes and group">
+          <Avatar size="sm">
+            <AvatarFallback>AK</AvatarFallback>
+          </Avatar>
+          <Avatar>
+            <AvatarFallback>RV</AvatarFallback>
+          </Avatar>
+          <Avatar size="lg">
+            <AvatarFallback>MI</AvatarFallback>
+          </Avatar>
+          <AvatarGroup>
+            <Avatar>
+              <AvatarFallback>AK</AvatarFallback>
+            </Avatar>
+            <Avatar>
+              <AvatarFallback>RV</AvatarFallback>
+            </Avatar>
+            <AvatarGroupCount>+3</AvatarGroupCount>
+          </AvatarGroup>
+        </Row>
+        <Separator />
+        <Row label="Skeleton">
+          <div className="flex w-full max-w-sm flex-col gap-2">
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-4 w-1/2" />
+            <Skeleton className="h-10" />
+          </div>
+        </Row>
+      </div>
+    ),
+  },
+  {
+    id: "overlays",
+    title: "Overlays",
+    description: "Dialog, AlertDialog, Sheet, DropdownMenu, Popover, Tooltip and toasts",
+    content: (
+      <Row label="Click to open">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline">Dialog</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Rename flow</DialogTitle>
+              <DialogDescription>Give this flow a name your team will recognise.</DialogDescription>
+            </DialogHeader>
+            <Input aria-label="Flow name" defaultValue="Welcome flow" />
+            <DialogFooter showCloseButton>
+              <Button>Save</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">Alert dialog</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete this flow?</AlertDialogTitle>
+              <AlertDialogDescription>Contacts currently in it will stop receiving messages.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction variant="destructive">Delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline">Sheet</Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Asha Kulkarni</SheetTitle>
+              <SheetDescription>+91 98765 00001 · Opted in</SheetDescription>
+            </SheetHeader>
+            <SheetFooter>
+              <Button>Send message</Button>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon" aria-label="More actions">
+              <MoreHorizontalIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Flow</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <CopyIcon />
+              Duplicate <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuCheckboxItem checked>Pinned</DropdownMenuCheckboxItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive">
+              <Trash2Icon />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline">Popover</Button>
+          </PopoverTrigger>
+          <PopoverContent aria-labelledby="catalog-popover-title">
+            <PopoverHeader>
+              <PopoverTitle id="catalog-popover-title">Filter contacts</PopoverTitle>
+              <PopoverDescription>Show only contacts who opted in.</PopoverDescription>
+            </PopoverHeader>
+          </PopoverContent>
+        </Popover>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost">Tooltip</Button>
+          </TooltipTrigger>
+          <TooltipContent>Duplicate flow</TooltipContent>
+        </Tooltip>
+
+        <Button variant="secondary" onClick={() => toast.success("Flow published")}>
+          Success toast
+        </Button>
+        <Button variant="secondary" onClick={() => toast.error("Couldn't publish the flow")}>
+          Error toast
+        </Button>
+      </Row>
+    ),
+  },
+  {
+    id: "composed",
+    title: "Composed components",
+    description: "src/components: PageHeader, EmptyState, ErrorState, Spinner",
+    content: (
+      <div className="flex flex-col gap-section">
+        <Row label="EmptyState">
+          <EmptyState
+            className="w-full"
+            headingLevel={3}
+            icon={<InboxIcon />}
+            title="No flows yet"
+            description="Create your first flow to start talking to contacts."
+            action={<Button>Create flow</Button>}
+          />
+        </Row>
+        <Row label="ErrorState">
+          <ErrorState className="w-full rounded-lg border" title="Couldn't load flows" onRetry={() => {}} />
+        </Row>
+        <Row label="Spinner">
+          <Spinner size="sm" />
+          <Spinner />
+          <Spinner size="lg" />
+        </Row>
+        <Row label="PageHeader (renders the page h1, so it is shown last)">
+          <PageHeader
+            className="w-full rounded-lg border p-stack"
+            title="Flows"
+            description="Build and manage conversations."
+            actions={
+              <>
+                <Button variant="outline">Import</Button>
+                <Button>
+                  <PlusIcon data-icon="inline-start" />
+                  New flow
+                </Button>
+              </>
+            }
+          />
+        </Row>
+      </div>
+    ),
+  },
+];

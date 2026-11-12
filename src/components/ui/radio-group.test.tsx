@@ -26,7 +26,9 @@ describe("RadioGroup", () => {
     await userEvent.tab()
     expect(screen.getByRole("radio", { name: "whatsapp" })).toHaveFocus()
     await userEvent.keyboard("{ArrowDown}")
-    expect(screen.getByRole("radio", { name: "sms" })).toBeChecked()
+    await expect
+      .element(screen.getByRole("radio", { name: "sms" }))
+      .toBeChecked()
     expect(onValueChange).toHaveBeenLastCalledWith("sms")
     await expectNoA11yViolations()
   })

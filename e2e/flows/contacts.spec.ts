@@ -38,13 +38,4 @@ test.describe("app shell", () => {
     await page.getByRole("link", { name: "Go to home" }).click();
     await expect(page).toHaveURL(/\/$/);
   });
-
-  test("persists the theme choice across reloads", async ({ page }) => {
-    await page.goto("/");
-    await page.getByRole("button", { name: "Change theme" }).click();
-    await page.getByRole("menuitemradio", { name: "Dark" }).click();
-    await expect(page.locator("html")).toHaveClass(/dark/);
-    await page.reload();
-    await expect(page.locator("html")).toHaveClass(/dark/);
-  });
 });

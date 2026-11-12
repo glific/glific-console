@@ -20,7 +20,7 @@ References: `src/components/ui/dialog.test.tsx`, `src/features/contacts/contacts
 
 ## E2E (`e2e/`)
 
-- Flows in `e2e/flows`, axe per page and theme in `e2e/a11y` (`checkA11y` fixture), screenshots in `e2e/visual`
+- Flows in `e2e/flows`, axe per page in `e2e/a11y` (`checkA11y` fixture), screenshots in `e2e/visual`
   tagged `@visual`. Wait for a heading before interacting.
 - Never generate visual baselines locally; use `pnpm test:visual:update` (Docker).
 

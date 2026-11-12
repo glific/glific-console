@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { NavLink, Outlet } from "react-router";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/", key: "nav.home", end: true },
   { to: "/contacts", key: "nav.contacts", end: false },
+  { to: "/components", key: "nav.components", end: false },
 ] as const;
 
 export function RootLayout() {
@@ -39,7 +39,6 @@ export function RootLayout() {
             ))}
           </nav>
         </div>
-        <ThemeToggle />
       </header>
       <main id="main" className="flex-1 p-page">
         <Outlet />

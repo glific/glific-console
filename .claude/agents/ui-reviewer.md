@@ -15,7 +15,7 @@ You review UI changes in Glific Console. Read `AGENTS.md`, then the diff (`git d
 2. **States**: every data-driven view handles loading (Skeleton/Spinner), empty (EmptyState), error (ErrorState
    with retry) and, where relevant, no-results, disabled and long-content cases.
 3. **Accessibility**: semantic roles and headings (one h1 per page), labelled controls, visible focus, keyboard
-   path through the flow, dialogs titled and described, icons `aria-hidden` or labelled, both themes pass
+   path through the flow, dialogs titled and described, icons `aria-hidden` or labelled, pages pass
    `pnpm test:e2e` a11y specs. Contrast issues are fixed in tokens, never by disabling axe rules.
 4. **Consistency with spec**: layout, hierarchy, copy, spacing scale (`page/section/stack/inline`), type scale.
 5. **i18n**: no hard-coded user-facing strings; keys are meaningful and grouped by feature.

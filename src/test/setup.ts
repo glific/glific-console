@@ -13,6 +13,5 @@ beforeAll(() => worker.start({ onUnhandledFrame: "error", quiet: true }));
 afterEach(() => {
   cleanup();
   worker.resetHandlers();
-  document.documentElement.classList.remove("dark");
 });
 afterAll(() => worker.stop());

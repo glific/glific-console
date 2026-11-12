@@ -30,6 +30,7 @@ export const colorTokens = [
   color("popover", "Popover, menu and tooltip surface."),
   color("popover-foreground", "Text on popover."),
   color("primary", "Brand colour for the main action on a screen."),
+  color("primary-hover", "Primary on hover and press: darker, so text keeps its contrast."),
   color("primary-foreground", "Text and icons on primary."),
   color("secondary", "Lower-emphasis action surface."),
   color("secondary-foreground", "Text on secondary."),
