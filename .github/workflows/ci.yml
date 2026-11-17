@@ -49,29 +49,92 @@ jobs:
           retention-days: 7
 
   e2e:
-    name: E2E, a11y and visual
+    name: E2E and a11y (real backend)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    # Same image as `pnpm test:visual:update`, so screenshots match the committed baselines.
-    container:
-      image: mcr.microsoft.com/playwright:v1.65.0-noble
-      options: --ipc=host
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: glific_dev
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      BACKEND_DIR: ${{ github.workspace }}/backend
+      GLIFIC_CERT_DIR: ${{ github.workspace }}/backend/priv/cert
     steps:
       - uses: actions/checkout@v7
+
+      - name: Clone the backend
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        # A feature that spans both repos lands in a same-named backend branch first; use it when it exists.
+        run: |
+          if [ -n "$HEAD_REF" ] && git ls-remote --exit-code --heads https://github.com/glific/glific.git "$HEAD_REF" >/dev/null 2>&1; then
+            git clone --depth 1 --branch "$HEAD_REF" https://github.com/glific/glific.git "$BACKEND_DIR"
+          else
+            git clone --depth 1 https://github.com/glific/glific.git "$BACKEND_DIR"
+          fi
+
+      - name: Hosts, certificate and backend config
+        run: |
+          echo '127.0.0.1 glific.test api.glific.test postgres' | sudo tee -a /etc/hosts
+          mkdir -p "$GLIFIC_CERT_DIR"
+          openssl req -x509 -newkey rsa:2048 -nodes -days 7 -subj "/CN=glific.test" \
+            -addext "subjectAltName=DNS:glific.test,DNS:api.glific.test" \
+            -keyout "$GLIFIC_CERT_DIR/glific.test+1-key.pem" -out "$GLIFIC_CERT_DIR/glific.test+1.pem"
+          cd "$BACKEND_DIR/config"
+          cp dev.secret.exs.txt dev.secret.exs
+          cp .env.dev.txt .env.dev
+
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: backend/.tool-versions
+          version-type: strict
+
+      - uses: actions/cache@v6
+        with:
+          path: |
+            backend/deps
+            backend/_build
+          key: mix-${{ runner.os }}-${{ hashFiles('backend/.tool-versions', 'backend/mix.lock') }}
+          restore-keys: mix-${{ runner.os }}-${{ hashFiles('backend/.tool-versions') }}-
+
+      - name: Set up the backend with seed data
+        working-directory: backend
+        env:
+          ENABLE_DB_SSL: "false"
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix hex.repo add oban https://getoban.pro/repo --fetch-public-key "${{ secrets.OBAN_PUBLIC_KEY }}" --auth-key "${{ secrets.OBAN_PRO_KEY }}"
+          mix deps.get
+          mix setup
+          mix run -e 'Glific.Repo.put_organization_id(1); u = Glific.Repo.get_by!(Glific.Users.User, phone: "917834811114"); {:ok, _} = Glific.Users.update_user(u, %{roles: [:glific_admin]})'
+
+      - name: Start the backend
+        working-directory: backend
+        env:
+          ENABLE_DB_SSL: "false"
+        run: nohup mix phx.server > phoenix.log 2>&1 &
+
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      # The container runs as root over a checkout owned by the runner user; git (used by lefthook in `prepare`) refuses that.
-      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Wait for the backend
+        run: timeout 180 sh -c 'until curl -sk -o /dev/null https://api.glific.test:4001; do sleep 2; done'
+
       - name: E2E and a11y
         run: pnpm test:e2e
-      - name: Visual regression
-        # Non-blocking until baselines are committed (pnpm test:visual:update in Docker). Remove once they exist.
-        continue-on-error: true
-        run: pnpm test:visual
+
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -79,4 +142,5 @@ jobs:
           path: |
             playwright-report
             test-results
+            backend/phoenix.log
           retention-days: 7

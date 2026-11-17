@@ -13,8 +13,7 @@ TanStack Query, i18next. Single app, pnpm. Stack rationale: `docs/adr/0001-stack
 | `pnpm lint` / `pnpm lint:fix`      | Biome check (format, lint, imports, DS rules)                                                                           |
 | `pnpm lint:ds`                     | Design-system rules only, plus the fixture self-test proving each rule fires                                            |
 | `pnpm test` / `pnpm test:coverage` | Vitest Browser Mode (Chromium). Coverage gate: 80% on `src/components`                                                  |
-| `pnpm test:e2e`                    | Playwright flows + axe a11y (starts its own dev server)                                                                 |
-| `pnpm test:visual`                 | Visual regression. Baselines come only from `pnpm test:visual:update` (runs in Docker)                                  |
+| `pnpm test:e2e`                    | Playwright flows + axe a11y against the real local backend with dev seeds (see README)                                  |
 | `pnpm build` / `pnpm size`         | Production build / bundle budgets (`.size-limit.js`: initial load and total)                                            |
 | `pnpm changeset`                   | Record a user-facing change                                                                                             |
 
@@ -37,7 +36,7 @@ src/styles/fonts.css   self-hosted Google Sans Flex + Noto Sans Devanagari (Lati
 src/locales/en.json    UI strings
 src/mocks/             MSW handlers (dev + tests)
 src/test/              test helpers: renderWithProviders, renderRoute, expectNoA11yViolations, MSW worker
-e2e/                   Playwright: flows/, a11y/, visual/
+e2e/                   Playwright: flows/, a11y/
 tools/ds-lint/         GritQL rules + fixtures for the design-system guardrails
 docs/adr/ docs/specs/  decisions and feature specs
 ```
@@ -95,10 +94,12 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
   `userEvent` from `vitest/browser`, and `expectNoA11yViolations()` (scope it to the open overlay for modals).
   Cover: render, variants, keyboard interaction, axe.
 - Feature tests: drive states with `worker.use(http.get(...))` from `@/test/msw`.
-- E2E: `e2e/flows` for user journeys, `e2e/a11y` for axe per page, `e2e/visual` tagged `@visual`.
+- E2E: `e2e/flows` for user journeys, `e2e/a11y` for axe per page. They hit the real backend with its dev seeds, never
+  MSW. Sign in with `test.use({ signedInAs: "staff" })` (seed users in `e2e/fixtures.ts`); a test that creates data
+  gives it a unique name so tests stay independent.
 
 ## Verifying a change
 
 1. `pnpm check` passes.
-2. UI change: `pnpm test:e2e` passes. If visuals changed intentionally, regenerate with `pnpm test:visual:update`.
+2. UI change: `pnpm test:e2e` passes.
 3. Conventional Commit messages (`feat(contacts): ...`); add a changeset for user-facing changes.

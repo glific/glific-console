@@ -11,7 +11,7 @@ import { parseEnv } from "./src/lib/env.ts";
 /**
  * `pnpm dev` serves https://glific.test:3000 like the current app, so cookies, CORS and the backend's websocket
  * origin check behave as they do in production. It reuses the backend's mkcert certificate (glific/priv/cert),
- * which covers glific.test and api.glific.test. Tests and Playwright keep plain localhost.
+ * which covers glific.test and api.glific.test. Playwright uses the same server; Vitest keeps plain localhost.
  */
 function glificDevServer(): ServerOptions {
   const certDir = resolve(process.env.GLIFIC_CERT_DIR ?? "../glific/priv/cert");
@@ -34,7 +34,7 @@ function glificDevServer(): ServerOptions {
 export default defineConfig(({ command, mode }) => {
   // Fail fast at dev/build start rather than at the first API call.
   parseEnv(loadEnv(mode, process.cwd(), "VITE_"));
-  const localDev = command === "serve" && !process.env.VITEST && process.env.GLIFIC_LOCALHOST !== "1";
+  const localDev = command === "serve" && !process.env.VITEST;
 
   return {
     plugins: [react(), tailwindcss()],
