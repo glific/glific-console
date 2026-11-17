@@ -14,7 +14,9 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { z } from "zod";
 import { AiMessage, PromptBox, PromptSuggestions, ThinkingIndicator } from "@/components/ai";
+import { AsyncSearchSelect } from "@/components/async-search-select";
 import {
   ChatComposer,
   ChatHeader,
@@ -29,10 +31,12 @@ import {
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { DatePicker } from "@/components/date-picker";
 import { EmptyState } from "@/components/empty-state";
+import { FormActions, FormField, FormSection, useZodForm } from "@/components/form";
 import { HelpTip } from "@/components/help-tip";
 import { SelectionBar } from "@/components/selection-bar";
 import { StatTile } from "@/components/stat-tile";
 import { StatusDot } from "@/components/status-dot";
+import { TimePicker } from "@/components/time-picker";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -54,6 +58,7 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { FileDropzone } from "@/components/ui/file-dropzone";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { IconButton } from "@/components/ui/icon-button";
+import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
@@ -70,6 +75,7 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SearchInput } from "@/components/ui/search-input";
 import { Slider } from "@/components/ui/slider";
+import { Textarea } from "@/components/ui/textarea";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
@@ -319,6 +325,8 @@ function PickersDemo() {
   const [language, setLanguage] = useState<string | null>("hi");
   const [groups, setGroups] = useState<string[]>(["batch-a"]);
   const [date, setDate] = useState<Date | undefined>();
+  const [time, setTime] = useState("09:30");
+  const [flow, setFlow] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   return (
     <div className="grid w-full max-w-2xl gap-stack sm:grid-cols-2">
@@ -346,11 +354,63 @@ function PickersDemo() {
         onValueChange={setGroups}
       />
       <DatePicker aria-label="Send on" value={date} onValueChange={setDate} fromDate={new Date()} />
+      <TimePicker aria-label="Send at" value={time} onValueChange={setTime} />
+      <AsyncSearchSelect
+        aria-label="Flow"
+        placeholder="Search flows on the server"
+        queryKey={["design-system", "flows"]}
+        search={searchDemoFlows}
+        value={flow}
+        onValueChange={setFlow}
+      />
       <SearchInput value={search} onValueChange={setSearch} placeholder="Search flows" />
       <div className="sm:col-span-2">
         <FileDropzone onFiles={() => {}} accept=".csv" hint="Contacts CSV, up to 5 MB" />
       </div>
     </div>
+  );
+}
+
+const demoFlows = ["Registration", "Daily quiz", "Feedback survey", "Help desk", "Opt-in"].map((label, index) => ({
+  value: String(index + 1),
+  label,
+}));
+
+async function searchDemoFlows(text: string) {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return demoFlows.filter((flow) => flow.label.toLowerCase().includes(text.toLowerCase()));
+}
+
+const demoTagSchema = z.object({
+  name: z.string().trim().min(1, "Enter a name"),
+  keywords: z.string().trim().max(200, "Keep it under 200 characters"),
+});
+
+function FormDemo() {
+  const form = useZodForm(demoTagSchema, { name: "", keywords: "" });
+  return (
+    <form
+      onSubmit={form.handleSubmit(() => form.reset())}
+      noValidate
+      className="flex w-full max-w-xl flex-col gap-section"
+    >
+      <FormSection title="Tag details" description="Errors show once a field is left, then update as you type.">
+        <FormField
+          control={form.control}
+          name="name"
+          label="Name"
+          render={({ field, ...aria }) => <Input {...field} {...aria} />}
+        />
+        <FormField
+          control={form.control}
+          name="keywords"
+          label="Keywords"
+          hint="Comma separated. Messages with these words get the tag."
+          render={({ field, ...aria }) => <Textarea {...field} {...aria} />}
+        />
+      </FormSection>
+      <FormActions onCancel={() => form.reset()} />
+    </form>
   );
 }
 
@@ -449,8 +509,16 @@ export const moreSections: CatalogSection[] = [
     group: "Components",
     id: "pickers",
     title: "Pickers and inputs",
-    description: "Combobox (single and multi), date picker, search, file upload.",
+    description: "Combobox (single and multi), date and time pickers, server search select, search, file upload.",
     content: <PickersDemo />,
+  },
+  {
+    group: "Components",
+    id: "forms",
+    title: "Forms",
+    description:
+      "components/form: useZodForm, FormField (label, hint, error), FormSection, FormActions, UnsavedChangesGuard.",
+    content: <FormDemo />,
   },
   {
     group: "Components",

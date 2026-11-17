@@ -89,6 +89,9 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
 - Every page and nav item opens to the same roles as in the current app: wrap the route in
   `<RequireAccess allow={managers}>` and give the nav item the same `allow` (`everyone`, `managers`, `admins`,
   `glificAdmins` from `features/auth/current-user.ts`). Custom roles count as managers, as they do today.
+- Forms use `@/components/form`: a zod schema with `useZodForm`, each field in `FormField` (label, hint, error wired
+  to the control), `FormActions` for Save and Cancel, and `UnsavedChangesGuard` on every edit page. Lists too long to
+  load at once use `AsyncSearchSelect`.
 - List screens use `ListPage` (`src/components/list-page.tsx`): search, filters, server pagination and all states.
 - Env vars: add to `src/lib/env.ts` (typed + validated) and `.env.example`. Never read `import.meta.env` elsewhere.
 

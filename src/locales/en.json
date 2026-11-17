@@ -202,5 +202,16 @@
   "list": {
     "total_one": "{{count}} result",
     "total_other": "{{count}} results"
+  },
+  "form": {
+    "save": "Save",
+    "saving": "Saving",
+    "cancel": "Cancel",
+    "unsaved": {
+      "title": "Leave without saving?",
+      "description": "Your changes on this page will be lost.",
+      "stay": "Keep editing",
+      "leave": "Leave"
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react"
 import * as React from "react"
 import { useTranslation } from "react-i18next"
+import { Spinner } from "@/components/spinner"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -35,6 +36,12 @@ interface ComboboxBaseProps {
   className?: string
   "aria-label"?: string
   "aria-invalid"?: boolean
+  "aria-describedby"?: string
+  /** Server-side search: the list is not filtered locally, and this gets the typed text. */
+  onSearchChange?: (search: string) => void
+  loading?: boolean
+  /** Labels for selected values that may not be in the current options, e.g. when editing. */
+  selectedOptions?: ComboboxOption[]
 }
 
 type ComboboxProps = ComboboxBaseProps &
@@ -71,6 +78,9 @@ function Combobox(props: ComboboxProps) {
     disabled,
     id,
     className,
+    onSearchChange,
+    loading,
+    selectedOptions,
   } = props
   const selected = props.multiple
     ? props.value
@@ -78,7 +88,10 @@ function Combobox(props: ComboboxProps) {
       ? [props.value]
       : []
   const labelOf = (value: string) =>
-    options.find((o) => o.value === value)?.label ?? value
+    (
+      options.find((o) => o.value === value) ??
+      selectedOptions?.find((o) => o.value === value)
+    )?.label ?? value
 
   function toggle(value: string) {
     if (props.multiple) {
@@ -104,6 +117,7 @@ function Combobox(props: ComboboxProps) {
           aria-expanded={open}
           aria-label={props["aria-label"]}
           aria-invalid={props["aria-invalid"]}
+          aria-describedby={props["aria-describedby"]}
           disabled={disabled}
           data-slot="combobox-trigger"
           className={cn(
@@ -139,12 +153,19 @@ function Combobox(props: ComboboxProps) {
           props["aria-label"] ?? placeholder ?? t("combobox.placeholder")
         }
       >
-        <Command>
+        <Command shouldFilter={!onSearchChange}>
           <CommandInput
             placeholder={searchPlaceholder ?? t("combobox.search")}
+            onValueChange={onSearchChange}
           />
-          <CommandList>
-            <CommandEmpty>{emptyText ?? t("combobox.empty")}</CommandEmpty>
+          <CommandList aria-busy={loading || undefined}>
+            {loading ? (
+              <div className="flex justify-center py-6">
+                <Spinner size="sm" label={t("common.loading")} />
+              </div>
+            ) : (
+              <CommandEmpty>{emptyText ?? t("combobox.empty")}</CommandEmpty>
+            )}
             {groupOptions(options).map(([group, items]) => (
               <CommandGroup key={group || "_"} heading={group || undefined}>
                 {items.map((option) => (
