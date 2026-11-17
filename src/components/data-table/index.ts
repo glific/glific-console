@@ -1,2 +1,2 @@
-export { DataTable, type DataTableColumn, type DataTableFeatures, dataTableFeatures } from "./data-table";
-export { DataTablePagination } from "./data-table-pagination";
+export { DataTable, type DataTableColumn, type DataTableFeatures, dataTableFeatures } from "./DataTable";
+export { DataTablePagination } from "./DataTablePagination";

@@ -1,2 +1,2 @@
-export { LanguageSelect } from "./language";
+export { LanguageSelect } from "./LanguageSelect";
 export { useUserLanguage } from "./use-user-language";

@@ -1,7 +1,7 @@
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react"
 import * as React from "react"
 import { useTranslation } from "react-i18next"
-import { Spinner } from "@/components/spinner"
+import { Spinner } from "@/components/Spinner"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {

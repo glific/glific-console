@@ -10,10 +10,10 @@ import {
   WorkflowIcon,
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-import { EmptyState } from "@/components/empty-state";
-import { HelpTip } from "@/components/help-tip";
-import { StatTile } from "@/components/stat-tile";
-import { StatusDot } from "@/components/status-dot";
+import { EmptyState } from "@/components/EmptyState";
+import { HelpTip } from "@/components/HelpTip";
+import { StatTile } from "@/components/StatTile";
+import { StatusDot } from "@/components/StatusDot";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -55,14 +55,14 @@ import {
   TemplateMessage,
   WhatsAppPreview,
 } from "@/components/whatsapp";
-import { AiDemo } from "./ai-demo";
-import { ChatDemo } from "./chat-demo";
-import { ChatListDemo } from "./chat-list-demo";
-import { DataTableDemo } from "./data-table-demo";
-import { DemoRow } from "./demo-row";
-import { FormDemo } from "./form-demo";
-import { MediaDemo } from "./media-demo";
-import { PickersDemo } from "./pickers-demo";
+import { AiDemo } from "./AiDemo";
+import { ChatDemo } from "./ChatDemo";
+import { ChatListDemo } from "./ChatListDemo";
+import { DataTableDemo } from "./DataTableDemo";
+import { DemoRow } from "./DemoRow";
+import { FormDemo } from "./FormDemo";
+import { MediaDemo } from "./MediaDemo";
+import { PickersDemo } from "./PickersDemo";
 import type { CatalogSection } from "./sections";
 
 const chartConfig = {

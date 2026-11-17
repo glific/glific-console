@@ -1,10 +1,10 @@
 import { CopyIcon, InboxIcon, MoreHorizontalIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import type { ReactNode } from "react";
 import { toast } from "sonner";
-import { EmptyState } from "@/components/empty-state";
-import { ErrorState } from "@/components/error-state";
-import { PageHeader } from "@/components/page-header";
-import { Spinner } from "@/components/spinner";
+import { EmptyState } from "@/components/EmptyState";
+import { ErrorState } from "@/components/ErrorState";
+import { PageHeader } from "@/components/PageHeader";
+import { Spinner } from "@/components/Spinner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -77,7 +77,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { DemoRow } from "./demo-row";
+import { DemoRow } from "./DemoRow";
 
 /*
  * Internal catalog page. The sample copy below ("Rename flow", "Asha Kulkarni") is demo fixture data, not product

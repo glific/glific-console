@@ -1,7 +1,7 @@
 import { type RenderOptions, render } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
 import { createMemoryRouter, RouterProvider } from "react-router";
-import { AppProviders } from "@/app-providers";
+import { AppProviders } from "@/AppProviders";
 import { createQueryClient } from "@/lib/query-client";
 import { clearSession, setSession } from "@/lib/session";
 import { mockSession } from "@/mocks/auth";

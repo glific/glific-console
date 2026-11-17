@@ -1,3 +1,3 @@
-export { LoginPage } from "./login-page";
-export { LogoutPage } from "./logout-page";
-export { RequireAuth } from "./require-auth";
+export { LoginPage } from "./LoginPage";
+export { LogoutPage } from "./LogoutPage";
+export { RequireAuth } from "./RequireAuth";

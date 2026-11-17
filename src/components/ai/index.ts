@@ -1,5 +1,5 @@
-export { AiMark } from "./ai-mark";
-export { AiMessage } from "./ai-message";
-export { PromptBox } from "./prompt-box";
-export { PromptSuggestions } from "./prompt-suggestions";
-export { ThinkingIndicator } from "./thinking-indicator";
+export { AiMark } from "./AiMark";
+export { AiMessage } from "./AiMessage";
+export { PromptBox } from "./PromptBox";
+export { PromptSuggestions } from "./PromptSuggestions";
+export { ThinkingIndicator } from "./ThinkingIndicator";
