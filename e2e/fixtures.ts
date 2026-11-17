@@ -3,7 +3,7 @@ import { test as base, expect } from "@playwright/test";
 
 export const BACKEND_URL = process.env.E2E_BACKEND_URL ?? "https://api.glific.test:4001";
 
-/** Users created by the backend's dev seeds (`mix setup`). CI promotes `admin` to Glific admin. */
+/** Users created by the backend's dev seeds (`mix setup`). */
 export const users = {
   admin: { phone: "917834811114", password: "Secret1234!" },
   staff: { phone: "919820112345", password: "Secret12345678!" },
@@ -13,7 +13,6 @@ type UserKey = keyof typeof users;
 type Session = { access_token: string; renewal_token: string; token_expiry_time: string };
 
 interface TestFixtures {
-  /** Seed user the test starts signed in as; `null` starts signed out. Change with test.use({ signedInAs }). */
   signedInAs: UserKey | null;
   checkA11y: () => Promise<void>;
 }
