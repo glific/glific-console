@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 import { expectNoA11yViolations } from "@/test/axe";
 import { renderWithProviders } from "@/test/render";
-import { ListMessage, LocationRequestMessage, QuickReplyMessage, TemplateMessage } from "./whatsapp-messages";
+import { ListMessage, LocationRequestMessage, QuickReplyMessage, TemplateMessage } from ".";
 import { WhatsAppPreview } from "./whatsapp-preview";
 
 describe("WhatsApp preview", () => {

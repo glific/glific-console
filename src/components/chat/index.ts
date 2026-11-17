@@ -1,10 +1,11 @@
 export { ChatComposer, type QuickReply } from "./chat-composer";
 export { ChatHeader } from "./chat-header";
-export { DayDivider, SystemNotice } from "./chat-notices";
 export { ContactAvatar, initialsOf } from "./contact-avatar";
 export { ConversationListItem } from "./conversation-list-item";
+export { DayDivider } from "./day-divider";
 export { MessageBubble, type MessageDirection } from "./message-bubble";
 export { type MediaKind, MessageMedia } from "./message-media";
 export { type MessageStatus, MessageStatusIcon } from "./message-status";
 export { PollMessage } from "./poll-message";
 export { SessionWindow } from "./session-window";
+export { SystemNotice } from "./system-notice";

@@ -2,16 +2,6 @@ import { CheckIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export function DayDivider({ children }: { children: ReactNode }) {
-  return (
-    <div className="my-4 flex justify-center" data-slot="day-divider">
-      <span className="rounded-full border bg-background px-3 py-1 text-caption font-medium text-muted-foreground">
-        {children}
-      </span>
-    </div>
-  );
-}
-
 interface SystemNoticeProps {
   children: ReactNode;
   tone?: "neutral" | "success" | "warning";

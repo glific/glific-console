@@ -1,6 +1,7 @@
 import { DownloadIcon, FileTextIcon, MapPinIcon, MicIcon, PlayIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { MediaPlaceholder } from "./media-placeholder";
 
 export type MediaKind = "image" | "video" | "audio" | "document" | "location" | "sticker";
 
@@ -102,20 +103,5 @@ export function MessageMedia({ kind, url, name, detail, location, className }: M
         {location?.label ?? (location ? `${location.latitude}, ${location.longitude}` : t("chat.media.location"))}
       </span>
     </a>
-  );
-}
-
-function MediaPlaceholder({ label, icon, className }: { label: string; icon?: React.ReactNode; className?: string }) {
-  return (
-    <div
-      role="img"
-      aria-label={label}
-      className={cn(
-        "mb-1 flex h-40 w-64 items-center justify-center rounded-lg bg-muted text-muted-foreground [&_svg]:size-8",
-        className,
-      )}
-    >
-      {icon}
-    </div>
   );
 }

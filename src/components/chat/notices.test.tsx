@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 import { expectNoA11yViolations } from "@/test/axe";
 import { renderWithProviders } from "@/test/render";
-import { DayDivider, SystemNotice } from "./chat-notices";
+import { DayDivider, SystemNotice } from ".";
 
 describe("DayDivider and SystemNotice", () => {
   it("render conversation markers in each tone", async () => {
