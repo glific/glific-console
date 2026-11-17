@@ -5,7 +5,7 @@ export const BACKEND_URL = process.env.E2E_BACKEND_URL ?? "https://api.glific.te
 
 /** Users created by the backend's dev seeds (`mix setup`). */
 export const users = {
-  admin: { phone: "917834811114", password: "Secret1234!" },
+  glificAdmin: { phone: "919900000001", password: "Secret12345678!" },
   staff: { phone: "919820112345", password: "Secret12345678!" },
 } as const;
 
@@ -42,7 +42,7 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
     },
     { scope: "worker" },
   ],
-  signedInAs: ["admin", { option: true }],
+  signedInAs: ["glificAdmin", { option: true }],
   page: async ({ page, signedInAs, sessionFor }, use) => {
     if (signedInAs) {
       const session = JSON.stringify(await sessionFor(signedInAs));
