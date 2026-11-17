@@ -6,11 +6,7 @@ import {
   type FieldPath,
   type FieldValues,
 } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { Spinner } from "@/components/spinner";
-import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
-import { cn } from "@/lib/utils";
 
 interface ControlProps<Values extends FieldValues, Name extends FieldPath<Values>> {
   field: ControllerRenderProps<Values, Name>;
@@ -54,55 +50,5 @@ export function FormField<Values extends FieldValues, Name extends FieldPath<Val
         );
       }}
     />
-  );
-}
-
-export function FormSection({
-  title,
-  description,
-  children,
-  className,
-}: {
-  title: ReactNode;
-  description?: ReactNode;
-  children: ReactNode;
-  className?: string;
-}) {
-  const id = useId();
-  return (
-    <section aria-labelledby={id} className={cn("flex flex-col gap-stack", className)}>
-      <div className="flex flex-col gap-1">
-        <h2 id={id} className="text-heading">
-          {title}
-        </h2>
-        {description ? <p className="text-body text-muted-foreground">{description}</p> : null}
-      </div>
-      {children}
-    </section>
-  );
-}
-
-export function FormActions({
-  onCancel,
-  saving = false,
-  saveLabel,
-  className,
-}: {
-  onCancel: () => void;
-  saving?: boolean;
-  saveLabel?: ReactNode;
-  className?: string;
-}) {
-  const { t } = useTranslation();
-  return (
-    <div className={cn("sticky bottom-0 flex justify-end gap-inline border-t bg-background py-stack", className)}>
-      <Button type="button" variant="outline" onClick={onCancel} disabled={saving}>
-        {t("form.cancel")}
-      </Button>
-      <Button type="submit" disabled={saving}>
-        {saving ? <Spinner size="sm" label={t("form.saving")} /> : null}
-        {saveLabel ?? t("form.save")}
-      </Button>
-    </div>
   );
 }
