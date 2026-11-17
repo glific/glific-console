@@ -56,5 +56,4 @@ Environment variables are validated at startup (`src/lib/env.ts`); see `.env.exa
 ## Project docs
 
 - `AGENTS.md`: conventions, design-system rules and how to verify a change (for humans and AI agents)
-- `docs/adr/`: architecture decisions; start with `0001-stack.md`
 - `docs/specs/`: feature specs

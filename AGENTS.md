@@ -1,7 +1,7 @@
 # Glific Console: agent guide
 
 The new Glific frontend (2.0). Vite + React 19 + TypeScript (strict), Tailwind v4 + shadcn/ui (Radix), React Router,
-TanStack Query, i18next. Single app, pnpm. Stack rationale: `docs/adr/0001-stack.md`.
+TanStack Query, i18next. Single app, pnpm.
 
 ## Commands
 
@@ -38,7 +38,7 @@ src/mocks/             MSW handlers (dev + tests)
 src/test/              test helpers: renderWithProviders, renderRoute, expectNoA11yViolations, MSW worker
 e2e/                   Playwright: flows/, a11y/
 tools/ds-lint/         GritQL rules + fixtures for the design-system guardrails
-docs/adr/ docs/specs/  decisions and feature specs
+docs/specs/            feature specs
 ```
 
 ## UI rules (enforced by `pnpm lint:ds`)
