@@ -1,8 +1,11 @@
 import { LogOutIcon } from "lucide-react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink, Outlet } from "react-router";
 import { Button } from "@/components/ui/button";
-import { everyone, glificAdmins, useAccess } from "@/features/auth/current-user";
+import { everyone, glificAdmins, roleLabels, useAccess, useCurrentUser } from "@/features/auth/current-user";
+import { identifyUser } from "@/lib/monitoring";
+import { getSession } from "@/lib/session";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -14,6 +17,7 @@ const navItems = [
 export function RootLayout() {
   const { t } = useTranslation();
   const { can } = useAccess();
+  useIdentifyUser();
   const items = navItems.filter((item) => can(item.allow));
   return (
     <div className="flex min-h-svh flex-col">
@@ -56,4 +60,15 @@ export function RootLayout() {
       </main>
     </div>
   );
+}
+
+function useIdentifyUser() {
+  const user = useCurrentUser().data;
+  useEffect(() => {
+    if (!user?.id || !user.organization?.id) return;
+    identifyUser(
+      { id: user.id, roles: roleLabels(user) },
+      { id: user.organization.id, isTrial: getSession()?.is_trial },
+    );
+  }, [user]);
 }

@@ -71,7 +71,7 @@ export type SortOrder =
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { currentUser: { user: { id: string | null, name: string | null, roles: Array<unknown> | null } | null } | null };
+export type CurrentUserQuery = { currentUser: { user: { id: string | null, name: string | null, accessRoles: Array<{ label: string | null } | null> | null, organization: { id: string | null } | null } | null } | null };
 
 export type ContactsQueryVariables = Exact<{
   filter?: ContactFilter | null | undefined;
@@ -106,7 +106,12 @@ export const CurrentUserDocument = new TypedDocumentString(`
     user {
       id
       name
-      roles
+      accessRoles {
+        label
+      }
+      organization {
+        id
+      }
     }
   }
 }

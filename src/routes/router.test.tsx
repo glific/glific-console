@@ -34,7 +34,13 @@ describe("router", () => {
   it("hides /design-system from users who are not Glific admins", async () => {
     worker.use(
       glificApi.query("CurrentUser", () =>
-        HttpResponse.json({ data: { currentUser: { user: { id: "2", name: "NGO admin", roles: ["Admin"] } } } }),
+        HttpResponse.json({
+          data: {
+            currentUser: {
+              user: { id: "2", name: "NGO admin", accessRoles: [{ label: "Admin" }], organization: { id: "1" } },
+            },
+          },
+        }),
       ),
     );
     renderRoute("/design-system");

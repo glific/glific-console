@@ -54,3 +54,23 @@ export function track(event: string, properties?: Record<string, unknown>): void
 export async function monitoringReady(): Promise<void> {
   await Promise.all([sentry, analytics]);
 }
+
+/** Same distinct id, person properties and organisation group as the current app, so existing dashboards keep working. */
+export function identifyUser(
+  user: { id: string; roles: string[] },
+  organization: { id: string; isTrial?: boolean | undefined },
+): void {
+  void analytics.then((posthog) => {
+    if (!posthog) return;
+    posthog.identify(user.id, user.roles.length ? { access_roles: user.roles } : undefined);
+    posthog.group(
+      "organization",
+      organization.id,
+      organization.isTrial === undefined ? undefined : { is_trial: organization.isTrial },
+    );
+  });
+}
+
+export function resetAnalytics(): void {
+  void analytics.then((posthog) => posthog?.reset());
+}

@@ -14,7 +14,18 @@ import { RequireAccess } from "./require-access";
 function renderAs(roles: string[]) {
   worker.use(
     glificApi.query("CurrentUser", () =>
-      HttpResponse.json({ data: { currentUser: { user: { id: "2", name: "Someone", roles } } } }),
+      HttpResponse.json({
+        data: {
+          currentUser: {
+            user: {
+              id: "2",
+              name: "Someone",
+              accessRoles: roles.map((label) => ({ label })),
+              organization: { id: "1" },
+            },
+          },
+        },
+      }),
     ),
   );
   setSession(mockSession());

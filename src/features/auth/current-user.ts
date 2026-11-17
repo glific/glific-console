@@ -3,13 +3,19 @@ import { request } from "@/graphql/client";
 import { graphql } from "@/graphql/generated";
 import { useSession } from "@/lib/use-session";
 
+// accessRoles, not roles: only accessRoles includes the custom roles an organisation creates, and the current app uses it.
 const CurrentUserQuery = graphql(`
   query CurrentUser {
     currentUser {
       user {
         id
         name
-        roles
+        accessRoles {
+          label
+        }
+        organization {
+          id
+        }
       }
     }
   }
@@ -27,7 +33,13 @@ export function useCurrentUser() {
   });
 }
 
-// The backend serialises roles as labels ("Glific_admin", "Admin", "No access"); compare on a normalised form.
+type WithAccessRoles = { accessRoles?: readonly ({ label?: string | null } | null)[] | null } | null | undefined;
+
+export function roleLabels(user: WithAccessRoles): string[] {
+  return (user?.accessRoles ?? []).flatMap((role) => (role?.label ? [role.label] : []));
+}
+
+// Role labels arrive as "Glific_admin", "Admin", "No access"; compare on a normalised form.
 const normalise = (role: unknown) => String(role).trim().toLowerCase().replace(/\s+/g, "_");
 
 export function hasRole(
@@ -39,7 +51,7 @@ export function hasRole(
 
 export function useIsGlificAdmin(): { isGlificAdmin: boolean; isLoading: boolean } {
   const user = useCurrentUser();
-  return { isGlificAdmin: hasRole(user.data?.roles, "glific_admin"), isLoading: user.isPending };
+  return { isGlificAdmin: hasRole(roleLabels(user.data), "glific_admin"), isLoading: user.isPending };
 }
 
 /** A built-in role, or "custom" for any role an organisation created on the Roles page. */
@@ -68,5 +80,6 @@ export function canAccess(roles: readonly unknown[] | null | undefined, allow: r
 
 export function useAccess(): { can: (allow: readonly RoleKind[]) => boolean; isLoading: boolean } {
   const user = useCurrentUser();
-  return { can: (allow) => canAccess(user.data?.roles, allow), isLoading: user.isPending };
+  const labels = roleLabels(user.data);
+  return { can: (allow) => canAccess(labels, allow), isLoading: user.isPending };
 }

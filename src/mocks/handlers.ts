@@ -16,7 +16,11 @@ export const handlers = [
   // Glific admin in mock mode, so the internal /design-system page is reachable while developing.
   glificApi.query("CurrentUser", () =>
     HttpResponse.json({
-      data: { currentUser: { user: { id: "1", name: "Glific Team", roles: ["Glific_admin"] } } },
+      data: {
+        currentUser: {
+          user: { id: "1", name: "Glific Team", accessRoles: [{ label: "Glific_admin" }], organization: { id: "1" } },
+        },
+      },
     }),
   ),
   glificApi.query("Contacts", ({ variables }) => {
