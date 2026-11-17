@@ -1,0 +1,222 @@
+{
+  "app": {
+    "name": "Glific",
+    "skipToContent": "सामग्री पर जाएँ"
+  },
+  "nav": {
+    "label": "मुख्य",
+    "home": "होम",
+    "contacts": "संपर्क",
+    "designSystem": "डिज़ाइन सिस्टम"
+  },
+  "common": {
+    "loading": "लोड हो रहा है",
+    "close": "बंद करें",
+    "more": "और",
+    "retry": "फिर कोशिश करें",
+    "goHome": "होम पर जाएँ",
+    "search": "खोज",
+    "clear": "साफ़ करें",
+    "select": "चुनें",
+    "selected": "{{count}} चुने गए",
+    "noResults": "कोई परिणाम नहीं",
+    "help": "मदद",
+    "beta": "बीटा"
+  },
+  "errors": {
+    "generic": {
+      "title": "कुछ गलत हो गया",
+      "description": "एक अनपेक्षित त्रुटि हुई। फिर कोशिश करें, या होम पर वापस जाएँ।"
+    },
+    "notFound": {
+      "title": "पेज नहीं मिला",
+      "description": "जो पेज आप ढूँढ रहे हैं वह मौजूद नहीं है या हटा दिया गया है।"
+    },
+    "permissionDenied": {
+      "title": "आपके पास इस पेज की अनुमति नहीं है",
+      "description": "अगर आपको इसकी ज़रूरत है, तो अपने संगठन के एडमिन से अपनी भूमिका बदलने को कहें।"
+    }
+  },
+  "home": {
+    "title": "होम",
+    "description": "नए Glific कंसोल में आपका स्वागत है।"
+  },
+  "contacts": {
+    "title": "संपर्क",
+    "description": "हर वह व्यक्ति जिसने आपके WhatsApp नंबर पर संदेश भेजा है।",
+    "search": "संपर्क खोजें",
+    "columns": {
+      "name": "नाम",
+      "phone": "फ़ोन",
+      "status": "स्थिति",
+      "lastMessage": "आखिरी संदेश"
+    },
+    "status": {
+      "VALID": "सक्रिय",
+      "PROCESSING": "प्रोसेस हो रहा है",
+      "INVALID": "अमान्य नंबर",
+      "FAILED": "विफल",
+      "BLOCKED": "ब्लॉक किया गया"
+    },
+    "empty": {
+      "title": "अभी कोई संपर्क नहीं",
+      "description": "किसी के आपके नंबर पर संदेश भेजते ही संपर्क यहाँ दिखेंगे।"
+    },
+    "noResults": {
+      "title": "कोई मिलता-जुलता संपर्क नहीं",
+      "description": "कोई दूसरा नाम या फ़ोन नंबर आज़माएँ।"
+    },
+    "error": {
+      "title": "संपर्क लोड नहीं हो सके"
+    }
+  },
+  "pagination": {
+    "label": "पेज",
+    "previous": "पिछला",
+    "next": "अगला",
+    "previousPage": "पिछले पेज पर जाएँ",
+    "nextPage": "अगले पेज पर जाएँ",
+    "morePages": "और पेज"
+  },
+  "command": {
+    "title": "खोज",
+    "description": "चलाने के लिए कोई कमांड खोजें"
+  },
+  "search": {
+    "placeholder": "खोज",
+    "clear": "खोज साफ़ करें"
+  },
+  "combobox": {
+    "placeholder": "चुनें…",
+    "search": "खोजें…",
+    "empty": "कुछ नहीं मिला"
+  },
+  "datePicker": {
+    "placeholder": "तारीख चुनें",
+    "selected": "चुनी गई"
+  },
+  "dataTable": {
+    "selectAll": "सभी पंक्तियाँ चुनें",
+    "selectRow": "पंक्ति चुनें",
+    "sortAscending": "बढ़ते क्रम में",
+    "sortDescending": "घटते क्रम में",
+    "sort": "{{column}} के अनुसार क्रम दें",
+    "rowsPerPage": "हर पेज पर पंक्तियाँ",
+    "pageOf": "पेज {{page}} / {{pages}}",
+    "empty": "कोई पंक्ति नहीं",
+    "selection": "{{count}} चुने गए",
+    "clearSelection": "चयन हटाएँ"
+  },
+  "fileDropzone": {
+    "title": "फ़ाइल यहाँ छोड़ें, या चुनें",
+    "browse": "फ़ाइलें चुनें",
+    "accepts": "{{types}} स्वीकार है"
+  },
+  "emoji": {
+    "open": "इमोजी डालें",
+    "search": "इमोजी खोजें",
+    "loading": "इमोजी लोड हो रहे हैं…",
+    "empty": "कोई इमोजी नहीं मिला"
+  },
+  "chat": {
+    "composer": {
+      "placeholder": "संदेश लिखें…",
+      "windowClosed": "24 घंटे की विंडो बंद हो गई है। उन तक पहुँचने के लिए टेम्पलेट भेजें।",
+      "more": "अधिक विकल्प",
+      "attach": "फ़ाइल जोड़ें",
+      "voice": "वॉइस नोट रिकॉर्ड करें",
+      "send": "भेजें",
+      "message": "संदेश",
+      "quickReplies": "त्वरित जवाब"
+    },
+    "status": {
+      "pending": "भेजा जा रहा है",
+      "sent": "भेजा गया",
+      "delivered": "पहुँच गया",
+      "read": "पढ़ लिया",
+      "error": "नहीं पहुँचा"
+    },
+    "seeError": "देखें क्या गलत हुआ",
+    "today": "आज",
+    "window": {
+      "open": "विंडो में {{time}} बाकी",
+      "closing": "विंडो में {{time}} बाकी",
+      "closed": "विंडो बंद",
+      "none": "कोई संदेश विंडो नहीं"
+    },
+    "poll": {
+      "single": "एक चुनें",
+      "multi": "एक या अधिक चुनें"
+    },
+    "media": {
+      "image": "फ़ोटो",
+      "video": "वीडियो",
+      "audio": "वॉइस नोट",
+      "document": "दस्तावेज़",
+      "location": "लोकेशन",
+      "sticker": "स्टिकर",
+      "download": "{{name}} डाउनलोड करें"
+    },
+    "unread": "{{count}} अपठित",
+    "contactInfo": "संपर्क विवरण",
+    "contactOptions": "संपर्क विकल्प",
+    "close": "चैट बंद करें"
+  },
+  "whatsapp": {
+    "preview": "WhatsApp प्रीव्यू",
+    "businessAccount": "बिज़नेस अकाउंट",
+    "listButton": "विकल्प देखें",
+    "sendLocation": "लोकेशन भेजें",
+    "templateFooter": "टेम्पलेट"
+  },
+  "ai": {
+    "name": "Glific AI",
+    "prompt": "Glific AI से पूछें",
+    "placeholder": "बताएँ कि आप क्या बनाना चाहते हैं…",
+    "send": "पूछें",
+    "thinking": "सोच रहे हैं…",
+    "suggestions": "सुझाव"
+  },
+  "designSystem": {
+    "title": "डिज़ाइन सिस्टम",
+    "description": "Glific 2.0 ब्रांडबुक: सिद्धांत, ब्रांड, रंग, टाइप और हर कंपोनेंट, असली टोकन से बना।",
+    "contents": "सामग्री"
+  },
+  "auth": {
+    "title": "Glific में साइन इन करें",
+    "description": "अपने Glific अकाउंट का फ़ोन नंबर और पासवर्ड इस्तेमाल करें।",
+    "phone": "फ़ोन नंबर",
+    "phoneHint": "देश कोड के साथ, जैसे 919876543210",
+    "password": "पासवर्ड",
+    "showPassword": "पासवर्ड दिखाएँ",
+    "hidePassword": "पासवर्ड छिपाएँ",
+    "submit": "साइन इन करें",
+    "submitting": "साइन इन हो रहा है…",
+    "errors": {
+      "required": "अपना फ़ोन नंबर और पासवर्ड डालें।",
+      "generic": "साइन इन नहीं हो सका। अपना कनेक्शन जाँचें और फिर कोशिश करें।"
+    },
+    "signOut": "साइन आउट",
+    "signingOut": "साइन आउट हो रहा है…"
+  },
+  "list": {
+    "total_one": "{{count}} परिणाम",
+    "total_other": "{{count}} परिणाम"
+  },
+  "form": {
+    "save": "सहेजें",
+    "saving": "सहेजा जा रहा है",
+    "cancel": "रद्द करें",
+    "unsaved": {
+      "title": "बिना सहेजे छोड़ें?",
+      "description": "इस पेज पर आपके बदलाव खो जाएँगे।",
+      "stay": "संपादन जारी रखें",
+      "leave": "छोड़ें"
+    }
+  },
+  "language": {
+    "label": "भाषा",
+    "changed": "भाषा बदल दी गई",
+    "error": "भाषा नहीं बदल सकी। फिर कोशिश करें।"
+  }
+}

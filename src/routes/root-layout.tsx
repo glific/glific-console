@@ -1,12 +1,16 @@
 import { LogOutIcon } from "lucide-react";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink, Outlet } from "react-router";
 import { Button } from "@/components/ui/button";
 import { everyone, glificAdmins, roleLabels, useAccess, useCurrentUser } from "@/features/auth/current-user";
+import { useUserLanguage } from "@/features/language/use-user-language";
 import { identifyUser } from "@/lib/monitoring";
 import { getSession } from "@/lib/session";
 import { cn } from "@/lib/utils";
+
+// Loaded after first paint: the dropdown pulls in floating-ui, which the first screen doesn't need.
+const LanguageSelect = lazy(async () => ({ default: (await import("@/features/language")).LanguageSelect }));
 
 const navItems = [
   { to: "/", key: "nav.home", end: true, allow: everyone },
@@ -18,6 +22,7 @@ export function RootLayout() {
   const { t } = useTranslation();
   const { can } = useAccess();
   useIdentifyUser();
+  useUserLanguage();
   const items = navItems.filter((item) => can(item.allow));
   return (
     <div className="flex min-h-svh flex-col">
@@ -48,12 +53,17 @@ export function RootLayout() {
             ))}
           </nav>
         </div>
-        <Button variant="ghost" size="sm" asChild>
-          <Link to="/logout">
-            <LogOutIcon data-icon="inline-start" aria-hidden="true" />
-            {t("auth.signOut")}
-          </Link>
-        </Button>
+        <div className="flex items-center gap-inline">
+          <Suspense fallback={null}>
+            <LanguageSelect />
+          </Suspense>
+          <Button variant="ghost" size="sm" asChild>
+            <Link to="/logout">
+              <LogOutIcon data-icon="inline-start" aria-hidden="true" />
+              {t("auth.signOut")}
+            </Link>
+          </Button>
+        </div>
       </header>
       <main id="main" className="flex-1 p-page">
         <Outlet />

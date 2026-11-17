@@ -34,7 +34,7 @@ src/routes/            route tree (router.tsx), layout, pages, 404, error bounda
 src/lib/               api-client, query-client, env/config, i18n, storage, utils (cn)
 src/styles/tokens.css  ALL design tokens; tokens.ts is the manifest the design-system page reads
 src/styles/fonts.css   self-hosted Google Sans Flex + Noto Sans Devanagari (Latin, Latin Ext, Devanagari only)
-src/locales/en.json    UI strings
+src/locales/           UI strings: en.json and hi.json, same keys
 src/mocks/             MSW handlers (dev + tests)
 src/test/              test helpers: renderWithProviders, renderRoute, expectNoA11yViolations, MSW worker
 e2e/                   Playwright: flows/, a11y/, visual/
@@ -58,7 +58,9 @@ docs/adr/ docs/specs/  decisions and feature specs
   plugin `includes` in `biome.json`, with a one-line reason in the PR.
 - No `radix-ui` / `@radix-ui/*` imports outside `src/components/ui`. Import `cn` from `@/lib/utils`, never from `cn`.
 - Every screen handles **loading, empty, error** (Skeleton/Spinner, EmptyState, ErrorState).
-- All user-facing text goes through `t()` (`useTranslation`) with keys in `src/locales/en.json`.
+- All user-facing text goes through `t()` (`useTranslation`) with keys in `src/locales/en.json`. Add the Hindi in
+  `hi.json` in the same change, reusing the current app's wording (glific-frontend `src/i18n/hi/hi.json`, keyed by the
+  English text) where it exists; a test fails when the keys or `{{placeholders}}` differ.
 - Comments only explain a non-obvious **why** (an a11y fix, a perf trap, a deliberate deviation). No comments that
   restate a name, a prop or what the code does; prefer a clearer name.
 

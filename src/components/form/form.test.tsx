@@ -49,7 +49,7 @@ describe("forms", () => {
 
     await userEvent.click(name);
     await userEvent.tab();
-    await expect.element(screen.getByText("Enter a name")).toBeVisible();
+    expect(await screen.findByText("Enter a name")).toBeVisible();
     expect(name).toHaveAttribute("aria-invalid", "true");
     expect(name).toHaveAccessibleDescription("Shown on the chat list Enter a name");
     await expectNoA11yViolations(container);
@@ -64,7 +64,7 @@ describe("forms", () => {
     const { router } = renderForm();
     await userEvent.fill(screen.getByLabelText("Name"), "Draft");
     await userEvent.click(screen.getByRole("link", { name: "Elsewhere" }));
-    await expect.element(screen.getByRole("alertdialog", { name: "Leave without saving?" })).toBeVisible();
+    expect(await screen.findByRole("alertdialog", { name: "Leave without saving?" })).toBeVisible();
 
     await userEvent.click(screen.getByRole("button", { name: "Keep editing" }));
     expect(router.state.location.pathname).toBe("/");

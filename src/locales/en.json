@@ -213,5 +213,10 @@
       "stay": "Keep editing",
       "leave": "Leave"
     }
+  },
+  "language": {
+    "label": "Language",
+    "changed": "Language changed",
+    "error": "Couldn't change the language. Try again."
   }
 }

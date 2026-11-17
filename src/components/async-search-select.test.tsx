@@ -32,12 +32,12 @@ describe("AsyncSearchSelect", () => {
     );
     renderWithProviders(<Harness search={search} />);
     await userEvent.click(screen.getByRole("combobox", { name: "Collection" }));
-    await expect.element(screen.getByRole("option", { name: "Teachers" })).toBeVisible();
+    expect(await screen.findByRole("option", { name: "Teachers" })).toBeVisible();
     await expectNoA11yViolations();
 
     await userEvent.keyboard("fi");
     await expect.poll(() => search.mock.lastCall?.[0]).toBe("fi");
-    await expect.element(screen.getByRole("option", { name: "Field staff" })).toBeVisible();
+    expect(await screen.findByRole("option", { name: "Field staff" })).toBeVisible();
     expect(screen.queryByRole("option", { name: "Teachers" })).toBeNull();
     expect(search).not.toHaveBeenCalledWith("f");
 

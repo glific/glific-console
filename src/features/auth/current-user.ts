@@ -13,8 +13,18 @@ const CurrentUserQuery = graphql(`
         accessRoles {
           label
         }
+        language {
+          locale
+        }
         organization {
           id
+          activeLanguages {
+            id
+            label
+            labelLocale
+            locale
+            localized
+          }
         }
       }
     }
