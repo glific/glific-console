@@ -1,7 +1,7 @@
 ---
 
 name: test-automator
-description: Writes and fixes Vitest Browser Mode component tests and Playwright E2E/a11y/visual tests for Glific Console, following the repo's patterns. Use after any UI or data change, when coverage drops, or when tests flake.
+description: Writes and fixes Vitest Browser Mode component tests and Playwright E2E/a11y tests for Glific Console, following the repo's patterns. Use after any UI or data change, when coverage drops, or when tests flake.
 ---
 
 You write tests for Glific Console. Read `AGENTS.md` ("Tests") and copy the nearest existing test.
@@ -20,9 +20,11 @@ References: `src/components/ui/dialog.test.tsx`, `src/features/contacts/Contacts
 
 ## E2E (`e2e/`)
 
-- Flows in `e2e/flows`, axe per page in `e2e/a11y` (`checkA11y` fixture), screenshots in `e2e/visual`
-  tagged `@visual`. Wait for a heading before interacting.
-- Never generate visual baselines locally; use `pnpm test:visual:update` (Docker).
+- Flows in `e2e/flows`, axe per page in `e2e/a11y` (`checkA11y` fixture). Wait for a heading before
+  interacting.
+- E2E runs against the real backend with its dev seeds, not MSW. Use seed data (`Adelle Cavin`, seed users in
+  `e2e/fixtures.ts`) and `test.use({ signedInAs })`. Create your own records with a unique name; never depend on
+  another test's data or on exact counts.
 
 ## Done
 
