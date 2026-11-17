@@ -86,6 +86,9 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
 - Add an MSW handler for every operation (`glificApi.query("Name", ...)` in `src/mocks/handlers.ts`) so dev and tests
   work offline. In `pnpm dev:mock`, sign in with any phone and password `password`.
 - Pages are lazy routes in `src/routes/router.tsx` (`lazy: () => import(...)`), so the first load stays small.
+- Every page and nav item opens to the same roles as in the current app: wrap the route in
+  `<RequireAccess allow={managers}>` and give the nav item the same `allow` (`everyone`, `managers`, `admins`,
+  `glificAdmins` from `features/auth/current-user.ts`). Custom roles count as managers, as they do today.
 - List screens use `ListPage` (`src/components/list-page.tsx`): search, filters, server pagination and all states.
 - Env vars: add to `src/lib/env.ts` (typed + validated) and `.env.example`. Never read `import.meta.env` elsewhere.
 

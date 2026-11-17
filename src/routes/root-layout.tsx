@@ -2,20 +2,19 @@ import { LogOutIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink, Outlet } from "react-router";
 import { Button } from "@/components/ui/button";
-import { useIsGlificAdmin } from "@/features/auth/current-user";
+import { everyone, glificAdmins, useAccess } from "@/features/auth/current-user";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { to: "/", key: "nav.home", end: true },
-  { to: "/contacts", key: "nav.contacts", end: false },
+  { to: "/", key: "nav.home", end: true, allow: everyone },
+  { to: "/contacts", key: "nav.contacts", end: false, allow: everyone },
+  { to: "/design-system", key: "nav.designSystem", end: false, allow: glificAdmins },
 ] as const;
-
-const internalNavItems = [{ to: "/design-system", key: "nav.designSystem", end: false }] as const;
 
 export function RootLayout() {
   const { t } = useTranslation();
-  const { isGlificAdmin } = useIsGlificAdmin();
-  const items = isGlificAdmin ? [...navItems, ...internalNavItems] : navItems;
+  const { can } = useAccess();
+  const items = navItems.filter((item) => can(item.allow));
   return (
     <div className="flex min-h-svh flex-col">
       <a
