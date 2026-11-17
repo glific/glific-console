@@ -64,7 +64,6 @@ export function useIsGlificAdmin(): { isGlificAdmin: boolean; isLoading: boolean
   return { isGlificAdmin: hasRole(roleLabels(user.data), "glific_admin"), isLoading: user.isPending };
 }
 
-/** A built-in role, or "custom" for any role an organisation created on the Roles page. */
 export type RoleKind = "staff" | "manager" | "admin" | "glific_admin" | "custom";
 
 // The same groups the current app's menu uses, so each page stays open to the same people.

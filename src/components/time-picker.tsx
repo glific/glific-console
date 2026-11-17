@@ -14,7 +14,6 @@ interface TimePickerProps {
   onBlur?: () => void;
 }
 
-/** The browser's own time field, so typing, the keyboard and screen readers work everywhere without extra code. */
 export function TimePicker({ value, onValueChange, className, ...props }: TimePickerProps) {
   return (
     <InputGroup className={className}>

@@ -6,7 +6,6 @@ import { safeStorage } from "./storage";
 export const defaultNS = "translation";
 export const resources = { en: { translation: en } } as const;
 
-// English ships in the first load; other languages are fetched only by the people who use them.
 const bundles = {
   en: async () => en,
   hi: async () => (await import("@/locales/hi.json")).default,

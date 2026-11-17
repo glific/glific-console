@@ -21,7 +21,6 @@ const UpdateLanguage = graphql(`
   }
 `);
 
-/** The organisation's active languages that the app has translations for; changing it saves it on the user. */
 export function LanguageSelect({ className }: { className?: string }) {
   const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();

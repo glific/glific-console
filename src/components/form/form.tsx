@@ -28,7 +28,6 @@ interface FormFieldProps<Values extends FieldValues, Name extends FieldPath<Valu
   render: (props: ControlProps<Values, Name>) => ReactNode;
 }
 
-/** One form field: label, the control, a hint, and the field's error once the user has left it or submitted. */
 export function FormField<Values extends FieldValues, Name extends FieldPath<Values>>({
   control,
   name,
@@ -58,7 +57,6 @@ export function FormField<Values extends FieldValues, Name extends FieldPath<Val
   );
 }
 
-/** A titled group of fields; long forms are split into these. */
 export function FormSection({
   title,
   description,
@@ -84,7 +82,6 @@ export function FormSection({
   );
 }
 
-/** Save and Cancel at the bottom of a form, kept in view while the form scrolls. */
 export function FormActions({
   onCancel,
   saving = false,

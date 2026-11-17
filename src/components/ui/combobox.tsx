@@ -37,10 +37,8 @@ interface ComboboxBaseProps {
   "aria-label"?: string
   "aria-invalid"?: boolean
   "aria-describedby"?: string
-  /** Server-side search: the list is not filtered locally, and this gets the typed text. */
   onSearchChange?: (search: string) => void
   loading?: boolean
-  /** Labels for selected values that may not be in the current options, e.g. when editing. */
   selectedOptions?: ComboboxOption[]
 }
 

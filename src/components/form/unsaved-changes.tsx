@@ -12,7 +12,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-/** Asks before leaving a form with unsaved changes: in-app navigation gets a dialog, closing the tab the browser's prompt. */
 export function UnsavedChangesGuard({ when }: { when: boolean }) {
   const { t } = useTranslation();
   const blocker = useBlocker(

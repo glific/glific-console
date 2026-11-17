@@ -14,7 +14,6 @@ function setPath(target: Record<string, unknown>, path: readonly PropertyKey[], 
   });
 }
 
-/** Validates with a zod schema and hands react-hook-form the parsed values, or the first error per field. */
 export function zodResolver<Schema extends z.ZodType<FieldValues, FieldValues>>(
   schema: Schema,
 ): Resolver<z.input<Schema>, unknown, z.output<Schema>> {
@@ -29,7 +28,6 @@ export function zodResolver<Schema extends z.ZodType<FieldValues, FieldValues>>(
   };
 }
 
-/** A form validated by `schema`: errors show once a field is left, then update as the user types. */
 export function useZodForm<Schema extends z.ZodType<FieldValues, FieldValues>>(
   schema: Schema,
   defaultValues: DefaultValues<z.input<Schema>>,

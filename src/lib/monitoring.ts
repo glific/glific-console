@@ -55,7 +55,7 @@ export async function monitoringReady(): Promise<void> {
   await Promise.all([sentry, analytics]);
 }
 
-/** Same distinct id, person properties and organisation group as the current app, so existing dashboards keep working. */
+// Matches the current app's identify and group calls so existing PostHog dashboards keep working.
 export function identifyUser(
   user: { id: string; roles: string[] },
   organization: { id: string; isTrial?: boolean | undefined },
