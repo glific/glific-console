@@ -18,7 +18,7 @@
       "matchPackageNames": ["vite", "@vitejs/**", "vitest", "@vitest/**", "@tailwindcss/vite"]
     },
     {
-      "description": "Keep @playwright/test in step with the Docker image used for visual baselines (re-run pnpm test:visual:update after bumping)",
+      "description": "Playwright and its axe integration move together",
       "groupName": "Playwright",
       "matchPackageNames": ["@playwright/test", "@axe-core/playwright", "axe-core"]
     },
