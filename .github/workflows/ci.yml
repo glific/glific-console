@@ -113,7 +113,7 @@ jobs:
           mix hex.repo add oban https://getoban.pro/repo --fetch-public-key "${{ secrets.OBAN_PUBLIC_KEY }}" --auth-key "${{ secrets.OBAN_PRO_KEY }}"
           mix deps.get
           mix setup
-          mix run -e 'Glific.Repo.put_organization_id(1); u = Glific.Repo.get_by!(Glific.Users.User, phone: "917834811114"); {:ok, _} = Glific.Users.update_user(u, %{roles: [:glific_admin]})'
+          mix run -e 'Glific.Repo.put_organization_id(1); u = Glific.Repo.get_by!(Glific.Users.User, phone: "917834811114"); r = Glific.Repo.get_by!(Glific.AccessControl.Role, label: "Glific_admin"); {:ok, _} = Glific.Users.update_user(u, %{add_role_ids: [r.id]})'
 
       - name: Start the backend
         working-directory: backend

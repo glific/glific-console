@@ -35,10 +35,10 @@ on another port need that origin added to the backend's `REQUEST_ORIGIN`.
 
 `pnpm test:e2e` runs against a real backend on `https://api.glific.test:4001` with the dev seeds loaded (`mix setup`),
 the same way CI does. It reuses `pnpm dev` if it's running, otherwise starts it. Tests sign in as the seed users in
-`e2e/fixtures.ts`. Once per database, make the seed admin a Glific admin (from the backend folder):
+`e2e/fixtures.ts`. Once per database, make the seed admin a Glific admin (from the backend folder, with the server stopped):
 
 ```sh
-mix run -e 'Glific.Repo.put_organization_id(1); u = Glific.Repo.get_by!(Glific.Users.User, phone: "917834811114"); {:ok, _} = Glific.Users.update_user(u, %{roles: [:glific_admin]})'
+mix run -e 'Glific.Repo.put_organization_id(1); u = Glific.Repo.get_by!(Glific.Users.User, phone: "917834811114"); r = Glific.Repo.get_by!(Glific.AccessControl.Role, label: "Glific_admin"); {:ok, _} = Glific.Users.update_user(u, %{add_role_ids: [r.id]})'
 ```
 
 Environment variables are validated at startup (`src/lib/env.ts`); see `.env.example`. Dev defaults are in
