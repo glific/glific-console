@@ -34,6 +34,8 @@ export default [
     path: toPaths(minus(closure(key), initial)),
     limit: "60 kB",
     gzip: true,
+    // Size only: timing each page starts headless Chrome once per page, which times out in CI.
+    running: false,
   })),
   {
     name: "Monitoring SDKs (Sentry + PostHog, after first paint, only where configured)",
