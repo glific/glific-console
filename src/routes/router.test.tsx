@@ -58,7 +58,7 @@ describe("expired session", () => {
     renderWithProviders(<RouterProvider router={router} />);
     await expect.poll(() => router.state.location.pathname, { timeout: 5000 }).toBe("/login");
 
-    await userEvent.fill(screen.getByLabelText("Phone number"), "917834811114");
+    await userEvent.fill(await screen.findByLabelText("Phone number"), "917834811114");
     await userEvent.fill(screen.getByLabelText("Password", { exact: true }), MOCK_PASSWORD);
     await userEvent.click(screen.getByRole("button", { name: "Sign in" }));
     await expect.poll(() => router.state.location.pathname).toBe("/contacts");
