@@ -1,10 +1,10 @@
 import { CopyIcon, InboxIcon, MoreHorizontalIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import type { ReactNode } from "react";
 import { toast } from "sonner";
-import { EmptyState } from "@/components/empty-state";
-import { ErrorState } from "@/components/error-state";
-import { PageHeader } from "@/components/page-header";
-import { Spinner } from "@/components/spinner";
+import { EmptyState } from "@/components/EmptyState";
+import { ErrorState } from "@/components/ErrorState";
+import { PageHeader } from "@/components/PageHeader";
+import { Spinner } from "@/components/Spinner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -77,6 +77,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { DemoRow } from "./DemoRow";
 
 /*
  * Internal catalog page. The sample copy below ("Rename flow", "Asha Kulkarni") is demo fixture data, not product
@@ -91,15 +92,6 @@ export interface CatalogSection {
   content: ReactNode;
 }
 
-function Row({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <span className="text-caption text-muted-foreground">{label}</span>
-      <div className="flex flex-wrap items-center gap-inline">{children}</div>
-    </div>
-  );
-}
-
 const buttonVariants = ["default", "secondary", "outline", "ghost", "destructive", "link"] as const;
 const badgeVariants = ["default", "secondary", "outline", "destructive", "ghost", "link"] as const;
 const badgeTones = ["neutral", "success", "warning", "danger", "info", "ai"] as const;
@@ -112,14 +104,14 @@ export const sections: CatalogSection[] = [
     description: "components/ui/button. Add a variant here instead of creating a new button component.",
     content: (
       <div className="flex flex-col gap-stack">
-        <Row label="Variants">
+        <DemoRow label="Variants">
           {buttonVariants.map((variant) => (
             <Button key={variant} variant={variant}>
               {variant}
             </Button>
           ))}
-        </Row>
-        <Row label="Sizes">
+        </DemoRow>
+        <DemoRow label="Sizes">
           <Button size="xs">Extra small</Button>
           <Button size="sm">Small</Button>
           <Button>Default</Button>
@@ -127,8 +119,8 @@ export const sections: CatalogSection[] = [
           <Button size="icon" aria-label="Add">
             <PlusIcon />
           </Button>
-        </Row>
-        <Row label="With icon, loading, disabled">
+        </DemoRow>
+        <DemoRow label="With icon, loading, disabled">
           <Button>
             <PlusIcon data-icon="inline-start" />
             New flow
@@ -140,7 +132,7 @@ export const sections: CatalogSection[] = [
           <Button disabled variant="outline">
             Disabled
           </Button>
-        </Row>
+        </DemoRow>
       </div>
     ),
   },
@@ -151,20 +143,20 @@ export const sections: CatalogSection[] = [
     description: "components/ui/badge",
     content: (
       <div className="flex flex-col gap-stack">
-        <Row label="Variants">
+        <DemoRow label="Variants">
           {badgeVariants.map((variant) => (
             <Badge key={variant} variant={variant}>
               {variant}
             </Badge>
           ))}
-        </Row>
-        <Row label="Status tones (tags, pills)">
+        </DemoRow>
+        <DemoRow label="Status tones (tags, pills)">
           {badgeTones.map((tone) => (
             <Badge key={tone} variant={tone}>
               {tone}
             </Badge>
           ))}
-        </Row>
+        </DemoRow>
       </div>
     ),
   },
@@ -309,7 +301,7 @@ export const sections: CatalogSection[] = [
     description: "Display primitives",
     content: (
       <div className="flex flex-col gap-stack">
-        <Row label="Avatar sizes and group">
+        <DemoRow label="Avatar sizes and group">
           <Avatar size="sm">
             <AvatarFallback>AK</AvatarFallback>
           </Avatar>
@@ -328,15 +320,15 @@ export const sections: CatalogSection[] = [
             </Avatar>
             <AvatarGroupCount>+3</AvatarGroupCount>
           </AvatarGroup>
-        </Row>
+        </DemoRow>
         <Separator />
-        <Row label="Skeleton">
+        <DemoRow label="Skeleton">
           <div className="flex w-full max-w-sm flex-col gap-2">
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="h-4 w-1/2" />
             <Skeleton className="h-10" />
           </div>
-        </Row>
+        </DemoRow>
       </div>
     ),
   },
@@ -346,7 +338,7 @@ export const sections: CatalogSection[] = [
     title: "Overlays",
     description: "Dialog, AlertDialog, Sheet, DropdownMenu, Popover, Tooltip and toasts",
     content: (
-      <Row label="Click to open">
+      <DemoRow label="Click to open">
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline">Dialog</Button>
@@ -440,7 +432,7 @@ export const sections: CatalogSection[] = [
         <Button variant="secondary" onClick={() => toast.error("Couldn't publish the flow")}>
           Error toast
         </Button>
-      </Row>
+      </DemoRow>
     ),
   },
   {
@@ -450,7 +442,7 @@ export const sections: CatalogSection[] = [
     description: "src/components: PageHeader, EmptyState, ErrorState, Spinner",
     content: (
       <div className="flex flex-col gap-section">
-        <Row label="EmptyState">
+        <DemoRow label="EmptyState">
           <EmptyState
             className="w-full"
             headingLevel={3}
@@ -459,16 +451,16 @@ export const sections: CatalogSection[] = [
             description="Create your first flow to start talking to contacts."
             action={<Button>Create flow</Button>}
           />
-        </Row>
-        <Row label="ErrorState">
+        </DemoRow>
+        <DemoRow label="ErrorState">
           <ErrorState className="w-full rounded-lg border" title="Couldn't load flows" onRetry={() => {}} />
-        </Row>
-        <Row label="Spinner">
+        </DemoRow>
+        <DemoRow label="Spinner">
           <Spinner size="sm" />
           <Spinner />
           <Spinner size="lg" />
-        </Row>
-        <Row label="PageHeader (renders the page h1, so it is shown last)">
+        </DemoRow>
+        <DemoRow label="PageHeader (renders the page h1, so it is shown last)">
           <PageHeader
             className="w-full rounded-lg border p-stack"
             title="Flows"
@@ -483,7 +475,7 @@ export const sections: CatalogSection[] = [
               </>
             }
           />
-        </Row>
+        </DemoRow>
       </div>
     ),
   },

@@ -5,7 +5,7 @@ import { userEvent } from "vitest/browser";
 import { Button } from "@/components/ui/button";
 import { expectNoA11yViolations } from "@/test/axe";
 import { renderWithProviders } from "@/test/render";
-import { AiMark, AiMessage, PromptBox, PromptSuggestions, ThinkingIndicator } from "./ai";
+import { AiMark, AiMessage, PromptBox, PromptSuggestions, ThinkingIndicator } from ".";
 
 function Harness({ onSubmit, busy }: { onSubmit: (p: string) => void; busy?: boolean }) {
   const [value, setValue] = useState("");

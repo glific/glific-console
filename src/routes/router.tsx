@@ -1,20 +1,20 @@
 import { createBrowserRouter, Outlet, type RouteObject } from "react-router";
-import { RequireAuth } from "@/features/auth/require-auth";
-import { RequireGlificAdmin } from "@/features/auth/require-glific-admin";
-import { HomePage } from "./home";
-import { NotFoundPage } from "./not-found";
-import { RootLayout } from "./root-layout";
-import { RouteErrorBoundary } from "./route-error";
+import { RequireAuth } from "@/features/auth/RequireAuth";
+import { RequireGlificAdmin } from "@/features/auth/RequireGlificAdmin";
+import { HomePage } from "./HomePage";
+import { NotFoundPage } from "./NotFoundPage";
+import { RootLayout } from "./RootLayout";
+import { RouteErrorBoundary } from "./RouteErrorBoundary";
 
 export function createRoutes(): RouteObject[] {
   return [
     // Every page is lazy so the first load is only the shell; each route fetches its own chunk.
     {
       path: "login",
-      lazy: async () => ({ Component: (await import("@/features/auth/login-page")).LoginPage }),
+      lazy: async () => ({ Component: (await import("@/features/auth/LoginPage")).LoginPage }),
       errorElement: <RouteErrorBoundary />,
     },
-    { path: "logout", lazy: async () => ({ Component: (await import("@/features/auth/logout-page")).LogoutPage }) },
+    { path: "logout", lazy: async () => ({ Component: (await import("@/features/auth/LogoutPage")).LogoutPage }) },
     {
       element: (
         <RequireAuth>

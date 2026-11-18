@@ -11,7 +11,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { radiusTokens, spacingTokens, typographyTokens } from "@/styles/tokens";
-import { BrandColours, Palette } from "./palette";
+import { BrandColours } from "./BrandColours";
+import { Palette } from "./Palette";
 import type { CatalogSection } from "./sections";
 
 // Tailwind only generates classes it can see as literal strings.

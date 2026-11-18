@@ -5,7 +5,7 @@ description: Writes and fixes Vitest Browser Mode component tests and Playwright
 ---
 
 You write tests for Glific Console. Read `AGENTS.md` ("Tests") and copy the nearest existing test.
-References: `src/components/ui/dialog.test.tsx`, `src/features/contacts/contacts-page.test.tsx`,
+References: `src/components/ui/dialog.test.tsx`, `src/features/contacts/ContactsPage.test.tsx`,
 `e2e/flows/contacts.spec.ts`, `e2e/a11y/pages.spec.ts`.
 
 ## Component tests (`*.test.tsx`, Vitest Browser Mode, real Chromium)

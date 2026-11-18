@@ -31,6 +31,10 @@
     "notFound": {
       "title": "Page not found",
       "description": "The page you are looking for doesn't exist or has moved."
+    },
+    "permissionDenied": {
+      "title": "You don't have access to this page",
+      "description": "Ask an admin in your organisation to change your role if you need it."
     }
   },
   "home": {
@@ -198,5 +202,21 @@
   "list": {
     "total_one": "{{count}} result",
     "total_other": "{{count}} results"
+  },
+  "form": {
+    "save": "Save",
+    "saving": "Saving",
+    "cancel": "Cancel",
+    "unsaved": {
+      "title": "Leave without saving?",
+      "description": "Your changes on this page will be lost.",
+      "stay": "Keep editing",
+      "leave": "Leave"
+    }
+  },
+  "language": {
+    "label": "Language",
+    "changed": "Language changed",
+    "error": "Couldn't change the language. Try again."
   }
 }

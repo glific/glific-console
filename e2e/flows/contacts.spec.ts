@@ -20,7 +20,8 @@ test.describe("contacts", () => {
 
   test("is fully keyboard operable", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { level: 1, name: "Home" })).toBeVisible();
+    // The nav links render once the user's roles load, which can be after the page heading.
+    await expect(page.getByRole("link", { name: "Contacts" })).toBeVisible();
     await page.keyboard.press("Tab");
     await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
     await page.keyboard.press("Tab");

@@ -1,9 +1,6 @@
-export {
-  ListMessage,
-  LocationRequestMessage,
-  QuickReplyMessage,
-  type TemplateButton,
-  TemplateMessage,
-} from "./whatsapp-messages";
-export { WhatsAppPreview } from "./whatsapp-preview";
-export { WhatsAppText } from "./whatsapp-text";
+export { ListMessage } from "./ListMessage";
+export { LocationRequestMessage } from "./LocationRequestMessage";
+export { QuickReplyMessage } from "./QuickReplyMessage";
+export { type TemplateButton, TemplateMessage } from "./TemplateMessage";
+export { WhatsAppPreview } from "./WhatsAppPreview";
+export { WhatsAppText } from "./WhatsAppText";

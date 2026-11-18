@@ -45,6 +45,14 @@ export type ContactStatusEnum =
   | 'PROCESSING'
   | 'VALID';
 
+export type CurrentUserInput = {
+  email?: string | null | undefined;
+  languageId?: string | number | null | undefined;
+  name?: string | null | undefined;
+  otp?: string | null | undefined;
+  password?: string | null | undefined;
+};
+
 /** A generic date range filter where from and to both are inclusive */
 export type DateRangeInput = {
   /** column name where we apply the date range. Default is inserted_at. */
@@ -71,7 +79,7 @@ export type SortOrder =
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { currentUser: { user: { id: string | null, name: string | null, roles: Array<unknown> | null } | null } | null };
+export type CurrentUserQuery = { currentUser: { user: { id: string | null, name: string | null, accessRoles: Array<{ label: string | null } | null> | null, language: { locale: string | null } | null, organization: { id: string | null, activeLanguages: Array<{ id: string | null, label: string | null, labelLocale: string | null, locale: string | null, localized: boolean | null } | null> | null } | null } | null } | null };
 
 export type ContactsQueryVariables = Exact<{
   filter?: ContactFilter | null | undefined;
@@ -80,6 +88,13 @@ export type ContactsQueryVariables = Exact<{
 
 
 export type ContactsQuery = { countContacts: number | null, contacts: Array<{ id: string | null, name: string | null, maskedPhone: string | null, status: ContactStatusEnum | null, lastMessageAt: string | null } | null> | null };
+
+export type UpdateLanguageMutationVariables = Exact<{
+  input: CurrentUserInput;
+}>;
+
+
+export type UpdateLanguageMutation = { updateCurrentUser: { user: { id: string | null } | null, errors: Array<{ key: string, message: string } | null> | null } | null };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -106,7 +121,22 @@ export const CurrentUserDocument = new TypedDocumentString(`
     user {
       id
       name
-      roles
+      accessRoles {
+        label
+      }
+      language {
+        locale
+      }
+      organization {
+        id
+        activeLanguages {
+          id
+          label
+          labelLocale
+          locale
+          localized
+        }
+      }
     }
   }
 }
@@ -123,3 +153,16 @@ export const ContactsDocument = new TypedDocumentString(`
   countContacts(filter: $filter)
 }
     `) as unknown as TypedDocumentString<ContactsQuery, ContactsQueryVariables>;
+export const UpdateLanguageDocument = new TypedDocumentString(`
+    mutation UpdateLanguage($input: CurrentUserInput!) {
+  updateCurrentUser(input: $input) {
+    user {
+      id
+    }
+    errors {
+      key
+      message
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<UpdateLanguageMutation, UpdateLanguageMutationVariables>;

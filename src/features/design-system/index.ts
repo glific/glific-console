@@ -1,1 +1,1 @@
-export { DesignSystemPage } from "./design-system-page";
+export { DesignSystemPage } from "./DesignSystemPage";

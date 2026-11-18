@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router/dom";
-import { AppProviders } from "./app-providers";
+import { AppProviders } from "./AppProviders";
 import { env } from "./lib/config";
 import { startMonitoring } from "./lib/monitoring";
 import { createRouter } from "./routes/router";

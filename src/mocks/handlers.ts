@@ -8,6 +8,12 @@ function matches(term: string | undefined, name: string, phone: string) {
   return !query || name.toLowerCase().includes(query) || phone.includes(query);
 }
 
+export const languages = [
+  { id: "1", label: "English", labelLocale: "English", locale: "en", localized: true },
+  { id: "2", label: "Hindi", labelLocale: "हिंदी", locale: "hi", localized: true },
+  { id: "3", label: "Marathi", labelLocale: "मराठी", locale: "mr", localized: false },
+];
+
 // Any origin, so the handlers answer whichever backend host the app resolves to.
 export const glificApi = graphql.link("*/api");
 
@@ -16,8 +22,21 @@ export const handlers = [
   // Glific admin in mock mode, so the internal /design-system page is reachable while developing.
   glificApi.query("CurrentUser", () =>
     HttpResponse.json({
-      data: { currentUser: { user: { id: "1", name: "Glific Team", roles: ["Glific_admin"] } } },
+      data: {
+        currentUser: {
+          user: {
+            id: "1",
+            name: "Glific Team",
+            accessRoles: [{ label: "Glific_admin" }],
+            language: { locale: "en" },
+            organization: { id: "1", activeLanguages: languages },
+          },
+        },
+      },
     }),
+  ),
+  glificApi.mutation("UpdateLanguage", () =>
+    HttpResponse.json({ data: { updateCurrentUser: { user: { id: "1" }, errors: null } } }),
   ),
   glificApi.query("Contacts", ({ variables }) => {
     const filter = (variables.filter ?? {}) as { term?: string };

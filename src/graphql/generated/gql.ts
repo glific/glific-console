@@ -15,22 +15,28 @@ import * as types from './graphql';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  query CurrentUser {\n    currentUser {\n      user {\n        id\n        name\n        roles\n      }\n    }\n  }\n": typeof types.CurrentUserDocument,
+    "\n  query CurrentUser {\n    currentUser {\n      user {\n        id\n        name\n        accessRoles {\n          label\n        }\n        language {\n          locale\n        }\n        organization {\n          id\n          activeLanguages {\n            id\n            label\n            labelLocale\n            locale\n            localized\n          }\n        }\n      }\n    }\n  }\n": typeof types.CurrentUserDocument,
     "\n  query Contacts($filter: ContactFilter, $opts: Opts) {\n    contacts(filter: $filter, opts: $opts) {\n      id\n      name\n      maskedPhone\n      status\n      lastMessageAt\n    }\n    countContacts(filter: $filter)\n  }\n": typeof types.ContactsDocument,
+    "\n  mutation UpdateLanguage($input: CurrentUserInput!) {\n    updateCurrentUser(input: $input) {\n      user {\n        id\n      }\n      errors {\n        key\n        message\n      }\n    }\n  }\n": typeof types.UpdateLanguageDocument,
 };
 const documents: Documents = {
-    "\n  query CurrentUser {\n    currentUser {\n      user {\n        id\n        name\n        roles\n      }\n    }\n  }\n": types.CurrentUserDocument,
+    "\n  query CurrentUser {\n    currentUser {\n      user {\n        id\n        name\n        accessRoles {\n          label\n        }\n        language {\n          locale\n        }\n        organization {\n          id\n          activeLanguages {\n            id\n            label\n            labelLocale\n            locale\n            localized\n          }\n        }\n      }\n    }\n  }\n": types.CurrentUserDocument,
     "\n  query Contacts($filter: ContactFilter, $opts: Opts) {\n    contacts(filter: $filter, opts: $opts) {\n      id\n      name\n      maskedPhone\n      status\n      lastMessageAt\n    }\n    countContacts(filter: $filter)\n  }\n": types.ContactsDocument,
+    "\n  mutation UpdateLanguage($input: CurrentUserInput!) {\n    updateCurrentUser(input: $input) {\n      user {\n        id\n      }\n      errors {\n        key\n        message\n      }\n    }\n  }\n": types.UpdateLanguageDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query CurrentUser {\n    currentUser {\n      user {\n        id\n        name\n        roles\n      }\n    }\n  }\n"): typeof import('./graphql').CurrentUserDocument;
+export function graphql(source: "\n  query CurrentUser {\n    currentUser {\n      user {\n        id\n        name\n        accessRoles {\n          label\n        }\n        language {\n          locale\n        }\n        organization {\n          id\n          activeLanguages {\n            id\n            label\n            labelLocale\n            locale\n            localized\n          }\n        }\n      }\n    }\n  }\n"): typeof import('./graphql').CurrentUserDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query Contacts($filter: ContactFilter, $opts: Opts) {\n    contacts(filter: $filter, opts: $opts) {\n      id\n      name\n      maskedPhone\n      status\n      lastMessageAt\n    }\n    countContacts(filter: $filter)\n  }\n"): typeof import('./graphql').ContactsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateLanguage($input: CurrentUserInput!) {\n    updateCurrentUser(input: $input) {\n      user {\n        id\n      }\n      errors {\n        key\n        message\n      }\n    }\n  }\n"): typeof import('./graphql').UpdateLanguageDocument;
 
 
 export function graphql(source: string) {

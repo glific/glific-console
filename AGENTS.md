@@ -33,7 +33,7 @@ src/routes/            route tree (router.tsx), layout, pages, 404, error bounda
 src/lib/               api-client, query-client, env/config, i18n, storage, utils (cn)
 src/styles/tokens.css  ALL design tokens; tokens.ts is the manifest the design-system page reads
 src/styles/fonts.css   self-hosted Google Sans Flex + Noto Sans Devanagari (Latin, Latin Ext, Devanagari only)
-src/locales/en.json    UI strings
+src/locales/           UI strings: en.json and hi.json, same keys
 src/mocks/             MSW handlers (dev + tests)
 src/test/              test helpers: renderWithProviders, renderRoute, expectNoA11yViolations, MSW worker
 e2e/                   Playwright: flows/, a11y/
@@ -57,7 +57,9 @@ docs/specs/            feature specs
   plugin `includes` in `biome.json`, with a one-line reason in the PR.
 - No `radix-ui` / `@radix-ui/*` imports outside `src/components/ui`. Import `cn` from `@/lib/utils`, never from `cn`.
 - Every screen handles **loading, empty, error** (Skeleton/Spinner, EmptyState, ErrorState).
-- All user-facing text goes through `t()` (`useTranslation`) with keys in `src/locales/en.json`.
+- All user-facing text goes through `t()` (`useTranslation`) with keys in `src/locales/en.json`. Add the Hindi in
+  `hi.json` in the same change, reusing the current app's wording (glific-frontend `src/i18n/hi/hi.json`, keyed by the
+  English text) where it exists; a test fails when the keys or `{{placeholders}}` differ.
 - Comments only explain a non-obvious **why** (an a11y fix, a perf trap, a deliberate deviation). No comments that
   restate a name, a prop or what the code does; prefer a clearer name.
 
@@ -84,8 +86,18 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
 - REST (auth only) goes through `apiClient`. Never call `fetch` from components.
 - Add an MSW handler for every operation (`glificApi.query("Name", ...)` in `src/mocks/handlers.ts`) so dev and tests
   work offline. In `pnpm dev:mock`, sign in with any phone and password `password`.
+- One component per file, named exactly after it in PascalCase (`FormField` in `FormField.tsx`, its test in
+  `FormField.test.tsx`); small helpers a component uses get their own file too. Hooks, utilities and data stay
+  kebab-case (`use-zod-form.ts`, `api-client.ts`). Folders re-export through `index.ts`. Only `src/components/ui` keeps
+  shadcn's generated kebab-case files, with related parts like `Card` and `CardHeader` together.
 - Pages are lazy routes in `src/routes/router.tsx` (`lazy: () => import(...)`), so the first load stays small.
-- List screens use `ListPage` (`src/components/list-page.tsx`): search, filters, server pagination and all states.
+- Every page and nav item opens to the same roles as in the current app: wrap the route in
+  `<RequireAccess allow={managers}>` and give the nav item the same `allow` (`everyone`, `managers`, `admins`,
+  `glificAdmins` from `features/auth/current-user.ts`). Custom roles count as managers, as they do today.
+- Forms use `@/components/form`: a zod schema with `useZodForm`, each field in `FormField` (label, hint, error wired
+  to the control), `FormActions` for Save and Cancel, and `UnsavedChangesGuard` on every edit page. Lists too long to
+  load at once use `AsyncSearchSelect`.
+- List screens use `ListPage` (`src/components/ListPage.tsx`): search, filters, server pagination and all states.
 - Env vars: add to `src/lib/env.ts` (typed + validated) and `.env.example`. Never read `import.meta.env` elsewhere.
 
 ## Tests

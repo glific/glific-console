@@ -1,8 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { monitoringReady, reportError, startMonitoring, track } from "./monitoring";
+import { identifyUser, monitoringReady, reportError, resetAnalytics, startMonitoring, track } from "./monitoring";
 
 const sentry = { init: vi.fn(), setTag: vi.fn(), captureException: vi.fn() };
-const posthog = { init: vi.fn(), register: vi.fn(), capture: vi.fn() };
+const posthog = {
+  init: vi.fn(),
+  register: vi.fn(),
+  capture: vi.fn(),
+  identify: vi.fn(),
+  group: vi.fn(),
+  reset: vi.fn(),
+};
 const load = {
   sentry: async () => sentry as never,
   posthog: async () => posthog as never,
@@ -41,5 +48,21 @@ describe("monitoring", () => {
     expect(sentry.captureException).toHaveBeenCalledWith(error, { extra: { source: "test" } });
     await expect.poll(() => posthog.capture.mock.calls.length).toBe(1);
     expect(posthog.capture).toHaveBeenCalledWith("signed_in", { method: "password" });
+  });
+
+  it("identifies the user and organisation the way the current app does, and resets on sign-out", async () => {
+    startMonitoring({ ...off, VITE_POSTHOG_KEY: "phc_1" }, load);
+    identifyUser({ id: "7", roles: ["Admin"] }, { id: "1", isTrial: false });
+    await expect.poll(() => posthog.group.mock.calls.length).toBe(1);
+    expect(posthog.identify).toHaveBeenCalledWith("7", { access_roles: ["Admin"] });
+    expect(posthog.group).toHaveBeenCalledWith("organization", "1", { is_trial: false });
+
+    identifyUser({ id: "8", roles: [] }, { id: "2" });
+    await expect.poll(() => posthog.group.mock.calls.length).toBe(2);
+    expect(posthog.identify).toHaveBeenLastCalledWith("8", undefined);
+    expect(posthog.group).toHaveBeenLastCalledWith("organization", "2", undefined);
+
+    resetAnalytics();
+    await expect.poll(() => posthog.reset.mock.calls.length).toBe(1);
   });
 });
