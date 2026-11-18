@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/sonner";
 import { currentUserKey, useCurrentUser } from "@/features/auth/current-user";
 import { request } from "@/graphql/client";
@@ -21,7 +20,8 @@ const UpdateLanguage = graphql(`
   }
 `);
 
-export function LanguageSelect({ className }: { className?: string }) {
+/** The organisation's languages this app is translated into, and a switch that saves the choice on the user. */
+export function useLanguageSwitch() {
   const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
   const user = useCurrentUser().data;
@@ -37,8 +37,6 @@ export function LanguageSelect({ className }: { className?: string }) {
     },
   });
 
-  if (languages.length < 2) return null;
-
   async function change(locale: string) {
     const language = languages.find((option) => option.locale === locale);
     if (!language) return;
@@ -53,18 +51,5 @@ export function LanguageSelect({ className }: { className?: string }) {
     }
   }
 
-  return (
-    <Select value={i18n.language} onValueChange={(locale) => void change(locale)} disabled={save.isPending}>
-      <SelectTrigger size="sm" aria-label={t("language.label")} className={className}>
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        {languages.map((language) => (
-          <SelectItem key={language.id} value={language.locale}>
-            {language.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
+  return { languages, current: i18n.language, change, isSaving: save.isPending };
 }

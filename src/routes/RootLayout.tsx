@@ -1,74 +1,18 @@
-import { LogOutIcon } from "lucide-react";
-import { lazy, Suspense, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { Link, NavLink, Outlet } from "react-router";
-import { Button } from "@/components/ui/button";
-import { everyone, glificAdmins, roleLabels, useAccess, useCurrentUser } from "@/features/auth/current-user";
+import { useEffect } from "react";
+import { Outlet } from "react-router";
+import { roleLabels, useCurrentUser } from "@/features/auth/current-user";
 import { useUserLanguage } from "@/features/language/use-user-language";
+import { AppShell } from "@/features/shell";
 import { identifyUser } from "@/lib/monitoring";
 import { getSession } from "@/lib/session";
-import { cn } from "@/lib/utils";
-
-// Loaded after first paint: the dropdown pulls in floating-ui, which the first screen doesn't need.
-const LanguageSelect = lazy(async () => ({ default: (await import("@/features/language")).LanguageSelect }));
-
-const navItems = [
-  { to: "/", key: "nav.home", end: true, allow: everyone },
-  { to: "/contacts", key: "nav.contacts", end: false, allow: everyone },
-  { to: "/design-system", key: "nav.designSystem", end: false, allow: glificAdmins },
-] as const;
 
 export function RootLayout() {
-  const { t } = useTranslation();
-  const { can } = useAccess();
   useIdentifyUser();
   useUserLanguage();
-  const items = navItems.filter((item) => can(item.allow));
   return (
-    <div className="flex min-h-svh flex-col">
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2"
-      >
-        {t("app.skipToContent")}
-      </a>
-      <header className="flex h-14 items-center justify-between gap-stack border-b px-page">
-        <div className="flex items-center gap-section">
-          <span className="text-subheading">{t("app.name")}</span>
-          <nav aria-label={t("nav.label")} className="flex items-center gap-1">
-            {items.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) =>
-                  cn(
-                    "rounded-md px-3 py-1.5 text-body text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
-                    isActive && "bg-accent text-accent-foreground",
-                  )
-                }
-              >
-                {t(item.key)}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
-        <div className="flex items-center gap-inline">
-          <Suspense fallback={null}>
-            <LanguageSelect />
-          </Suspense>
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/logout">
-              <LogOutIcon data-icon="inline-start" aria-hidden="true" />
-              {t("auth.signOut")}
-            </Link>
-          </Button>
-        </div>
-      </header>
-      <main id="main" className="flex-1 p-page">
-        <Outlet />
-      </main>
-    </div>
+    <AppShell>
+      <Outlet />
+    </AppShell>
   );
 }
 

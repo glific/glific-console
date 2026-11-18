@@ -1,5 +1,5 @@
 import { type DefaultValues, type FieldErrors, type FieldValues, type Resolver, useForm } from "react-hook-form";
-import type { z } from "zod";
+import { type core, safeParseAsync, type z } from "zod/mini";
 
 function setPath(target: Record<string, unknown>, path: readonly PropertyKey[], value: unknown) {
   let node = target;
@@ -14,11 +14,14 @@ function setPath(target: Record<string, unknown>, path: readonly PropertyKey[], 
   });
 }
 
-export function zodResolver<Schema extends z.ZodType<FieldValues, FieldValues>>(
+// Zod mini: the same schemas as full Zod with a much smaller bundle, since every form page loads it.
+type FormSchema = core.$ZodType<FieldValues, FieldValues>;
+
+export function zodResolver<Schema extends FormSchema>(
   schema: Schema,
 ): Resolver<z.input<Schema>, unknown, z.output<Schema>> {
   return async (values) => {
-    const result = await schema.safeParseAsync(values);
+    const result = await safeParseAsync(schema, values);
     if (result.success) return { values: result.data, errors: {} };
     const errors: Record<string, unknown> = {};
     for (const issue of result.error.issues) {
@@ -28,10 +31,7 @@ export function zodResolver<Schema extends z.ZodType<FieldValues, FieldValues>>(
   };
 }
 
-export function useZodForm<Schema extends z.ZodType<FieldValues, FieldValues>>(
-  schema: Schema,
-  defaultValues: DefaultValues<z.input<Schema>>,
-) {
+export function useZodForm<Schema extends FormSchema>(schema: Schema, defaultValues: DefaultValues<z.input<Schema>>) {
   return useForm<z.input<Schema>, unknown, z.output<Schema>>({
     resolver: zodResolver(schema),
     defaultValues,

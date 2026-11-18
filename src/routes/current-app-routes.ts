@@ -1,0 +1,38 @@
+/**
+ * Top-level paths the current app serves and this one doesn't yet. Old links and bookmarks to them forward to the
+ * current app instead of a 404. Remove a path once its pages are rebuilt here.
+ */
+export const currentAppPaths = [
+  "chat",
+  "search",
+  "speed-send",
+  "contact-profile",
+  "contact-management",
+  "collection",
+  "blocked-contacts",
+  "contact-fields",
+  "flow",
+  "trigger",
+  "sheet-integration",
+  "certificates",
+  "certificate",
+  "template",
+  "interactive-message",
+  "whatsapp-forms",
+  "group",
+  "group-details",
+  "webhook-logs",
+  "notifications",
+  "ticket",
+  "analytics",
+  "settings",
+  "tag",
+  "staff-management",
+  "role",
+  "organizations",
+  "consulting-hours",
+  "assistants",
+  "ai-evaluations",
+  "myaccount",
+  "organization-registration",
+] as const;

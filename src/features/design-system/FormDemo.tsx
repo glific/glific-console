@@ -1,11 +1,11 @@
-import { z } from "zod";
+import { z } from "zod/mini";
 import { FormActions, FormField, FormSection, useZodForm } from "@/components/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const demoTagSchema = z.object({
-  name: z.string().trim().min(1, "Enter a name"),
-  keywords: z.string().trim().max(200, "Keep it under 200 characters"),
+  name: z.string().check(z.trim(), z.minLength(1, "Enter a name")),
+  keywords: z.string().check(z.trim(), z.maxLength(200, "Keep it under 200 characters")),
 });
 
 export function FormDemo() {

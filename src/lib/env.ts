@@ -4,6 +4,8 @@ export interface Env {
   /** Backend origin override (local dev). Unset: derived per NGO host, api.<shortcode>.glific.com. */
   readonly VITE_BACKEND_URL: string | null;
   readonly VITE_API_SUBDOMAIN: string;
+  /** Current app origin override (local dev). Unset: <shortcode>.glific.com when served at console.<shortcode>. */
+  readonly VITE_CURRENT_APP_URL: string | null;
   readonly VITE_ENABLE_MOCKS: boolean;
   readonly VITE_SENTRY_DSN: string | null;
   readonly VITE_POSTHOG_KEY: string | null;
@@ -46,6 +48,7 @@ export function parseEnv(raw: RawEnv): Env {
   const env: Env = {
     VITE_BACKEND_URL: optionalUrl(raw, "VITE_BACKEND_URL", problems),
     VITE_API_SUBDOMAIN: optionalString(raw, "VITE_API_SUBDOMAIN") ?? "api",
+    VITE_CURRENT_APP_URL: optionalUrl(raw, "VITE_CURRENT_APP_URL", problems),
     VITE_ENABLE_MOCKS: optionalBoolean(raw, "VITE_ENABLE_MOCKS", problems),
     VITE_SENTRY_DSN: optionalUrl(raw, "VITE_SENTRY_DSN", problems),
     VITE_POSTHOG_KEY: optionalString(raw, "VITE_POSTHOG_KEY"),

@@ -8,6 +8,7 @@
   --palette-white: #ffffff;
 
   --palette-zinc-100: #f5f5f5;
+  --palette-zinc-200: #ebebec;
   --palette-zinc-250: #e4e4e7;
   --palette-zinc-300: #d4d4d8;
   --palette-zinc-600: #52525b;
@@ -30,6 +31,10 @@
   --palette-violet-100: #ebe9f1;
   --palette-violet-400: #7e6bb5;
   --palette-violet-700: #5b4b8a;
+  /* Glific AI gradient stops from the 2.0 prototype */
+  --palette-violet-500: #7357d9;
+  --palette-purple-400: #a35ddb;
+  --palette-pink-400: #d978b4;
 
   --palette-wa-wallpaper: #f8f6f2;
   --palette-wa-bubble-out: #d9fdd3;
@@ -73,6 +78,13 @@
   --ai: var(--palette-violet-700);
   --ai-foreground: var(--palette-white);
   --ai-soft: var(--palette-violet-100);
+  --ai-gradient: linear-gradient(
+    135deg,
+    var(--palette-violet-700) 0%,
+    var(--palette-violet-500) 40%,
+    var(--palette-purple-400) 72%,
+    var(--palette-pink-400) 100%
+  );
   --border: var(--palette-zinc-250);
   --input: var(--palette-zinc-300);
   --ring: var(--palette-brand-700);
@@ -90,12 +102,13 @@
   --chart-4: var(--palette-violet-400);
   --chart-5: var(--palette-brand-500);
 
-  --sidebar: var(--palette-white);
+  --sidebar: var(--palette-zinc-100);
   --sidebar-foreground: var(--palette-zinc-900);
   --sidebar-primary: var(--palette-brand-700);
   --sidebar-primary-foreground: var(--palette-white);
-  --sidebar-accent: var(--palette-brand-100);
-  --sidebar-accent-foreground: var(--palette-brand-700);
+  --sidebar-accent: var(--palette-white);
+  --sidebar-accent-foreground: var(--palette-zinc-900);
+  --sidebar-hover: var(--palette-zinc-200);
   --sidebar-border: var(--palette-zinc-250);
   --sidebar-ring: var(--palette-brand-700);
 
@@ -160,6 +173,7 @@
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
   --color-sidebar-accent: var(--sidebar-accent);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-hover: var(--sidebar-hover);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
@@ -198,4 +212,9 @@
   --spacing-section: 1.5rem;
   --spacing-stack: 1rem;
   --spacing-inline: 0.5rem;
+}
+
+/* 4. Gradient utilities (Tailwind has no theme namespace for background images) */
+@utility bg-ai-gradient {
+  background-image: var(--ai-gradient);
 }

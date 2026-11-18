@@ -6,8 +6,46 @@
   "nav": {
     "label": "मुख्य",
     "home": "होम",
+    "chats": "चैट",
+    "flows": "फ्लो",
+    "library": "लाइब्रेरी",
+    "ai": "AI असिस्टेंट",
+    "analytics": "डेटा एनालिटिक्स",
     "contacts": "संपर्क",
-    "designSystem": "डिज़ाइन सिस्टम"
+    "settings": "सेटिंग्स",
+    "glificAdmin": "Glific एडमिन",
+    "designSystem": "डिज़ाइन सिस्टम",
+    "sections": "{{section}} के भाग",
+    "pages": {
+      "chats": "चैट",
+      "groupChats": "WhatsApp समूह चैट",
+      "searches": "खोजें",
+      "speedSends": "Speed Sends",
+      "flows": "फ्लो",
+      "triggers": "ट्रिगर",
+      "webhookLogs": "वेबहुक लॉग्स",
+      "interactiveMessages": "इंटरएक्टिव संदेश",
+      "templates": "HSM टेम्पलेट",
+      "whatsappForms": "WhatsApp फ़ॉर्म",
+      "polls": "WhatsApp पोल",
+      "sheets": "गूगल शीट्स",
+      "certificates": "प्रमाणपत्र",
+      "assistants": "AI असिस्टेंट",
+      "aiEvaluations": "AI Evals",
+      "allContacts": "सभी संपर्क",
+      "collections": "संग्रह",
+      "groupCollections": "WhatsApp समूह संग्रह",
+      "contactFields": "संपर्क चर",
+      "blocked": "ब्लॉक किये हुए कॉन्टेक्ट्स",
+      "import": "संपर्क अपलोड करें",
+      "organizationSettings": "संगठन सेटिंग्स",
+      "staff": "कर्मचारी प्रबंधन",
+      "roles": "भूमिकाएँ",
+      "tags": "टैग",
+      "phones": "व्हाट्सएप फ़ोन",
+      "organizations": "संगठनों",
+      "consulting": "Consulting"
+    }
   },
   "common": {
     "loading": "लोड हो रहा है",
@@ -21,7 +59,8 @@
     "selected": "{{count}} चुने गए",
     "noResults": "कोई परिणाम नहीं",
     "help": "मदद",
-    "beta": "बीटा"
+    "beta": "बीटा",
+    "opensInNewTab": "नए टैब में खुलता है"
   },
   "errors": {
     "generic": {
@@ -35,7 +74,8 @@
     "permissionDenied": {
       "title": "आपके पास इस पेज की अनुमति नहीं है",
       "description": "अगर आपको इसकी ज़रूरत है, तो अपने संगठन के एडमिन से अपनी भूमिका बदलने को कहें।"
-    }
+    },
+    "openingCurrentApp": "यह पेज मौजूदा Glific में खुल रहा है"
   },
   "home": {
     "title": "होम",
@@ -218,5 +258,75 @@
     "label": "भाषा",
     "changed": "भाषा बदल दी गई",
     "error": "भाषा नहीं बदल सकी। फिर कोशिश करें।"
+  },
+  "breadcrumb": {
+    "label": "ब्रेडक्रम्ब"
+  },
+  "shell": {
+    "menu": "मेन्यू",
+    "menuDescription": "ऐप के भाग",
+    "toggleMenu": "मेन्यू छोटा या बड़ा करें",
+    "account": {
+      "myAccount": "मेरा खाता",
+      "suffix": ": खाता और सेटिंग्स"
+    },
+    "balance": {
+      "label": "मैसेज बैलेंस",
+      "low": "मैसेज बैलेंस कम है",
+      "unavailable": "Gupshup सेटिंग सत्यापित करें",
+      "title": "मैसेज बैलेंस: {{amount}}"
+    },
+    "apps": {
+      "label": "ऐप्स",
+      "withCount": "{{label}}, {{count}} अपठित",
+      "logsTip": "आपके फ्लो से वेबहुक कॉल",
+      "tickets": "सपोर्ट टिकट",
+      "ticketsTip": "संपर्क जिन्होंने किसी व्यक्ति से बात करनी चाही"
+    },
+    "panel": {
+      "resize": "पैनल का आकार बदलें",
+      "close": "{{title}} बंद करें"
+    },
+    "resources": {
+      "title": "संसाधन",
+      "tip": "Glific की गाइड और कम्युनिटी",
+      "docs": {
+        "title": "दस्तावेज़",
+        "description": "Glific के हर हिस्से के लिए गाइड"
+      },
+      "community": {
+        "title": "Discord कम्युनिटी",
+        "description": "सवाल पूछें और Glific टीम के साथ टिकट बनाएँ"
+      }
+    }
+  },
+  "notifications": {
+    "title": "सूचनाएं",
+    "tip": "क्या हुआ: भेजे गए संदेश, प्रकाशन, मंज़ूरियाँ",
+    "empty": "अभी कोई सूचना नहीं",
+    "error": "सूचनाएं लोड नहीं हो सकीं",
+    "viewAll": "सूचनाएं देखें",
+    "severity": {
+      "critical": "गंभीर",
+      "warning": "चेतावनी",
+      "info": "जानकारी"
+    }
+  },
+  "glificAi": {
+    "name": "Glific AI",
+    "tip": "इस पेज के बारे में कुछ भी पूछें",
+    "greeting": "नमस्ते, मैं कैसे मदद करूँ?",
+    "intro": "Glific में कुछ करने का तरीका पूछें, या इस पेज पर जो है उसमें मदद लें।",
+    "placeholder": "Glific से कुछ भी पूछें",
+    "error": "माफ़ करें, कुछ गलत हो गया। फिर कोशिश करें।",
+    "newChat": "नई चैट",
+    "helpful": "मददगार",
+    "notHelpful": "मददगार नहीं",
+    "suggestions": {
+      "debug": "एक फ्लो ने काम करना बंद कर दिया है, मैं इसे कैसे डीबग करूँ?",
+      "ai": "मैं अपने फ्लो में AI कैसे जोड़ूँ?",
+      "sheets": "मैं अपने फ्लो में Google Sheets का उपयोग कैसे करूँ?",
+      "broadcast": "मैं अपना फ्लो संपर्कों को कैसे भेजूँ?"
+    }
   }
 }

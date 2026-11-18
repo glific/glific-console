@@ -1,6 +1,6 @@
 // Primitive --palette-* values are deliberately not listed: nothing outside tokens.css may use them.
 
-export type TokenGroup = "color" | "chart" | "sidebar" | "radius" | "font" | "typography" | "spacing";
+export type TokenGroup = "color" | "gradient" | "chart" | "sidebar" | "radius" | "font" | "typography" | "spacing";
 
 export interface TokenDefinition {
   /** CSS custom property, without the leading `--`. */
@@ -50,6 +50,12 @@ export const colorTokens = [
   color("ai", "Glific AI violet. Never the brand green, so AI output is never mistaken for live state."),
   color("ai-foreground", "Text on a solid AI fill."),
   color("ai-soft", "Soft violet fill behind AI suggestions."),
+  {
+    name: "ai-gradient",
+    group: "gradient",
+    description: "The Glific AI mark: violet to pink. Only on the AI mark and the Glific AI app button.",
+    utility: "bg-ai-gradient",
+  },
   color("border", "Default border and divider colour."),
   color("input", "Form control border."),
   color("ring", "Focus ring."),
@@ -77,6 +83,7 @@ export const sidebarTokens = [
   "sidebar-primary-foreground",
   "sidebar-accent",
   "sidebar-accent-foreground",
+  "sidebar-hover",
   "sidebar-border",
   "sidebar-ring",
 ].map(

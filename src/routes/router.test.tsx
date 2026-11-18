@@ -28,7 +28,8 @@ describe("router", () => {
   it("serves /design-system to Glific admins", async () => {
     renderRoute("/design-system");
     expect(await screen.findByRole("heading", { level: 1, name: "Design system" }, { timeout: 5000 })).toBeVisible();
-    expect(screen.getByRole("link", { name: "Design system" })).toHaveAttribute("aria-current", "page");
+    await userEvent.click(await screen.findByRole("button", { name: /account and settings/ }));
+    expect(await screen.findByRole("menuitem", { name: "Design system" })).toHaveAttribute("aria-current", "page");
   });
 
   it("hides /design-system from users who are not Glific admins", async () => {

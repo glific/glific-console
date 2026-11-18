@@ -14,7 +14,7 @@ TanStack Query, i18next. Single app, pnpm.
 | `pnpm lint:ds`                     | Design-system rules only, plus the fixture self-test proving each rule fires                                            |
 | `pnpm test` / `pnpm test:coverage` | Vitest Browser Mode (Chromium). Coverage gate: 80% on `src/components`                                                  |
 | `pnpm test:e2e`                    | Playwright flows + axe a11y against the real local backend with dev seeds (see README)                                  |
-| `pnpm build` / `pnpm size`         | Production build / bundle budgets (`.size-limit.js`: initial load and total)                                            |
+| `pnpm build` / `pnpm size`         | Production build / bundle budgets (`.size-limit.js`: first load, and each lazy page)                                    |
 | `pnpm changeset`                   | Record a user-facing change                                                                                             |
 
 ## Layout
@@ -93,7 +93,14 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
 - Pages are lazy routes in `src/routes/router.tsx` (`lazy: () => import(...)`), so the first load stays small.
 - Every page and nav item opens to the same roles as in the current app: wrap the route in
   `<RequireAccess allow={managers}>` and give the nav item the same `allow` (`everyone`, `managers`, `admins`,
-  `glificAdmins` from `features/auth/current-user.ts`). Custom roles count as managers, as they do today.
+  `staffManagers`, `glificAdmins` from `features/auth/current-user.ts`). Custom roles count as managers, as they do
+  today.
+- The IA lives in `src/features/shell/navigation.ts`: every section and page, who sees it and which organisation
+  feature it needs. A page not rebuilt yet has `currentAppPath` and opens in the current app; when you rebuild one,
+  swap it for `to` with the new route. Pages inside a section show their siblings with `<PageSections section="…" />`
+  (pass it to `ListPage`/`PageHeader` as `sections`); deeper pages pass `breadcrumbs`.
+- Right-panel apps are listed in `src/features/shell/side-apps.ts`; open one from any page with
+  `useSideApps().show("glificAi")`. Panels are lazy, so a new one adds nothing to the first load.
 - Forms use `@/components/form`: a zod schema with `useZodForm`, each field in `FormField` (label, hint, error wired
   to the control), `FormActions` for Save and Cancel, and `UnsavedChangesGuard` on every edit page. Lists too long to
   load at once use `AsyncSearchSelect`.

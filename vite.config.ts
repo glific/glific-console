@@ -55,6 +55,7 @@ export default defineConfig(({ command, mode }) => {
         "react-i18next",
         "i18next",
         "@tanstack/react-query",
+        "zod/mini",
         "class-variance-authority",
         "cn",
         "cn/config",
