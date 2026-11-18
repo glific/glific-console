@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { delay, HttpResponse } from "msw";
 import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
@@ -16,6 +16,17 @@ describe("ContactsPage", () => {
     expect(screen.getByText("60 results")).toBeVisible();
     expect(screen.getAllByText("Active").length).toBeGreaterThan(0);
     await expectNoA11yViolations();
+  });
+
+  it("shows the other pages in Contacts as tabs, linking unbuilt ones to the current app", async () => {
+    renderRoute("/contacts");
+    const tabs = await screen.findByRole("navigation", { name: "Sections in Contacts" });
+    expect(within(tabs).getByRole("link", { name: "All contacts" })).toHaveAttribute("aria-current", "page");
+    expect(within(tabs).getByRole("link", { name: "Collections" })).toHaveAttribute(
+      "href",
+      `${location.origin}/collection`,
+    );
+    expect(within(tabs).getByRole("link", { name: "Import contacts" })).toBeVisible();
   });
 
   it("searches on the server and pages through results", async () => {

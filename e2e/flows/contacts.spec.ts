@@ -20,13 +20,17 @@ test.describe("contacts", () => {
 
   test("is fully keyboard operable", async ({ page }) => {
     await page.goto("/");
+    const contacts = page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Contacts" });
     // The nav links render once the user's roles load, which can be after the page heading.
-    await expect(page.getByRole("link", { name: "Contacts" })).toBeVisible();
+    await expect(contacts).toBeVisible();
     await page.keyboard.press("Tab");
     await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
-    await page.keyboard.press("Tab");
-    await page.keyboard.press("Tab");
-    await expect(page.getByRole("link", { name: "Contacts" })).toBeFocused();
+    // Through the menu toggle and every section before Contacts in the rail.
+    const focused = () => contacts.evaluate((link) => link === link.ownerDocument.activeElement);
+    for (let step = 0; step < 12 && !(await focused()); step++) {
+      await page.keyboard.press("Tab");
+    }
+    await expect(contacts).toBeFocused();
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(/\/contacts$/);
   });

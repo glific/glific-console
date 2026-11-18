@@ -4,6 +4,19 @@ type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import type { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
+export type AskGlificFeedbackInput = {
+  content?: string | null | undefined;
+  messageId: string;
+  rating?: string | null | undefined;
+};
+
+export type AskGlificInput = {
+  conversationId?: string | null | undefined;
+  pageUrl?: string | null | undefined;
+  query: string;
+  requestId?: string | null | undefined;
+};
+
 /** Filtering options for contacts */
 export type ContactFilter = {
   /** Match the bsp provider status */
@@ -89,12 +102,72 @@ export type ContactsQueryVariables = Exact<{
 
 export type ContactsQuery = { countContacts: number | null, contacts: Array<{ id: string | null, name: string | null, maskedPhone: string | null, status: ContactStatusEnum | null, lastMessageAt: string | null } | null> | null };
 
+export type AskGlificMutationVariables = Exact<{
+  input: AskGlificInput;
+}>;
+
+
+export type AskGlificMutation = { askGlific: { errors: Array<{ message: string } | null> | null } | null };
+
+export type AskGlificResponseSubscriptionVariables = Exact<{
+  organizationId: string | number;
+}>;
+
+
+export type AskGlificResponseSubscription = { askGlificResponse: { answer: string | null, conversationId: string | null, messageId: string | null, requestId: string | null, errors: Array<{ message: string } | null> | null } | null };
+
+export type AskGlificFeedbackMutationVariables = Exact<{
+  input: AskGlificFeedbackInput;
+}>;
+
+
+export type AskGlificFeedbackMutation = { askGlificFeedback: { success: boolean | null } | null };
+
 export type UpdateLanguageMutationVariables = Exact<{
   input: CurrentUserInput;
 }>;
 
 
 export type UpdateLanguageMutation = { updateCurrentUser: { user: { id: string | null } | null, errors: Array<{ key: string, message: string } | null> | null } | null };
+
+export type UnreadNotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UnreadNotificationsQuery = { countNotifications: number | null };
+
+export type RecentNotificationsQueryVariables = Exact<{
+  opts?: Opts | null | undefined;
+}>;
+
+
+export type RecentNotificationsQuery = { notifications: Array<{ id: string | null, category: string | null, message: string | null, severity: unknown, isRead: boolean | null, insertedAt: string | null } | null> | null };
+
+export type MarkNotificationsReadMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MarkNotificationsReadMutation = { markNotificationAsRead: boolean | null };
+
+export type OrganizationQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OrganizationQuery = { organization: { organization: { id: string | null, name: string | null, isTrialOrg: boolean | null, isSuspended: boolean | null, bsp: { shortcode: string | null } | null } | null } | null };
+
+export type OrganizationServicesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OrganizationServicesQuery = { organizationServices: { askGlificEnabled: boolean | null, glificAiEnabled: boolean | null, certificateEnabled: boolean | null, rolesAndPermission: boolean | null, ticketingEnabled: boolean | null, whatsappFormsEnabled: boolean | null, whatsappGroupEnabled: boolean | null } | null };
+
+export type WalletBalanceQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WalletBalanceQuery = { bspbalance: unknown };
+
+export type WalletBalanceUpdatedSubscriptionVariables = Exact<{
+  organizationId: string | number;
+}>;
+
+
+export type WalletBalanceUpdatedSubscription = { bspBalance: unknown };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -153,6 +226,35 @@ export const ContactsDocument = new TypedDocumentString(`
   countContacts(filter: $filter)
 }
     `) as unknown as TypedDocumentString<ContactsQuery, ContactsQueryVariables>;
+export const AskGlificDocument = new TypedDocumentString(`
+    mutation AskGlific($input: AskGlificInput!) {
+  askGlific(input: $input) {
+    errors {
+      message
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AskGlificMutation, AskGlificMutationVariables>;
+export const AskGlificResponseDocument = new TypedDocumentString(`
+    subscription AskGlificResponse($organizationId: ID!) {
+  askGlificResponse(organizationId: $organizationId) {
+    answer
+    conversationId
+    messageId
+    requestId
+    errors {
+      message
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AskGlificResponseSubscription, AskGlificResponseSubscriptionVariables>;
+export const AskGlificFeedbackDocument = new TypedDocumentString(`
+    mutation AskGlificFeedback($input: AskGlificFeedbackInput!) {
+  askGlificFeedback(input: $input) {
+    success
+  }
+}
+    `) as unknown as TypedDocumentString<AskGlificFeedbackMutation, AskGlificFeedbackMutationVariables>;
 export const UpdateLanguageDocument = new TypedDocumentString(`
     mutation UpdateLanguage($input: CurrentUserInput!) {
   updateCurrentUser(input: $input) {
@@ -166,3 +268,63 @@ export const UpdateLanguageDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UpdateLanguageMutation, UpdateLanguageMutationVariables>;
+export const UnreadNotificationsDocument = new TypedDocumentString(`
+    query UnreadNotifications {
+  countNotifications(filter: { isRead: false })
+}
+    `) as unknown as TypedDocumentString<UnreadNotificationsQuery, UnreadNotificationsQueryVariables>;
+export const RecentNotificationsDocument = new TypedDocumentString(`
+    query RecentNotifications($opts: Opts) {
+  notifications(opts: $opts) {
+    id
+    category
+    message
+    severity
+    isRead
+    insertedAt
+  }
+}
+    `) as unknown as TypedDocumentString<RecentNotificationsQuery, RecentNotificationsQueryVariables>;
+export const MarkNotificationsReadDocument = new TypedDocumentString(`
+    mutation MarkNotificationsRead {
+  markNotificationAsRead
+}
+    `) as unknown as TypedDocumentString<MarkNotificationsReadMutation, MarkNotificationsReadMutationVariables>;
+export const OrganizationDocument = new TypedDocumentString(`
+    query Organization {
+  organization {
+    organization {
+      id
+      name
+      isTrialOrg
+      isSuspended
+      bsp {
+        shortcode
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<OrganizationQuery, OrganizationQueryVariables>;
+export const OrganizationServicesDocument = new TypedDocumentString(`
+    query OrganizationServices {
+  organizationServices {
+    askGlificEnabled
+    glificAiEnabled
+    certificateEnabled
+    rolesAndPermission
+    ticketingEnabled
+    whatsappFormsEnabled
+    whatsappGroupEnabled
+  }
+}
+    `) as unknown as TypedDocumentString<OrganizationServicesQuery, OrganizationServicesQueryVariables>;
+export const WalletBalanceDocument = new TypedDocumentString(`
+    query WalletBalance {
+  bspbalance
+}
+    `) as unknown as TypedDocumentString<WalletBalanceQuery, WalletBalanceQueryVariables>;
+export const WalletBalanceUpdatedDocument = new TypedDocumentString(`
+    subscription WalletBalanceUpdated($organizationId: ID!) {
+  bspBalance(organizationId: $organizationId)
+}
+    `) as unknown as TypedDocumentString<WalletBalanceUpdatedSubscription, WalletBalanceUpdatedSubscriptionVariables>;

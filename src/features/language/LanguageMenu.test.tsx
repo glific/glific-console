@@ -47,9 +47,11 @@ describe("language", () => {
       }),
     );
     renderRoute("/");
-    await userEvent.click(await screen.findByRole("combobox", { name: "Language" }));
-    expect(screen.queryByRole("option", { name: "मराठी" })).toBeNull();
-    await userEvent.click(screen.getByRole("option", { name: "हिंदी" }));
+    await userEvent.click(await screen.findByRole("button", { name: /account and settings/ }));
+    await userEvent.click(await screen.findByRole("menuitem", { name: "Language" }));
+    expect(await screen.findByRole("menuitemradio", { name: "English" })).toBeChecked();
+    expect(screen.queryByRole("menuitemradio", { name: "मराठी" })).toBeNull();
+    await userEvent.click(screen.getByRole("menuitemradio", { name: "हिंदी" }));
 
     expect(await screen.findByRole("link", { name: "संपर्क" })).toBeVisible();
     expect(saved).toEqual({ languageId: "2" });

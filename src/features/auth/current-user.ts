@@ -70,6 +70,7 @@ export type RoleKind = "staff" | "manager" | "admin" | "glific_admin" | "custom"
 export const everyone: readonly RoleKind[] = ["staff", "manager", "admin", "glific_admin", "custom"];
 export const managers: readonly RoleKind[] = ["manager", "admin", "glific_admin", "custom"];
 export const admins: readonly RoleKind[] = ["admin", "glific_admin"];
+export const staffManagers: readonly RoleKind[] = ["manager", "admin", "glific_admin"];
 export const glificAdmins: readonly RoleKind[] = ["glific_admin"];
 
 const builtIn = new Set<string>(["staff", "manager", "admin", "glific_admin"]);

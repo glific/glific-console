@@ -2,13 +2,16 @@ import { screen } from "@testing-library/react";
 import { createMemoryRouter, Link, RouterProvider } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
-import { z } from "zod";
+import { z } from "zod/mini";
 import { Input } from "@/components/ui/input";
 import { expectNoA11yViolations } from "@/test/axe";
 import { renderWithProviders } from "@/test/render";
 import { FormActions, FormField, FormSection, UnsavedChangesGuard, useZodForm, zodResolver } from ".";
 
-const schema = z.object({ name: z.string().trim().min(1, "Enter a name"), keyword: z.string().optional() });
+const schema = z.object({
+  name: z.string().check(z.trim(), z.minLength(1, "Enter a name")),
+  keyword: z.optional(z.string()),
+});
 
 function TagForm({ onSave }: { onSave: (values: z.output<typeof schema>) => void }) {
   const form = useZodForm(schema, { name: "", keyword: "" });
@@ -85,7 +88,7 @@ describe("forms", () => {
 describe("zodResolver", () => {
   it("nests errors by path and keeps the first error per field", async () => {
     const nested = z.object({
-      rules: z.array(z.object({ value: z.string().min(1, "Required").min(3, "Too short") })),
+      rules: z.array(z.object({ value: z.string().check(z.minLength(1, "Required"), z.minLength(3, "Too short")) })),
     });
     const result = await zodResolver(nested)({ rules: [{ value: "" }] }, undefined, {
       fields: {},

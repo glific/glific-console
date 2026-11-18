@@ -4,7 +4,7 @@ import { mockSession } from "@/mocks/auth";
 import { worker } from "@/test/msw";
 import { apiClient } from "./api-client";
 import { accessToken, renewSession } from "./auth";
-import { backendOrigin } from "./backend";
+import { backendOrigin, currentAppUrl } from "./backend";
 import { getSession, needsRenewal, SESSION_KEY, setSession } from "./session";
 
 describe("session", () => {
@@ -80,6 +80,7 @@ describe("backendOrigin", () => {
   const overrides = {
     VITE_BACKEND_URL: null,
     VITE_API_SUBDOMAIN: "api",
+    VITE_CURRENT_APP_URL: null,
     VITE_ENABLE_MOCKS: false,
     VITE_SENTRY_DSN: null,
     VITE_POSTHOG_KEY: null,
@@ -106,5 +107,20 @@ describe("backendOrigin", () => {
         VITE_BACKEND_URL: "https://api.glific.test:4001",
       }),
     ).toBe("https://api.glific.test:4001");
+  });
+
+  it("opens pages not rebuilt yet in the current app beside console.<shortcode>", () => {
+    expect(currentAppUrl("/flow", place("https://console.pratham.glific.com/"), overrides)).toBe(
+      "https://pratham.glific.com/flow",
+    );
+    expect(currentAppUrl("/flow", place("https://pratham.glific.com/"), overrides)).toBe(
+      "https://pratham.glific.com/flow",
+    );
+    expect(
+      currentAppUrl("/flow", place("https://glific.test:3000/"), {
+        ...overrides,
+        VITE_CURRENT_APP_URL: "https://glific.test:3001",
+      }),
+    ).toBe("https://glific.test:3001/flow");
   });
 });
