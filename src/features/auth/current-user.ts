@@ -33,11 +33,13 @@ const CurrentUserQuery = graphql(`
 
 export const currentUserKey = ["currentUser"] as const;
 
+export const fetchCurrentUser = async () => (await request(CurrentUserQuery)).currentUser?.user ?? null;
+
 export function useCurrentUser() {
   const session = useSession();
   return useQuery({
     queryKey: currentUserKey,
-    queryFn: async () => (await request(CurrentUserQuery)).currentUser?.user ?? null,
+    queryFn: fetchCurrentUser,
     enabled: Boolean(session),
     staleTime: 5 * 60_000,
   });

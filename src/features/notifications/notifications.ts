@@ -53,8 +53,9 @@ export function useUnreadNotifications() {
   return allowed ? (count.data ?? 0) : 0;
 }
 
-export function useRecentNotifications() {
+export function useRecentNotifications({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
+    enabled,
     queryKey: [...notificationsKey, "recent"],
     queryFn: async () =>
       (

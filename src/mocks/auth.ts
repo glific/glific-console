@@ -1,6 +1,7 @@
 import { HttpResponse, http } from "msw";
 
 export const MOCK_PASSWORD = "password";
+export const MOCK_OTP = "123456";
 
 export function mockSession(expiresInMs = 60 * 60 * 1000) {
   const stamp = Date.now();
@@ -29,4 +30,31 @@ export const authHandlers = [
       : HttpResponse.json({ error: { status: 401, message: "Invalid token" } }, { status: 401 }),
   ),
   http.delete("*/api/v1/session", () => HttpResponse.json({ data: {} })),
+  http.post("*/api/v1/registration/send-otp", async ({ request }) => {
+    const body = (await request.json()) as { user?: { phone?: string } };
+    return HttpResponse.json({ data: { phone: body.user?.phone, message: "OTP sent" } });
+  }),
+  http.post("*/api/v1/registration", async ({ request }) => {
+    const body = (await request.json()) as { user?: { otp?: string } };
+    if (body.user?.otp !== MOCK_OTP) {
+      return HttpResponse.json({ error: { status: 500, message: "Couldn't create user" } }, { status: 500 });
+    }
+    return HttpResponse.json({ data: mockSession() });
+  }),
+  http.post("*/api/v1/registration/reset-password", async ({ request }) => {
+    const body = (await request.json()) as { user?: { otp?: string } };
+    if (body.user?.otp !== MOCK_OTP) {
+      return HttpResponse.json({ error: { status: 500, message: "Couldn't update user password" } }, { status: 500 });
+    }
+    return HttpResponse.json({ data: mockSession() });
+  }),
+  http.post("*/api/v1/trial/create-trial-user", async ({ request }) => {
+    const body = (await request.json()) as { email?: string };
+    return HttpResponse.json({ data: { message: `OTP sent successfully to ${body.email}` } });
+  }),
+  http.post("*/api/v1/trial/allocate-account", async ({ request }) => {
+    const body = (await request.json()) as { otp?: string };
+    if (body.otp !== MOCK_OTP) return HttpResponse.json({ success: false, error: "Invalid OTP" }, { status: 400 });
+    return HttpResponse.json({ success: true, data: { login_url: "https://trial1.glific.test/login" } });
+  }),
 ];

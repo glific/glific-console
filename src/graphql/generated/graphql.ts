@@ -123,6 +123,27 @@ export type AskGlificFeedbackMutationVariables = Exact<{
 
 export type AskGlificFeedbackMutation = { askGlificFeedback: { success: boolean | null } | null };
 
+export type HomeActivityQueryVariables = Exact<{
+  current?: DateRangeInput | null | undefined;
+  previous?: DateRangeInput | null | undefined;
+}>;
+
+
+export type HomeActivityQuery = { newContacts: number | null, previousNewContacts: number | null, messages: number | null, previousMessages: number | null };
+
+export type HomeUsageQueryVariables = Exact<{
+  fromDate: string;
+  toDate: string;
+}>;
+
+
+export type HomeUsageQuery = { dailyAppUsage: Array<{ date: string | null, incomingMsg: number | null, outgoingMsg: number | null, totalFees: number | null } | null> | null };
+
+export type HomeFlowsAndTriggersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HomeFlowsAndTriggersQuery = { flows: Array<{ id: string | null, uuid: unknown, name: string | null, lastPublishedAt: string | null, lastChangedAt: string | null, updatedAt: string | null } | null> | null, triggers: Array<{ id: string | null, name: string | null, isActive: boolean | null, nextTriggerAt: string | null, groups: Array<string | null> | null, flow: { name: string | null } | null } | null> | null };
+
 export type UpdateLanguageMutationVariables = Exact<{
   input: CurrentUserInput;
 }>;
@@ -150,7 +171,7 @@ export type MarkNotificationsReadMutation = { markNotificationAsRead: boolean | 
 export type OrganizationQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OrganizationQuery = { organization: { organization: { id: string | null, name: string | null, isTrialOrg: boolean | null, isSuspended: boolean | null, bsp: { shortcode: string | null } | null } | null } | null };
+export type OrganizationQuery = { organization: { organization: { id: string | null, name: string | null, isTrialOrg: boolean | null, isSuspended: boolean | null, trialExpirationDate: string | null, bsp: { shortcode: string | null } | null } | null } | null };
 
 export type OrganizationServicesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -255,6 +276,49 @@ export const AskGlificFeedbackDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AskGlificFeedbackMutation, AskGlificFeedbackMutationVariables>;
+export const HomeActivityDocument = new TypedDocumentString(`
+    query HomeActivity($current: DateRangeInput, $previous: DateRangeInput) {
+  newContacts: countContacts(filter: { dateRange: $current })
+  previousNewContacts: countContacts(filter: { dateRange: $previous })
+  messages: countMessages(filter: { dateRange: $current })
+  previousMessages: countMessages(filter: { dateRange: $previous })
+}
+    `) as unknown as TypedDocumentString<HomeActivityQuery, HomeActivityQueryVariables>;
+export const HomeUsageDocument = new TypedDocumentString(`
+    query HomeUsage($fromDate: Date!, $toDate: Date!) {
+  dailyAppUsage(fromDate: $fromDate, toDate: $toDate) {
+    date
+    incomingMsg
+    outgoingMsg
+    totalFees
+  }
+}
+    `) as unknown as TypedDocumentString<HomeUsageQuery, HomeUsageQueryVariables>;
+export const HomeFlowsAndTriggersDocument = new TypedDocumentString(`
+    query HomeFlowsAndTriggers {
+  flows(
+    filter: { isTemplate: false }
+    opts: { limit: 50, order: DESC, orderWith: "updated_at" }
+  ) {
+    id
+    uuid
+    name
+    lastPublishedAt
+    lastChangedAt
+    updatedAt
+  }
+  triggers(opts: { limit: 50, order: DESC, orderWith: "updated_at" }) {
+    id
+    name
+    isActive
+    nextTriggerAt
+    groups
+    flow {
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<HomeFlowsAndTriggersQuery, HomeFlowsAndTriggersQueryVariables>;
 export const UpdateLanguageDocument = new TypedDocumentString(`
     mutation UpdateLanguage($input: CurrentUserInput!) {
   updateCurrentUser(input: $input) {
@@ -298,6 +362,7 @@ export const OrganizationDocument = new TypedDocumentString(`
       name
       isTrialOrg
       isSuspended
+      trialExpirationDate
       bsp {
         shortcode
       }
