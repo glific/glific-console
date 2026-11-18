@@ -85,6 +85,7 @@ describe("backendOrigin", () => {
     VITE_SENTRY_DSN: null,
     VITE_POSTHOG_KEY: null,
     VITE_POSTHOG_HOST: "https://us.i.posthog.com",
+    VITE_RECAPTCHA_SITE_KEY: null,
   };
   const place = (url: string) => {
     const u = new URL(url);

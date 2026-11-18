@@ -10,6 +10,8 @@ export interface Env {
   readonly VITE_SENTRY_DSN: string | null;
   readonly VITE_POSTHOG_KEY: string | null;
   readonly VITE_POSTHOG_HOST: string;
+  /** Google reCAPTCHA v3 site key for staff sign-up; unset skips the captcha. */
+  readonly VITE_RECAPTCHA_SITE_KEY: string | null;
 }
 
 export class EnvError extends Error {
@@ -53,6 +55,7 @@ export function parseEnv(raw: RawEnv): Env {
     VITE_SENTRY_DSN: optionalUrl(raw, "VITE_SENTRY_DSN", problems),
     VITE_POSTHOG_KEY: optionalString(raw, "VITE_POSTHOG_KEY"),
     VITE_POSTHOG_HOST: optionalUrl(raw, "VITE_POSTHOG_HOST", problems) ?? "https://us.i.posthog.com",
+    VITE_RECAPTCHA_SITE_KEY: optionalString(raw, "VITE_RECAPTCHA_SITE_KEY"),
   };
   if (problems.length > 0) {
     throw new EnvError(`Invalid environment:\n  - ${problems.join("\n  - ")}\nSee .env.example.`);

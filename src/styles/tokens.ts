@@ -65,6 +65,13 @@ export const colorTokens = [
   color("chat-meta", "Timestamps and meta text inside bubbles."),
   color("chat-read", "Blue double tick: message read."),
   color("whatsapp", "WhatsApp brand green, for the channel mark only."),
+  ...(["morning", "afternoon", "evening", "night"] as const).flatMap((mood) => [
+    color(`mood-${mood}`, `Home greeting icon in the ${mood}. Decorative only, never text.`),
+    color(`mood-${mood}-wash`, `Soft wash behind the top of Home in the ${mood}.`),
+  ]),
+  color("brand-panel", "Deep green brand panel beside the sign-in and sign-up forms."),
+  color("brand-panel-foreground", "Text on the brand panel."),
+  color("brand-highlight", "Lime highlight words on the brand panel only; never on white."),
 ] as const satisfies readonly TokenDefinition[];
 
 export const chartTokens = [1, 2, 3, 4, 5].map(

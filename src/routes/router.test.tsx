@@ -13,7 +13,7 @@ import { createRoutes } from "./router";
 describe("router", () => {
   it("renders the layout with navigation and moves between pages", async () => {
     const { router } = renderRoute("/");
-    expect(await screen.findByRole("heading", { level: 1, name: "Home" })).toBeVisible();
+    expect(await screen.findByRole("heading", { level: 1 })).toBeVisible();
     await userEvent.click(await screen.findByRole("link", { name: "Contacts" }));
     await expect.poll(() => router.state.location.pathname).toBe("/contacts");
     await expect.element(screen.getByRole("link", { name: "Contacts" })).toHaveAttribute("aria-current", "page");
@@ -60,7 +60,7 @@ describe("expired session", () => {
 
     await userEvent.fill(screen.getByLabelText("Phone number"), "917834811114");
     await userEvent.fill(screen.getByLabelText("Password", { exact: true }), MOCK_PASSWORD);
-    await userEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    await userEvent.click(screen.getByRole("button", { name: "Log in" }));
     await expect.poll(() => router.state.location.pathname).toBe("/contacts");
   });
 });

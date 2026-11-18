@@ -30,4 +30,12 @@ describe("old addresses", () => {
     expect(await screen.findByRole("heading", { level: 1, name: "Page not found" })).toBeVisible();
     expect(open).not.toHaveBeenCalled();
   });
+
+  it("sends the current app's sign-in pages to their new addresses", async () => {
+    const registration = renderRoute("/registration", { signedIn: false });
+    await expect.poll(() => registration.router.state.location.pathname).toBe("/register");
+    registration.unmount();
+    const reset = renderRoute("/resetpassword-phone", { signedIn: false });
+    await expect.poll(() => reset.router.state.location.pathname).toBe("/forgot-password");
+  });
 });

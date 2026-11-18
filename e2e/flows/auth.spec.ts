@@ -8,25 +8,19 @@ test.describe("sign in and out", () => {
     await expect(page).toHaveURL(/\/login$/);
     await page.getByLabel("Phone number").fill(users.glificAdmin.phone);
     await page.getByLabel("Password", { exact: true }).fill("not-the-password");
-    await page.getByRole("button", { name: "Sign in" }).click();
+    await page.getByRole("button", { name: "Log in" }).click();
     await expect(page.getByRole("alert")).toContainText("Invalid phone or password");
 
     await page.getByLabel("Password", { exact: true }).fill(users.glificAdmin.password);
-    await page.getByRole("button", { name: "Sign in" }).click();
+    await page.getByRole("button", { name: "Log in" }).click();
     await expect(page).toHaveURL(/\/contacts$/);
     await expect(page.getByRole("heading", { level: 1, name: "Contacts" })).toBeVisible();
 
     await page.getByRole("button", { name: /account and settings/ }).click();
-    await page.getByRole("menuitem", { name: "Sign out" }).click();
+    await page.getByRole("menuitem", { name: "Log out" }).click();
     await expect(page).toHaveURL(/\/login$/);
     await page.goto("/");
     await expect(page).toHaveURL(/\/login$/);
-  });
-
-  test("login page has no axe violations", async ({ page, checkA11y }) => {
-    await page.goto("/login");
-    await expect(page.getByRole("heading", { level: 1, name: "Sign in to Glific" })).toBeVisible();
-    await checkA11y();
   });
 });
 

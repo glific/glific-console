@@ -25,7 +25,7 @@ describe("account menu", () => {
       `${location.origin}/organizations`,
     );
     expect(screen.getByRole("menuitem", { name: "Design system" })).toHaveAttribute("href", "/design-system");
-    expect(screen.getByRole("menuitem", { name: "Sign out" })).toBeVisible();
+    expect(screen.getByRole("menuitem", { name: "Log out" })).toBeVisible();
     // The open menu aria-hides the page behind it, so check the menu on its own.
     await expectNoA11yViolations(menu);
   });
