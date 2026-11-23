@@ -139,7 +139,6 @@ describe("backendOrigin", () => {
   const overrides = {
     VITE_BACKEND_URL: null,
     VITE_API_SUBDOMAIN: "api",
-    VITE_CURRENT_APP_URL: null,
     VITE_ENABLE_MOCKS: false,
     VITE_SENTRY_DSN: null,
     VITE_POSTHOG_KEY: null,
@@ -170,17 +169,9 @@ describe("backendOrigin", () => {
   });
 
   it("opens pages not rebuilt yet on the same address without console.", () => {
-    expect(currentAppUrl("/flow", place("https://console.pratham.glific.com/"), overrides)).toBe(
+    expect(currentAppUrl("/flow", place("https://console.pratham.glific.com/"))).toBe(
       "https://pratham.glific.com/flow",
     );
-    expect(currentAppUrl("/flow", place("https://pratham.glific.com/"), overrides)).toBe(
-      "https://pratham.glific.com/flow",
-    );
-    expect(
-      currentAppUrl("/flow", place("https://glific.test:3000/"), {
-        ...overrides,
-        VITE_CURRENT_APP_URL: "https://glific.test:3001",
-      }),
-    ).toBe("https://glific.test:3001/flow");
+    expect(currentAppUrl("/flow", place("https://pratham.glific.com/"))).toBe("https://pratham.glific.com/flow");
   });
 });

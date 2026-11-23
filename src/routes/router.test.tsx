@@ -50,6 +50,19 @@ describe("router", () => {
   });
 });
 
+describe("the current app's sign-in addresses", () => {
+  it("open the new sign-in pages", async () => {
+    const registration = renderRoute("/registration", { signedIn: false });
+    await expect.poll(() => registration.router.state.location.pathname).toBe("/register");
+    registration.unmount();
+    const reset = renderRoute("/resetpassword-phone", { signedIn: false });
+    await expect.poll(() => reset.router.state.location.pathname).toBe("/forgot-password");
+    reset.unmount();
+    const trial = renderRoute("/trial-registration", { signedIn: false });
+    await expect.poll(() => trial.router.state.location.pathname).toBe("/trial");
+  });
+});
+
 describe("expired session", () => {
   it("sends the user to login when renewal fails, then back to the page they were on", async () => {
     worker.use(http.post("*/api/v1/session/renew", () => HttpResponse.json({ error: {} }, { status: 401 })));
