@@ -7,7 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { AuthError, resetPassword, sendOtp } from "@/lib/auth";
 import { AuthLayout } from "./AuthLayout";
 import { authFields } from "./auth-schemas";

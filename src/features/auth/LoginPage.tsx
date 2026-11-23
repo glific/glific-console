@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { AuthError, login } from "@/lib/auth";
 import { clearSession } from "@/lib/session";
 import { useSession } from "@/lib/use-session";

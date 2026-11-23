@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { AuthError, confirmTrial, startTrial, type TrialSignUp } from "@/lib/auth";
 import { browser } from "@/lib/browser";
 import { AuthLayout } from "./AuthLayout";

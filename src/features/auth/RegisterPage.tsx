@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { AuthError, registerStaff, sendOtp } from "@/lib/auth";
 import { captchaToken } from "@/lib/recaptcha";
 import { AuthLayout } from "./AuthLayout";
