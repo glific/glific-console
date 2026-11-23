@@ -24,12 +24,18 @@ export function backendOrigin(place: Place = globalThis.location, overrides = en
 
 export const apiBaseUrl = () => `${backendOrigin()}/api`;
 
+// Where pages not rebuilt yet open when the host doesn't say (previews, local dev without VITE_CURRENT_APP_URL).
+const FALLBACK_CURRENT_APP = "https://prod.glific.com";
+
 /**
  * Pages not rebuilt yet open in the current app: <shortcode>.glific.com beside console.<shortcode>.glific.com, or
- * VITE_CURRENT_APP_URL. Anywhere else there is no current app to reach, so this is null and those links are hidden.
+ * VITE_CURRENT_APP_URL, or production when neither applies. Null only if that would be this very app.
  */
 export function currentAppUrl(path: string, place: Place = globalThis.location, overrides = env): string | null {
-  if (overrides.VITE_CURRENT_APP_URL) return `${overrides.VITE_CURRENT_APP_URL}${path}`;
-  if (!place.host.startsWith(CONSOLE_PREFIX)) return null;
-  return `${place.protocol}//${place.host.slice(CONSOLE_PREFIX.length)}${path}`;
+  let origin = FALLBACK_CURRENT_APP;
+  if (overrides.VITE_CURRENT_APP_URL) origin = overrides.VITE_CURRENT_APP_URL;
+  else if (place.host.startsWith(CONSOLE_PREFIX)) {
+    origin = `${place.protocol}//${place.host.slice(CONSOLE_PREFIX.length)}`;
+  }
+  return origin === place.origin ? null : `${origin}${path}`;
 }
