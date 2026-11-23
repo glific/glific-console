@@ -24,9 +24,8 @@ export function backendOrigin(place: Place = globalThis.location, overrides = en
 
 export const apiBaseUrl = () => `${backendOrigin()}/api`;
 
-/** Pages not rebuilt yet open in the current app: the same address without `console.`, or VITE_CURRENT_APP_URL. */
-export function currentAppUrl(path: string, place: Place = globalThis.location, overrides = env): string {
-  if (overrides.VITE_CURRENT_APP_URL) return `${overrides.VITE_CURRENT_APP_URL}${path}`;
+/** Pages not rebuilt yet open in the current app: the same address without `console.`. */
+export function currentAppUrl(path: string, place: Place = globalThis.location): string {
   const host = place.host.startsWith(CONSOLE_PREFIX) ? place.host.slice(CONSOLE_PREFIX.length) : place.host;
   return `${place.protocol}//${host}${path}`;
 }

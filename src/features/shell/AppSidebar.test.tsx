@@ -24,13 +24,10 @@ describe("side rail", () => {
     ]);
     expect(within(nav).getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
     expect(within(nav).getByRole("link", { name: "Contacts" })).toHaveAttribute("href", "/contacts");
-    expect(within(nav).getByRole("link", { name: "Flows" })).toHaveAttribute(
-      "href",
-      "https://current.glific.test/flow",
-    );
+    expect(within(nav).getByRole("link", { name: "Flows" })).toHaveAttribute("href", `${location.origin}/flow`);
     expect(within(nav).getByRole("link", { name: "Library" })).toHaveAttribute(
       "href",
-      "https://current.glific.test/interactive-message",
+      `${location.origin}/interactive-message`,
     );
     await expectNoA11yViolations();
   });
