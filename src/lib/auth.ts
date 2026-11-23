@@ -27,7 +27,9 @@ async function errorMessage(response: Response): Promise<string> {
     const message = typeof body.error === "string" ? body.error : body.error?.message;
     return message?.trim() || response.statusText;
   } catch {
-    return text.trim() || response.statusText;
+    // Only short plain text is meant for people; a proxy's HTML error page is not.
+    const plain = response.headers.get("content-type")?.startsWith("text/plain") && text.trim().length <= 200;
+    return plain ? text.trim() : response.statusText;
   }
 }
 

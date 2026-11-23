@@ -22,6 +22,7 @@ export function HowItsGoing() {
   const activity = useActivity(days);
   const usage = useUsage(days);
   const number = new Intl.NumberFormat(i18n.language);
+  const analyticsUrl = currentAppUrl("/analytics");
   const money = new Intl.NumberFormat(i18n.language, { style: "currency", currency: "USD" });
 
   let tiles: Tile[] = [];
@@ -102,9 +103,11 @@ export function HowItsGoing() {
               <SelectItem value="30">{t("home.stats.last30")}</SelectItem>
             </SelectContent>
           </Select>
-          <a href={currentAppUrl("/analytics")} className="text-body-sm text-primary hover:underline">
-            {t("home.stats.analytics")}
-          </a>
+          {analyticsUrl ? (
+            <a href={analyticsUrl} className="text-body-sm text-primary hover:underline">
+              {t("home.stats.analytics")}
+            </a>
+          ) : null}
         </>
       }
     >

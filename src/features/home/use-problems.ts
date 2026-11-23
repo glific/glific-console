@@ -3,7 +3,7 @@ import type { NavLinkTarget } from "@/components/NavTargetLink";
 import { managers, useAccess } from "@/features/auth/current-user";
 import { parseSeverity, useRecentNotifications } from "@/features/notifications/notifications";
 import { useOrganization } from "@/features/organization/organization";
-import { useWalletBalance } from "@/features/shell/use-wallet-balance";
+import { LOW_BALANCE, useWalletBalance } from "@/features/shell/use-wallet-balance";
 import { currentAppUrl } from "@/lib/backend";
 import { relativeTime } from "./relative-time";
 
@@ -14,7 +14,6 @@ export interface Problem {
   action?: { label: string; destination: NavLinkTarget };
 }
 
-const LOW_BALANCE = 1;
 const SHOWN = 3;
 
 /** Account problems first, then unread critical and warning notifications; worst first, at most three. */
@@ -36,7 +35,8 @@ export function useProblems() {
     account.push({ id: "wallet", title: t("home.fix.walletLow.title"), detail: t("home.fix.walletLow.detail") });
   }
 
-  const notificationsPage = { href: currentAppUrl("/notifications") };
+  const notificationsUrl = currentAppUrl("/notifications");
+  const notificationsPage = notificationsUrl ? { href: notificationsUrl } : null;
   const alerts = (notifications.data ?? [])
     .filter((notification) => !notification.isRead && parseSeverity(notification.severity) !== "info")
     .sort((a, b) => Number(parseSeverity(b.severity) === "critical") - Number(parseSeverity(a.severity) === "critical"))
@@ -50,7 +50,7 @@ export function useProblems() {
         ]
           .filter(Boolean)
           .join(" · "),
-        action: { label: t("home.fix.see"), destination: notificationsPage },
+        action: notificationsPage ? { label: t("home.fix.see"), destination: notificationsPage } : undefined,
       }),
     );
 

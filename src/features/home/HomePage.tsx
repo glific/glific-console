@@ -34,15 +34,17 @@ export function HomePage() {
   const firstName = user?.name?.trim().split(/\s+/)[0] ?? "";
 
   const trial = organization?.isTrialOrg ?? false;
+  // No end date means we don't know, not that the trial has ended.
   const daysLeft = organization?.trialExpirationDate
     ? Math.max(0, Math.ceil((new Date(organization.trialExpirationDate).getTime() - Date.now()) / DAY))
-    : 0;
+    : null;
   const noFlows = flows != null && flows.length === 0;
 
   let summary: string | null = null;
   if (noFlows) summary = t("home.summary.firstFlow");
-  else if (trial) summary = daysLeft > 0 ? t("home.summary.trial", { count: daysLeft }) : t("home.trial.ended");
-  else if (!problems.isLoading) {
+  else if (trial && daysLeft !== null) {
+    summary = daysLeft > 0 ? t("home.summary.trial", { count: daysLeft }) : t("home.trial.ended");
+  } else if (!problems.isLoading) {
     summary = problems.total > 0 ? t("home.summary.problems", { count: problems.total }) : t("home.fix.none");
   }
 

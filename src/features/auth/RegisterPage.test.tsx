@@ -42,7 +42,7 @@ describe("RegisterPage", () => {
         phone: "919876543210",
         password: "Glific@2026x",
         otp: MOCK_OTP,
-        consent_for_updates: false,
+        consent_for_updates: true,
       },
     });
     expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute("href", "/login");
