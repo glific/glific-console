@@ -18,7 +18,7 @@ const panels = {
   resources: lazy(async () => ({ default: (await import("./ResourcesPanel")).ResourcesPanel })),
 } satisfies Record<SideAppId, unknown>;
 
-const WIDTH = { initial: 400, min: 320, max: 640 } as const;
+const WIDTH = { initial: 460, min: 320, max: 640 } as const;
 // Rail, page and app strip together need this much beside the panel.
 const PAGE_MIN_WIDTH = 720;
 

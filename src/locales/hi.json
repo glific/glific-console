@@ -465,7 +465,9 @@
       "withCount": "{{label}}, {{count}} अपठित",
       "logsTip": "आपके फ्लो से वेबहुक कॉल",
       "tickets": "सपोर्ट टिकट",
-      "ticketsTip": "संपर्क जिन्होंने किसी व्यक्ति से बात करनी चाही"
+      "ticketsTip": "संपर्क जिन्होंने किसी व्यक्ति से बात करनी चाही",
+      "raiseTicket": "टिकट बनाएँ",
+      "raiseTicketTip": "Discord पर Glific टीम के साथ टिकट बनाएँ"
     },
     "panel": {
       "resize": "पैनल का आकार बदलें",
@@ -494,7 +496,9 @@
       "critical": "गंभीर",
       "warning": "चेतावनी",
       "info": "जानकारी"
-    }
+    },
+    "today": "आज",
+    "yesterday": "कल"
   },
   "glificAi": {
     "name": "Glific AI",

@@ -465,7 +465,9 @@
       "withCount": "{{label}}, {{count}} unread",
       "logsTip": "Webhook calls from your flows",
       "tickets": "Support tickets",
-      "ticketsTip": "Contacts who asked for a person"
+      "ticketsTip": "Contacts who asked for a person",
+      "raiseTicket": "Raise a ticket",
+      "raiseTicketTip": "Raise a ticket with the Glific team on Discord"
     },
     "panel": {
       "resize": "Resize the panel",
@@ -494,7 +496,9 @@
       "critical": "Critical",
       "warning": "Warning",
       "info": "Info"
-    }
+    },
+    "today": "Today",
+    "yesterday": "Yesterday"
   },
   "glificAi": {
     "name": "Glific AI",
