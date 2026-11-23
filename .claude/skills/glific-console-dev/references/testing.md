@@ -79,7 +79,8 @@ does. It reuses `pnpm dev` if it's running, otherwise starts it. MSW is never us
 - A test that creates data gives it a unique name, so tests don't depend on each other.
 - A feature that needs a backend change: push a backend branch with the same name as your console branch, and CI
   runs your E2E against it.
-- Backend setup locally: `mix setup` in `../glific` loads the seeds; restart it with `mix phx.server`.
+- The E2E seed users come from the backend's dev seeds. If a seed user is missing locally (the Glific admin
+  `919900000001` arrived with glific/glific#6214), reload the seeds with `mix setup` in `../glific`.
 
 ## Bundle budgets
 

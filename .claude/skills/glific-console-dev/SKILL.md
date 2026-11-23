@@ -16,16 +16,15 @@ first) and setup in `README.md`; this skill adds the context and the workflow ar
 
 ## First day
 
-1. Clone `glific/glific` (backend) and `glific/glific-console` side by side, e.g. `~/code/glific` and
-   `~/code/glific-console`. The console reads the backend's certificate and schema from `../glific`.
-2. Backend: follow its README, then `mix setup` (database plus dev seeds) and `mix phx.server`. Its mkcert
-   certificate in `glific/priv/cert` covers `glific.test` and `api.glific.test`.
-3. Add `127.0.0.1 glific.test` and `127.0.0.1 api.glific.test` to `/etc/hosts`.
-4. Console: `corepack enable`, `pnpm install` (also installs the git hooks), `pnpm exec playwright install chromium`.
-5. `pnpm dev` and log in at https://glific.test:3000 with a seed user (see `e2e/fixtures.ts`), or
+You already have `glific` (backend) and `glific-frontend` running locally.
+
+1. Clone `glific/glific-console` beside them (e.g. `~/code/glific-console` next to `~/code/glific`): the console
+   reads the backend's certificate and schema from `../glific`.
+2. `corepack enable`, `pnpm install` (also installs the git hooks), `pnpm exec playwright install chromium`.
+3. `pnpm dev` and log in at https://glific.test:3000 with a seed user (see `e2e/fixtures.ts`), or
    `pnpm dev:mock` with any phone and the password `password` (no backend).
-6. Run `pnpm check` and `pnpm test:e2e`. Both must pass on a clean checkout before you change anything.
-7. Read `AGENTS.md`, open the `/design-system` page (Glific admins only) to see the components and tokens, and
+4. Run `pnpm check` and `pnpm test:e2e`. Both must pass on a clean checkout before you change anything.
+5. Read `AGENTS.md`, open the `/design-system` page (Glific admins only) to see the components and tokens, and
    pick a ticket from glific/glific#6078 in your area.
 
 ## Where things live
