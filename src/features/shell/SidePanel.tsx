@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "@/components/Spinner";
 import { IconButton } from "@/components/ui/icon-button";
-import { ResizablePanel } from "@/components/ui/resizable-panel";
+import { ResizablePanel } from "@/components/ui/ResizablePanel";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { panelApps } from "./side-apps";
