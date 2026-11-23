@@ -21,10 +21,10 @@ const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 // Tooltips only show on the folded rail, so their positioning code loads when the rail first folds.
 // Phones get the rail as a drawer, so the dialog code loads only there.
 const SidebarSheet = React.lazy(async () => ({
-  default: (await import("./sidebar-sheet")).SidebarSheet,
+  default: (await import("./SidebarSheet")).SidebarSheet,
 }))
 const SidebarTooltip = React.lazy(async () => ({
-  default: (await import("./sidebar-tooltip")).SidebarTooltip,
+  default: (await import("./SidebarTooltip")).SidebarTooltip,
 }))
 
 type SidebarContextProps = {

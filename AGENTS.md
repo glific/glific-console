@@ -88,8 +88,9 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
   work offline. In `pnpm dev:mock`, sign in with any phone and password `password`.
 - One component per file, named exactly after it in PascalCase (`FormField` in `FormField.tsx`, its test in
   `FormField.test.tsx`); small helpers a component uses get their own file too. Hooks, utilities and data stay
-  kebab-case (`use-zod-form.ts`, `api-client.ts`). Folders re-export through `index.ts`. Only `src/components/ui` keeps
-  shadcn's generated kebab-case files, with related parts like `Card` and `CardHeader` together.
+  kebab-case (`use-zod-form.ts`, `api-client.ts`). Folders re-export through `index.ts`. The only kebab-case
+  components are the ones the shadcn CLI generates into `src/components/ui`, with related parts like `Card` and
+  `CardHeader` together; components we write ourselves in `ui` are PascalCase too (`ResizablePanel.tsx`).
 - Pages are lazy routes in `src/routes/router.tsx` (`lazy: () => import(...)`), so the first load stays small.
 - Every page and nav item opens to the same roles as in the current app: wrap the route in
   `<RequireAccess allow={managers}>` and give the nav item the same `allow` (`everyone`, `managers`, `admins`,
