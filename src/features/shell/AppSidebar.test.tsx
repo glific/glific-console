@@ -81,7 +81,7 @@ describe("side rail", () => {
     expect(screen.getByText("Message balance")).toBeVisible();
   });
 
-  it("hides sections still in the current app when it can't be reached", async () => {
+  it("hides sections still in the current app when this app is served from the current app's address", async () => {
     currentApp.reachable = false;
     renderRoute("/");
     const nav = await rail();
