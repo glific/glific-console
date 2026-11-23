@@ -1,8 +1,6 @@
 import { createBrowserRouter, Outlet, type RouteObject } from "react-router";
 import { RequireAuth } from "@/features/auth/RequireAuth";
 import { RequireGlificAdmin } from "@/features/auth/RequireGlificAdmin";
-import { CurrentAppRedirect } from "./CurrentAppRedirect";
-import { currentAppPaths } from "./current-app-routes";
 import { HomePage } from "./HomePage";
 import { NotFoundPage } from "./NotFoundPage";
 import { RootLayout } from "./RootLayout";
@@ -47,7 +45,6 @@ export function createRoutes(): RouteObject[] {
                 },
               ],
             },
-            ...currentAppPaths.map((path) => ({ path: `${path}/*`, element: <CurrentAppRedirect /> })),
             { path: "*", element: <NotFoundPage /> },
           ],
         },

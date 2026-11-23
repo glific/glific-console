@@ -17,15 +17,12 @@ describe("account menu", () => {
     const menu = await openAccountMenu();
     expect(screen.getByRole("menuitem", { name: "My account" })).toHaveAttribute(
       "href",
-      "https://current.glific.test/myaccount",
+      `${location.origin}/myaccount`,
     );
-    expect(screen.getByRole("menuitem", { name: "Settings" })).toHaveAttribute(
-      "href",
-      "https://current.glific.test/settings",
-    );
+    expect(screen.getByRole("menuitem", { name: "Settings" })).toHaveAttribute("href", `${location.origin}/settings`);
     expect(screen.getByRole("menuitem", { name: "Organizations" })).toHaveAttribute(
       "href",
-      "https://current.glific.test/organizations",
+      `${location.origin}/organizations`,
     );
     expect(screen.getByRole("menuitem", { name: "Design system" })).toHaveAttribute("href", "/design-system");
     expect(screen.getByRole("menuitem", { name: "Sign out" })).toBeVisible();
@@ -39,7 +36,7 @@ describe("account menu", () => {
     await openAccountMenu();
     expect(screen.getByRole("menuitem", { name: "Settings" })).toHaveAttribute(
       "href",
-      "https://current.glific.test/staff-management",
+      `${location.origin}/staff-management`,
     );
     expect(screen.queryByRole("menuitem", { name: "Organizations" })).toBeNull();
   });

@@ -18,8 +18,7 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
     command: "pnpm exec vite",
-    // Not a console.* host, so say where the current app is; links to pages not rebuilt yet point there.
-    env: { BROWSER: "none", VITE_CURRENT_APP_URL: "https://current.glific.test" },
+    env: { BROWSER: "none" },
     url: BASE_URL,
     ignoreHTTPSErrors: true,
     reuseExistingServer: !isCI,

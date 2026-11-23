@@ -6,7 +6,6 @@ describe("parseEnv", () => {
     expect(parseEnv({})).toEqual({
       VITE_BACKEND_URL: null,
       VITE_API_SUBDOMAIN: "api",
-      VITE_CURRENT_APP_URL: null,
       VITE_ENABLE_MOCKS: false,
       VITE_SENTRY_DSN: null,
       VITE_POSTHOG_KEY: null,

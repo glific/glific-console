@@ -74,8 +74,7 @@
     "permissionDenied": {
       "title": "You don't have access to this page",
       "description": "Ask an admin in your organisation to change your role if you need it."
-    },
-    "openingCurrentApp": "Opening this page in the current Glific"
+    }
   },
   "home": {
     "title": "Home",
