@@ -4,7 +4,6 @@ import { MessageBubble } from "@/components/chat/MessageBubble";
 
 const proof = ["nonprofits", "messages", "openSource"] as const;
 
-/** The green panel beside the sign-in and sign-up forms, from the 2.0 prototype. */
 export function BrandPanel() {
   const { t } = useTranslation();
   return (

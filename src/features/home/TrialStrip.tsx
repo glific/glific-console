@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 // The current app's "Schedule call" link for trial organisations.
 const TALK_TO_US = "https://calendar.app.google/USJMfhSsDvW5yS6B7";
 
-/** The trial's days left, and a way to talk to the Glific team about going live. */
 export function TrialStrip({ daysLeft }: { daysLeft: number | null }) {
   const { t } = useTranslation();
   return (

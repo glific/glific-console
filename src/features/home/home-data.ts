@@ -7,7 +7,6 @@ export type Period = 7 | 30;
 
 const DAY = 24 * 60 * 60 * 1000;
 
-/** This period and the one before it, ending now. */
 export function periodRanges(days: Period, now = Date.now()) {
   const from = new Date(now - days * DAY);
   const previousFrom = new Date(now - 2 * days * DAY);

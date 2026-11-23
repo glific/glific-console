@@ -6,7 +6,6 @@ import { currentAppUrl } from "@/lib/backend";
 import { browser } from "@/lib/browser";
 import { NotFoundPage } from "./NotFoundPage";
 
-/** Forwards an old link to the same page in the current app, which still serves it. */
 export function CurrentAppRedirect() {
   const { t } = useTranslation();
   const { pathname, search, hash } = useLocation();

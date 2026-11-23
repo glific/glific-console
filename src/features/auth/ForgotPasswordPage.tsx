@@ -13,7 +13,6 @@ import { AuthLayout } from "./AuthLayout";
 import { authFields } from "./auth-schemas";
 import { ResendCode } from "./ResendCode";
 
-/** Reset a password with a code sent on WhatsApp: the phone first, then the code and the new password. */
 export function ForgotPasswordPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();

@@ -9,11 +9,9 @@ interface ResizablePanelProps extends React.ComponentProps<"aside"> {
   minWidth: number
   maxWidth: number
   onWidthChange: (width: number) => void
-  /** Called once a resize ends (drag released or a key press), e.g. to save the width. */
   onWidthCommit?: (width: number) => void
 }
 
-/** A panel docked to the right of the page, resized by dragging or arrow keys on its left edge. */
 function ResizablePanel({
   width,
   minWidth,

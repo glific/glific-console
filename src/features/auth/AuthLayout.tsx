@@ -8,12 +8,10 @@ const BrandPanel = lazy(async () => ({ default: (await import("./BrandPanel")).B
 interface AuthLayoutProps {
   title: ReactNode;
   description?: ReactNode;
-  /** Top-right link to the other auth page, e.g. "New to Glific? Create an account". */
   switcher?: ReactNode;
   children: ReactNode;
 }
 
-/** Split screen for every signed-out page: the brand panel, and the form column. Phones get the form only. */
 export function AuthLayout({ title, description, switcher, children }: AuthLayoutProps) {
   const { t } = useTranslation();
   return (

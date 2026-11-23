@@ -2,7 +2,6 @@ import type { TFunction } from "i18next";
 import { z } from "zod/mini";
 import { normalisePhone } from "@/lib/auth";
 
-/** Field rules shared by the sign-in and sign-up forms, matching what the backend accepts. */
 export function authFields(t: TFunction) {
   return {
     name: z.string().check(z.trim(), z.minLength(1, t("auth.errors.nameRequired"))),

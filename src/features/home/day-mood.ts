@@ -5,13 +5,10 @@ export type Mood = "morning" | "afternoon" | "evening" | "night";
 export interface DayMood {
   mood: Mood;
   icon: LucideIcon;
-  /** Translation key under home.greeting. */
   greeting: "earlyStart" | "freshWeek" | "weekend" | "morning" | "almostWeekend" | "afternoon" | "evening" | "late";
-  /** Whether the greeting is followed by the person's first name. */
   withName: boolean;
 }
 
-/** The greeting for this time of day, as in the prototype: a little different on Mondays, Fridays and weekends. */
 export function dayMood(now = new Date()): DayMood {
   const hour = now.getHours();
   const day = now.getDay();

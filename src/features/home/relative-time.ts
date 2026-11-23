@@ -4,7 +4,6 @@ const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
   ["minute", 60 * 1000],
 ];
 
-/** "4 hours ago", "in 2 days": the largest whole unit, in the user's language. */
 export function relativeTime(iso: string, locale: string, now = Date.now()): string {
   const diff = new Date(iso).getTime() - now;
   const format = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });

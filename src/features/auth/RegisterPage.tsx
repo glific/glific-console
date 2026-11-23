@@ -17,10 +17,6 @@ import { ResendCode } from "./ResendCode";
 
 type Details = { name: string; email: string; phone: string; password: string; consentForUpdates: boolean };
 
-/**
- * A staff member creates an account in their organisation: details, then the code sent on WhatsApp. The account
- * has no access until an admin gives it a role.
- */
 export function RegisterPage() {
   const { t } = useTranslation();
   const [details, setDetails] = useState<Details | null>(null);

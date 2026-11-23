@@ -68,7 +68,6 @@ export function useRecentNotifications({ enabled = true }: { enabled?: boolean }
   });
 }
 
-/** Marks everything read, as opening the notifications page does in the current app. */
 export function useMarkNotificationsRead() {
   const queryClient = useQueryClient();
   return useMutation({

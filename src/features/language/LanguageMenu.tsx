@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useLanguageSwitch } from "./use-language-switch";
 
-/** Language submenu for the account menu; hidden when the organisation has only one translated language. */
 export function LanguageMenu() {
   const { t } = useTranslation();
   const { languages, current, change, isSaving } = useLanguageSwitch();

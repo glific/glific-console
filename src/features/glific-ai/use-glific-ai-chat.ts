@@ -85,7 +85,6 @@ export function useGlificAiChat({ enabled }: { enabled: boolean }) {
     );
   }, [organizationId, enabled]);
 
-  // No answer in time (backend job lost, socket down): stop waiting and say so.
   useEffect(() => {
     if (!pendingRequest) return;
     const timer = setTimeout(() => {

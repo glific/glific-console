@@ -8,7 +8,6 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group"
 
-/** A password input with a show/hide toggle. */
 function PasswordInput({
   className,
   ...props

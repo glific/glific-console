@@ -11,7 +11,6 @@ export interface SideAppsState {
 
 export const SideAppsContext = createContext<SideAppsState | null>(null);
 
-/** Opens and closes the right panel's apps from anywhere inside the shell. */
 export function useSideApps(): SideAppsState {
   const state = useContext(SideAppsContext);
   if (!state) throw new Error("useSideApps must be used inside the app shell.");

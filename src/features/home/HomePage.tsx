@@ -22,7 +22,6 @@ const wash = {
   night: "from-mood-night-wash",
 } as const;
 
-/** One Home for every organisation, as in the prototype: greeting, Glific AI, then how things are going. */
 export function HomePage() {
   const { t } = useTranslation();
   const mood = dayMood();

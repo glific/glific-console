@@ -24,7 +24,6 @@ import {
 import { type OrganizationService, useOrganizationServices } from "@/features/organization/organization";
 import { currentAppUrl } from "@/lib/backend";
 
-/** A page is either rebuilt here (`to`) or still served by the current app (`currentAppPath`). */
 export type NavPage = {
   id: string;
   label: ParseKeys;
@@ -212,7 +211,6 @@ function resolvePage(page: NavPage): ResolvedPage | null {
   return href ? { id: page.id, label: page.label, target: { href } } : null;
 }
 
-/** The sections and pages this user can open: their roles and the organisation's enabled features. */
 export function useNavigation() {
   const access = useAccess();
   const services = useOrganizationServices();

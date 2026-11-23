@@ -7,7 +7,6 @@ export const languages = [
   { id: "3", label: "Marathi", labelLocale: "मराठी", locale: "mr", localized: false },
 ];
 
-/** Signs the mock user in with these access-role labels, e.g. ["Staff"] or ["Admin"]. */
 export function currentUserWithRoles(roles: string[]) {
   return glificApi.query("CurrentUser", () =>
     HttpResponse.json({
