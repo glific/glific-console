@@ -22,6 +22,7 @@ export function NotificationsPanel() {
     if (hasUnread) mutate();
   }, [hasUnread, mutate]);
 
+  const viewAll = currentAppUrl("/notifications");
   const time = new Intl.DateTimeFormat(i18n.language, { dateStyle: "medium", timeStyle: "short" });
 
   let body: ReactNode;
@@ -66,11 +67,13 @@ export function NotificationsPanel() {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="min-h-0 flex-1 overflow-y-auto">{body}</div>
-      <div className="border-t p-stack">
-        <Button variant="outline" size="sm" className="w-full" asChild>
-          <a href={currentAppUrl("/notifications")}>{t("notifications.viewAll")}</a>
-        </Button>
-      </div>
+      {viewAll ? (
+        <div className="border-t p-stack">
+          <Button variant="outline" size="sm" className="w-full" asChild>
+            <a href={viewAll}>{t("notifications.viewAll")}</a>
+          </Button>
+        </div>
+      ) : null}
     </div>
   );
 }

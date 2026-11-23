@@ -1,5 +1,5 @@
 import { XIcon } from "lucide-react";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "@/components/Spinner";
 import { IconButton } from "@/components/ui/icon-button";
@@ -19,12 +19,18 @@ const panels = {
 } satisfies Record<SideAppId, unknown>;
 
 const WIDTH = { initial: 400, min: 320, max: 640 } as const;
+// Rail, page and app strip together need this much beside the panel.
+const PAGE_MIN_WIDTH = 720;
 
 export function SidePanel() {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
   const { open, close } = useSideApps();
-  const [width, setWidth] = usePersistedNumber("glific.sidePanelWidth", WIDTH.initial);
+  const [savedWidth, saveWidth] = usePersistedNumber("glific.sidePanelWidth", WIDTH.initial);
+  const [dragWidth, setDragWidth] = useState<number | null>(null);
+  // A width saved on a wide screen must still leave the page room on a smaller one.
+  const maxWidth = Math.max(WIDTH.min, Math.min(WIDTH.max, globalThis.innerWidth - PAGE_MIN_WIDTH));
+  const width = Math.min(maxWidth, Math.max(WIDTH.min, dragWidth ?? savedWidth));
   const app = panelApps.find((candidate) => candidate.id === open);
 
   useEffect(() => {
@@ -67,7 +73,17 @@ export function SidePanel() {
   }
 
   return (
-    <ResizablePanel aria-label={title} width={width} minWidth={WIDTH.min} maxWidth={WIDTH.max} onWidthChange={setWidth}>
+    <ResizablePanel
+      aria-label={title}
+      width={width}
+      minWidth={WIDTH.min}
+      maxWidth={maxWidth}
+      onWidthChange={setDragWidth}
+      onWidthCommit={(committed) => {
+        saveWidth(committed);
+        setDragWidth(null);
+      }}
+    >
       <header className="flex min-h-12 items-center gap-inline border-b py-2 pr-2 pl-stack">
         <Icon aria-hidden="true" className="size-4 text-muted-foreground" />
         <h2 className="flex-1 truncate text-body font-semibold">{title}</h2>

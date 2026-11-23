@@ -44,7 +44,7 @@ describe("right panel", () => {
     renderRoute("/");
     expect(await within(await strip()).findByRole("link", { name: "Webhook logs" })).toHaveAttribute(
       "href",
-      `${location.origin}/webhook-logs`,
+      "https://current.glific.test/webhook-logs",
     );
   });
 });
