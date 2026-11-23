@@ -1,6 +1,5 @@
-import { accessToken } from "@/lib/auth";
+import { fetchWithSession } from "@/lib/auth";
 import { apiBaseUrl } from "@/lib/backend";
-import { clearSession } from "@/lib/session";
 import type { TypedDocumentString } from "./generated/graphql";
 
 export class GraphQLRequestError extends Error {
@@ -19,18 +18,12 @@ export async function request<TResult, TVariables>(
   document: TypedDocumentString<TResult, TVariables>,
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ): Promise<TResult> {
-  const token = await accessToken();
-  const response = await fetch(apiBaseUrl(), {
+  const response = await fetchWithSession(apiBaseUrl(), {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      ...(token ? { authorization: token } : {}),
-    },
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({ query: document.toString(), variables }),
   });
 
-  if (response.status === 401) clearSession();
   const body = (await response.json().catch(() => null)) as {
     data?: TResult;
     errors?: GraphQLRequestError["errors"];
