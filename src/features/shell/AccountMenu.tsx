@@ -29,7 +29,6 @@ export function AccountMenu({ settings, glificAdmin }: AccountMenuProps) {
   const user = useCurrentUser().data;
   const organization = useOrganization().data;
   const workspace = organization?.name ?? "";
-  const myAccount = myAccountUrl();
 
   return (
     <SidebarMenu>
@@ -56,14 +55,12 @@ export function AccountMenu({ settings, glificAdmin }: AccountMenuProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              {myAccount ? (
-                <DropdownMenuItem asChild>
-                  <a href={myAccount}>
-                    <UserCogIcon aria-hidden="true" />
-                    {t("shell.account.myAccount")}
-                  </a>
-                </DropdownMenuItem>
-              ) : null}
+              <DropdownMenuItem asChild>
+                <a href={myAccountUrl()}>
+                  <UserCogIcon aria-hidden="true" />
+                  {t("shell.account.myAccount")}
+                </a>
+              </DropdownMenuItem>
               {settings ? (
                 <DropdownMenuItem asChild>
                   <NavTargetLink destination={settings.target}>

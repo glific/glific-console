@@ -10,11 +10,11 @@ export function CurrentAppRedirect() {
   const { t } = useTranslation();
   const { pathname, search, hash } = useLocation();
   const target = currentAppUrl(`${pathname}${search}${hash}`);
-  // No current app to reach, or it is this very address (forwarding would loop).
-  const sameApp = !target || new URL(target).origin === globalThis.location.origin;
+  // Served from the current app's own address there is no other app to go to: forwarding would loop.
+  const sameApp = new URL(target).origin === globalThis.location.origin;
 
   useEffect(() => {
-    if (!sameApp && target) browser.open(target);
+    if (!sameApp) browser.open(target);
   }, [sameApp, target]);
 
   if (sameApp) return <NotFoundPage />;

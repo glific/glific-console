@@ -205,10 +205,10 @@ export const glificAdminSection: NavSection = {
 
 export const myAccountUrl = () => currentAppUrl("/myaccount");
 
-function resolvePage(page: NavPage): ResolvedPage | null {
-  if ("to" in page) return { id: page.id, label: page.label, target: { to: page.to, end: page.end } };
-  const href = currentAppUrl(page.currentAppPath);
-  return href ? { id: page.id, label: page.label, target: { href } } : null;
+function resolvePage(page: NavPage): ResolvedPage {
+  const target: NavLinkTarget =
+    "to" in page ? { to: page.to, end: page.end } : { href: currentAppUrl(page.currentAppPath) };
+  return { id: page.id, label: page.label, target };
 }
 
 export function useNavigation() {
@@ -216,7 +216,7 @@ export function useNavigation() {
   const services = useOrganizationServices();
   const visible = (page: NavPage) => access.can(page.allow) && (!page.service || services.enabled(page.service));
   const resolve = (section: NavSection): ResolvedSection | null => {
-    const pages = section.pages.filter(visible).flatMap((page) => resolvePage(page) ?? []);
+    const pages = section.pages.filter(visible).map(resolvePage);
     const first = pages[0];
     return first ? { id: section.id, label: section.label, icon: section.icon, target: first.target, pages } : null;
   };

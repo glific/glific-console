@@ -131,7 +131,6 @@
       "period": "Period",
       "last7": "Last 7 days",
       "last30": "Last 30 days",
-      "analytics": "Open Data analytics",
       "newContacts": "New contacts",
       "messages": "Messages",
       "received": "Messages received",
@@ -141,9 +140,7 @@
     },
     "fix": {
       "title": "Things to fix",
-      "all": "All problems",
       "none": "Everything is working.",
-      "see": "See details",
       "suspended": {
         "title": "Your account is paused",
         "detail": "Messages aren't going out. Write to support@glific.org for help."
@@ -162,22 +159,16 @@
       "none": "Nothing to do right now.",
       "firstFlow": {
         "title": "Build your first flow",
-        "detail": "No flows yet",
-        "action": "Start"
+        "detail": "No flows yet"
       },
       "draft": {
         "never": "Never published",
         "unpublished": "Unpublished changes",
-        "edited": "edited {{when}}",
-        "action": "Open"
-      },
-      "scheduled": {
-        "action": "Preview"
+        "edited": "edited {{when}}"
       },
       "chats": {
         "title": "Reply to your chats",
-        "detail": "See who is waiting for an answer",
-        "action": "Open chats"
+        "detail": "See who is waiting for an answer"
       }
     }
   },

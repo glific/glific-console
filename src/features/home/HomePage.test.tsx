@@ -21,26 +21,18 @@ describe("Home", () => {
     expect(within(stats).getByText("Messages received")).toBeVisible();
     expect(within(stats).getByText("3,480")).toBeVisible();
     expect(within(stats).getByText("$2.10")).toBeVisible();
-    expect(within(stats).getByRole("link", { name: "Open Data analytics" })).toHaveAttribute(
-      "href",
-      "https://current.glific.test/analytics",
-    );
 
     const fix = await section("Things to fix");
     expect(await within(fix).findByText("Registration flow stopped: the webhook returned an error.")).toBeVisible();
-    expect(within(fix).getByRole("link", { name: "All problems" })).toHaveAttribute(
-      "href",
-      "https://current.glific.test/notifications",
-    );
 
     const next = await section("Suggested actions");
     expect(await within(next).findByText("Worker onboarding")).toBeVisible();
     expect(within(next).queryByText("State registration")).toBeNull();
-    const links = within(next).getAllByRole("link");
-    expect(links.map((link) => link.getAttribute("href"))).toEqual([
-      "https://current.glific.test/flow/configure/0b1f2c3d-0000-4000-8000-000000000011",
-      "https://current.glific.test/trigger/5/edit",
-    ]);
+    expect(within(next).getByText("Weekly lesson")).toBeVisible();
+    // Links into the current app stay in the rail and the right panel, not on Home.
+    expect(within(stats).queryAllByRole("link")).toEqual([]);
+    expect(within(fix).queryAllByRole("link")).toEqual([]);
+    expect(within(next).queryAllByRole("link")).toEqual([]);
     expect(screen.getByText("1 thing needs your attention.")).toBeVisible();
     await expectNoA11yViolations();
   });
@@ -52,11 +44,7 @@ describe("Home", () => {
     expect(await within(stats).findByText("4,380")).toBeVisible();
     expect(within(stats).queryByText("Spent")).toBeNull();
     const next = await section("Suggested actions");
-    expect(await within(next).findByRole("link", { name: "Open chats" })).toHaveAttribute(
-      "href",
-      "https://current.glific.test/chat",
-    );
-    expect(within(await section("Things to fix")).queryByRole("link", { name: "All problems" })).toBeNull();
+    expect(await within(next).findByText("Reply to your chats")).toBeVisible();
   });
 
   it("asks Glific AI from Home, with pills that fill the box", async () => {
@@ -93,10 +81,7 @@ describe("Home", () => {
     expect(await screen.findByText("Let's build your first flow.")).toBeVisible();
     expect(screen.getByRole("link", { name: /Go live on WhatsApp\s*3 days left/ })).toBeVisible();
     const next = await section("Suggested actions");
-    expect(await within(next).findByRole("link", { name: "Start" })).toHaveAttribute(
-      "href",
-      "https://current.glific.test/flow/add",
-    );
+    expect(await within(next).findByText("Build your first flow")).toBeVisible();
     expect(screen.getByRole("button", { name: "Build a sign-up flow" })).toBeVisible();
   });
 

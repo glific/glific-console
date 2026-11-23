@@ -1,4 +1,4 @@
-import { screen, within } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { delay, HttpResponse } from "msw";
 import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
@@ -18,15 +18,10 @@ describe("ContactsPage", () => {
     await expectNoA11yViolations();
   });
 
-  it("shows the other pages in Contacts as tabs, linking unbuilt ones to the current app", async () => {
+  it("has no section tabs until another Contacts page is rebuilt here", async () => {
     renderRoute("/contacts");
-    const tabs = await screen.findByRole("navigation", { name: "Sections in Contacts" });
-    expect(within(tabs).getByRole("link", { name: "All contacts" })).toHaveAttribute("aria-current", "page");
-    expect(within(tabs).getByRole("link", { name: "Collections" })).toHaveAttribute(
-      "href",
-      "https://current.glific.test/collection",
-    );
-    expect(within(tabs).getByRole("link", { name: "Import contacts" })).toBeVisible();
+    await expect.poll(() => screen.queryAllByRole("row").length).toBe(26);
+    expect(screen.queryByRole("navigation", { name: "Sections in Contacts" })).toBeNull();
   });
 
   it("searches on the server and pages through results", async () => {
