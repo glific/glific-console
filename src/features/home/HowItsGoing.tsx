@@ -4,7 +4,6 @@ import { ErrorState } from "@/components/ErrorState";
 import { StatTile } from "@/components/StatTile";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { currentAppUrl } from "@/lib/backend";
 import { HomeSection } from "./HomeSection";
 import { change, type Period, useActivity, useUsage } from "./home-data";
 
@@ -21,7 +20,6 @@ export function HowItsGoing() {
   const activity = useActivity(days);
   const usage = useUsage(days);
   const number = new Intl.NumberFormat(i18n.language);
-  const analyticsUrl = currentAppUrl("/analytics");
   const money = new Intl.NumberFormat(i18n.language, { style: "currency", currency: "USD" });
 
   let tiles: Tile[] = [];
@@ -102,11 +100,6 @@ export function HowItsGoing() {
               <SelectItem value="30">{t("home.stats.last30")}</SelectItem>
             </SelectContent>
           </Select>
-          {analyticsUrl ? (
-            <a href={analyticsUrl} className="text-body-sm text-primary hover:underline">
-              {t("home.stats.analytics")}
-            </a>
-          ) : null}
         </>
       }
     >

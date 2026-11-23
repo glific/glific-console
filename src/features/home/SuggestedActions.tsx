@@ -3,18 +3,12 @@ import { StatusDot } from "@/components/StatusDot";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { managers, useAccess } from "@/features/auth/current-user";
-import { currentAppUrl } from "@/lib/backend";
 import { HomeRow, type HomeRowProps } from "./HomeRow";
 import { HomeSection } from "./HomeSection";
 import { useFlowsAndTriggers } from "./home-data";
 import { relativeTime } from "./relative-time";
 
 const SHOWN_EACH = 2;
-
-function currentAppAction(label: string, path: string) {
-  const href = currentAppUrl(path);
-  return href ? { label, destination: { href } } : undefined;
-}
 
 type Row = HomeRowProps & { id: string };
 
@@ -32,7 +26,6 @@ export function SuggestedActions() {
       icon: dot("success"),
       title: t("home.next.chats.title"),
       detail: t("home.next.chats.detail"),
-      action: currentAppAction(t("home.next.chats.action"), "/chat"),
     });
   } else if (data.data) {
     const flows = (data.data.flows ?? []).flatMap((flow) => (flow?.id && flow.uuid ? [flow] : []));
@@ -42,7 +35,6 @@ export function SuggestedActions() {
         icon: dot("success"),
         title: t("home.next.firstFlow.title"),
         detail: t("home.next.firstFlow.detail"),
-        action: currentAppAction(t("home.next.firstFlow.action"), "/flow/add"),
       });
     }
     const drafts = flows.filter(
@@ -60,7 +52,6 @@ export function SuggestedActions() {
         ]
           .filter(Boolean)
           .join(" · "),
-        action: currentAppAction(t("home.next.draft.action"), `/flow/configure/${flow.uuid}`),
       });
     }
     const now = new Date().toISOString();
@@ -86,7 +77,6 @@ export function SuggestedActions() {
         ]
           .filter(Boolean)
           .join(" · "),
-        action: currentAppAction(t("home.next.scheduled.action"), `/trigger/${trigger.id}/edit`),
       });
     }
   }

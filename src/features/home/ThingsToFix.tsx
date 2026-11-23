@@ -1,6 +1,5 @@
 import { AlertTriangleIcon, CheckIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { NavTargetLink } from "@/components/NavTargetLink";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HomeRow } from "./HomeRow";
@@ -28,24 +27,13 @@ export function ThingsToFix({ problems }: { problems: ReturnType<typeof useProbl
             icon={<AlertTriangleIcon aria-hidden="true" className="size-3.5 text-destructive" />}
             title={problem.title}
             detail={problem.detail}
-            action={problem.action}
           />
         ))}
       </ul>
     );
   }
   return (
-    <HomeSection
-      title={t("home.fix.title")}
-      count={problems.total}
-      aside={
-        problems.allProblems ? (
-          <NavTargetLink destination={problems.allProblems} className="text-body-sm text-primary hover:underline">
-            {t("home.fix.all")}
-          </NavTargetLink>
-        ) : null
-      }
-    >
+    <HomeSection title={t("home.fix.title")} count={problems.total}>
       <Card className="gap-0 py-0">{body}</Card>
     </HomeSection>
   );
