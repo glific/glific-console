@@ -21,7 +21,6 @@ interface PageHeaderProps extends Omit<ComponentProps<"header">, "title"> {
   actions?: ReactNode;
   /** The pages above this one, outermost first; the title is the current page. */
   breadcrumbs?: readonly Crumb[];
-  /** In-page section menu (e.g. PageSections), shown under the title row. */
   sections?: ReactNode;
 }
 

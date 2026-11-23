@@ -86,7 +86,6 @@ export function renewSession({ rejected }: { rejected?: string } = {}): Promise<
   return renewing;
 }
 
-/** A usable access token, renewed first if it is about to expire; null when signed out. */
 export async function accessToken(): Promise<string | null> {
   const session = getSession();
   if (!session) return null;

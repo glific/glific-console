@@ -23,7 +23,6 @@ export interface SideLinkApp extends SideAppBase {
   currentAppPath: string;
 }
 
-// The prototype's right strip. Apps open in the panel; the rest still live in the current app until rebuilt.
 export const panelApps: readonly SidePanelApp[] = [
   {
     id: "glificAi",

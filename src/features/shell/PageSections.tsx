@@ -8,7 +8,6 @@ interface PageSectionsProps {
   className?: string;
 }
 
-/** A section's pages the user can open, for the top of each page in that section. */
 export function PageSections({ section, variant, className }: PageSectionsProps) {
   const { t } = useTranslation();
   const navigation = useNavigation();

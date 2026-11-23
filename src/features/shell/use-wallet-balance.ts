@@ -34,7 +34,6 @@ function parseBalance(raw: unknown): number | null {
   }
 }
 
-/** The WhatsApp wallet balance, kept live by the backend's periodic push. Hidden for trials and no-wallet providers. */
 export function useWalletBalance() {
   const queryClient = useQueryClient();
   const organization = useOrganization().data;

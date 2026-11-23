@@ -18,7 +18,6 @@ export const languages = [
 export const glificApi = graphql.link("*/api");
 const glificSocket = createGraphQLSubscriptionHandler("*/socket");
 
-/** Signs the mock user in with these access-role labels, e.g. ["Staff"] or ["Admin"]. */
 export function currentUserWithRoles(roles: string[]) {
   return glificApi.query("CurrentUser", () =>
     HttpResponse.json({
