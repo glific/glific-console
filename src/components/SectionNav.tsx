@@ -36,7 +36,6 @@ interface SectionNavProps {
   className?: string;
 }
 
-/** The pages inside a section, as tabs over the page or a column beside it. */
 export function SectionNav({ label, items, variant = "tabs", className }: SectionNavProps) {
   return (
     <nav aria-label={label} data-slot="section-nav" className={className}>

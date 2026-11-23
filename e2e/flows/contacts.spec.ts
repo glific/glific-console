@@ -25,7 +25,6 @@ test.describe("contacts", () => {
     await expect(contacts).toBeVisible();
     await page.keyboard.press("Tab");
     await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
-    // Through the menu toggle and every section before Contacts in the rail.
     const focused = () => contacts.evaluate((link) => link === link.ownerDocument.activeElement);
     for (let step = 0; step < 12 && !(await focused()); step++) {
       await page.keyboard.press("Tab");

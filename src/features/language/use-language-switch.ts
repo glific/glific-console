@@ -20,7 +20,6 @@ const UpdateLanguage = graphql(`
   }
 `);
 
-/** The organisation's languages this app is translated into, and a switch that saves the choice on the user. */
 export function useLanguageSwitch() {
   const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();

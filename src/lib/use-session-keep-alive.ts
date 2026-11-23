@@ -3,10 +3,7 @@ import { renewSession } from "./auth";
 import { getSession, needsRenewal, RENEW_BEFORE_MS } from "./session";
 import { useSession } from "./use-session";
 
-/**
- * Keeps a signed-in session fresh while the app is open: renews shortly before the access token expires, and as
- * soon as someone comes back to the tab or the connection returns. Failures are left to the next request.
- */
+// Errors are ignored here: the next request renews and retries, and only a real rejection signs out.
 export function useSessionKeepAlive() {
   const session = useSession();
   const expiry = session?.token_expiry_time;
