@@ -75,3 +75,17 @@ export function useMarkNotificationsRead() {
     onSuccess: () => queryClient.setQueryData([...notificationsKey, "unread"], 0),
   });
 }
+
+export type Notification = NonNullable<ReturnType<typeof useRecentNotifications>["data"]>[number];
+
+/** Newest day first, each day's notifications in the order given; `day` is the local date (YYYY-MM-DD). */
+export function groupByDay(notifications: readonly Notification[]) {
+  const groups = new Map<string, Notification[]>();
+  for (const notification of notifications) {
+    if (!notification.insertedAt) continue;
+    const at = new Date(notification.insertedAt);
+    const day = `${at.getFullYear()}-${String(at.getMonth() + 1).padStart(2, "0")}-${String(at.getDate()).padStart(2, "0")}`;
+    groups.set(day, [...(groups.get(day) ?? []), notification]);
+  }
+  return [...groups].map(([day, items]) => ({ day, items }));
+}
