@@ -13,11 +13,13 @@ export function PageSections({ section, variant, className }: PageSectionsProps)
   const navigation = useNavigation();
   const definition = navigation.section(section);
   const resolved = definition ? navigation.resolve(definition) : null;
-  if (!resolved || resolved.pages.length < 2) return null;
+  // Only pages rebuilt here: links into the current app stay in the rail and the right panel.
+  const pages = resolved?.pages.filter((page) => "to" in page.target) ?? [];
+  if (!resolved || pages.length < 2) return null;
   return (
     <SectionNav
       label={t("nav.sections", { section: t(resolved.label) })}
-      items={resolved.pages.map((page) => ({ id: page.id, label: t(page.label), destination: page.target }))}
+      items={pages.map((page) => ({ id: page.id, label: t(page.label), destination: page.target }))}
       variant={variant}
       className={className}
     />

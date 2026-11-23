@@ -37,7 +37,6 @@ test.describe("app shell", () => {
       await page.goto("/contacts");
       const rail = page.getByRole("navigation", { name: "Main" });
       await expect(rail.getByRole("link")).toHaveText(["Home", "Chats", "Analytics", "Contacts"]);
-      await expect(page.getByRole("navigation", { name: "Sections in Contacts" })).toBeVisible();
       await page.getByRole("button", { name: /account and settings/ }).click();
       await expect(page.getByRole("menuitem", { name: "Settings" })).toHaveCount(0);
     });

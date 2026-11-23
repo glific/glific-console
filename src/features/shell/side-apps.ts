@@ -63,9 +63,6 @@ export function useVisibleSideApps() {
     access.can(app.allow) && (!app.services || app.services.some((service) => services.enabled(service)));
   return {
     panels: panelApps.filter(visible),
-    links: linkApps.filter(visible).flatMap((app) => {
-      const href = currentAppUrl(app.currentAppPath);
-      return href ? [{ ...app, href }] : [];
-    }),
+    links: linkApps.filter(visible).map((app) => ({ ...app, href: currentAppUrl(app.currentAppPath) })),
   };
 }
