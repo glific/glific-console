@@ -26,6 +26,7 @@ const monitoringKeys = dynamicEntries((key) => /@sentry|posthog-js/.test(key));
 const pageKeys = dynamicEntries((key) => key.startsWith("src/") && !key.includes("features/design-system"));
 
 const monitoring = minus(union(monitoringKeys.map((key) => closure(key))), initial);
+const allPages = minus(union(pageKeys.map((key) => closure(key))), new Set(monitoring));
 
 export default [
   { name: "Initial JS (shell + home)", path: toPaths([...initial]), limit: "200 kB", gzip: true },
@@ -37,6 +38,8 @@ export default [
     // Size only: timing each page starts headless Chrome once per page, which times out in CI.
     running: false,
   })),
+  // A loose backstop on everything together, so steady growth across pages still gets noticed.
+  { name: "All app JS (backstop)", path: toPaths(allPages), limit: "450 kB", gzip: true, running: false },
   {
     name: "Monitoring SDKs (Sentry + PostHog, after first paint, only where configured)",
     path: toPaths(monitoring),

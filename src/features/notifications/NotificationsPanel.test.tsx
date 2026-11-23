@@ -23,7 +23,7 @@ describe("notifications", () => {
     expect(within(panel).getByRole("img", { name: "Critical" })).toBeVisible();
     expect(within(panel).getByRole("link", { name: "View all notifications" })).toHaveAttribute(
       "href",
-      `${location.origin}/notifications`,
+      "https://current.glific.test/notifications",
     );
     await expect.poll(() => marked).toBe(1);
     expect(await screen.findByRole("button", { name: "Notifications" })).toBeVisible();

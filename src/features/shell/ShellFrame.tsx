@@ -4,6 +4,7 @@ import logo from "@/assets/glific-logo.png";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { GlificAiProvider } from "@/features/glific-ai/GlificAiProvider";
 import { AppSidebar } from "./AppSidebar";
+import { useVisibleSideApps } from "./side-apps";
 import { useSideApps } from "./side-apps-context";
 import { useRailOpen } from "./use-rail-open";
 
@@ -15,10 +16,10 @@ export function ShellFrame({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
   const [railOpen, setRailOpen] = useRailOpen();
   const sideApps = useSideApps();
-  const glificAiOpen = sideApps.open === "glificAi";
+  const hasGlificAi = useVisibleSideApps().panels.some((app) => app.id === "glificAi");
 
   return (
-    <GlificAiProvider listening={glificAiOpen}>
+    <GlificAiProvider enabled={hasGlificAi}>
       <SidebarProvider open={railOpen} onOpenChange={setRailOpen} className="h-svh overflow-hidden">
         <a
           href="#main"

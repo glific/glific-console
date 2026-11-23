@@ -9,6 +9,8 @@ interface ResizablePanelProps extends React.ComponentProps<"aside"> {
   minWidth: number
   maxWidth: number
   onWidthChange: (width: number) => void
+  /** Called once a resize ends (drag released or a key press), e.g. to save the width. */
+  onWidthCommit?: (width: number) => void
 }
 
 /** A panel docked to the right of the page, resized by dragging or arrow keys on its left edge. */
@@ -17,6 +19,7 @@ function ResizablePanel({
   minWidth,
   maxWidth,
   onWidthChange,
+  onWidthCommit,
   className,
   children,
   ...props
@@ -27,16 +30,24 @@ function ResizablePanel({
   function startDrag(event: React.PointerEvent<HTMLDivElement>) {
     const startX = event.clientX
     const startWidth = width
+    let latest = width
     const handle = event.currentTarget
     handle.setPointerCapture(event.pointerId)
-    const move = (moveEvent: PointerEvent) =>
-      onWidthChange(clamp(startWidth + startX - moveEvent.clientX))
+    const move = (moveEvent: PointerEvent) => {
+      latest = clamp(startWidth + startX - moveEvent.clientX)
+      onWidthChange(latest)
+    }
     const stop = () => {
       handle.removeEventListener("pointermove", move)
       handle.removeEventListener("pointerup", stop)
+      handle.removeEventListener("pointercancel", stop)
+      handle.removeEventListener("lostpointercapture", stop)
+      onWidthCommit?.(latest)
     }
     handle.addEventListener("pointermove", move)
     handle.addEventListener("pointerup", stop)
+    handle.addEventListener("pointercancel", stop)
+    handle.addEventListener("lostpointercapture", stop)
   }
 
   function resizeWithKeys(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -45,7 +56,9 @@ function ResizablePanel({
     ]
     if (change === undefined) return
     event.preventDefault()
-    onWidthChange(clamp(width + change))
+    const next = clamp(width + change)
+    onWidthChange(next)
+    onWidthCommit?.(next)
   }
 
   return (

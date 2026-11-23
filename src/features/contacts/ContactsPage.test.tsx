@@ -24,7 +24,7 @@ describe("ContactsPage", () => {
     expect(within(tabs).getByRole("link", { name: "All contacts" })).toHaveAttribute("aria-current", "page");
     expect(within(tabs).getByRole("link", { name: "Collections" })).toHaveAttribute(
       "href",
-      `${location.origin}/collection`,
+      "https://current.glific.test/collection",
     );
     expect(within(tabs).getByRole("link", { name: "Import contacts" })).toBeVisible();
   });
