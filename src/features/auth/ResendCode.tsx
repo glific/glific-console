@@ -9,7 +9,6 @@ interface ResendCodeProps {
   onResend: () => Promise<void>;
 }
 
-/** Resends a verification code, then waits out the backend's rate limit before allowing another. */
 export function ResendCode({ onResend }: ResendCodeProps) {
   const { t } = useTranslation();
   const [wait, setWait] = useState(COOLDOWN_SECONDS);

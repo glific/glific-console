@@ -5,14 +5,11 @@ import { cn } from "@/lib/utils";
 
 interface HomeSectionProps {
   title: string;
-  /** Shown beside the title, e.g. how many problems there are. */
   count?: number;
-  /** Controls on the right of the heading: a period select, a link to the full page. */
   aside?: ReactNode;
   children: ReactNode;
 }
 
-/** A foldable section of Home, open by default. */
 export function HomeSection({ title, count, aside, children }: HomeSectionProps) {
   const [open, setOpen] = useState(true);
   const headingId = useId();

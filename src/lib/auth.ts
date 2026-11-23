@@ -126,7 +126,6 @@ export async function logout(): Promise<void> {
   }
 }
 
-/** The phone as the backend stores it: digits only, with the country code. */
 export const normalisePhone = (phone: string) => phone.replace(/\D/g, "");
 
 async function postJson<T>(path: string, body: unknown): Promise<T> {
@@ -188,12 +187,10 @@ function trialResult<T>(body: TrialResponse<T>): T | undefined {
   return body.data;
 }
 
-/** Emails a code to confirm the trial sign-up. */
 export async function startTrial(signUp: TrialSignUp): Promise<void> {
   trialResult(await postJson<TrialResponse>("/v1/trial/create-trial-user", trialBody(signUp)));
 }
 
-/** Confirms the emailed code and assigns a trial organisation; returns its login page. */
 export async function confirmTrial(signUp: TrialSignUp, otp: string): Promise<string> {
   const data = trialResult(
     await postJson<TrialResponse<{ login_url?: string }>>("/v1/trial/allocate-account", { ...trialBody(signUp), otp }),

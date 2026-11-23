@@ -11,7 +11,6 @@ import { relativeTime } from "./relative-time";
 
 const SHOWN_EACH = 2;
 
-/** A link into the current app, or none when it can't be reached. */
 function currentAppAction(label: string, path: string) {
   const href = currentAppUrl(path);
   return href ? { label, destination: { href } } : undefined;
@@ -19,10 +18,6 @@ function currentAppAction(label: string, path: string) {
 
 type Row = HomeRowProps & { id: string };
 
-/**
- * What to do next: build a first flow, finish drafts, check what's scheduled. Flows and triggers still live in the
- * current app, so the actions open it.
- */
 export function SuggestedActions() {
   const { t, i18n } = useTranslation();
   const { can } = useAccess();

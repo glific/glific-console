@@ -15,7 +15,6 @@ interface Tile {
   trend: number | null;
 }
 
-/** Activity over the last 7 or 30 days, each against the period before. */
 export function HowItsGoing() {
   const { t, i18n } = useTranslation();
   const [days, setDays] = useState<Period>(7);

@@ -9,7 +9,6 @@ interface HomeAskProps {
   suggestions: string[];
 }
 
-/** Ask Glific AI from Home: the question opens the Glific AI panel with it asked. Pills fill the box. */
 export function HomeAsk({ suggestions }: HomeAskProps) {
   const { t } = useTranslation();
   const chat = useGlificAi();

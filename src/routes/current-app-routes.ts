@@ -37,7 +37,6 @@ export const currentAppPaths = [
   "organization-registration",
 ] as const;
 
-/** The current app's signed-out pages that have a counterpart here. */
 export const renamedAuthPaths = {
   registration: "/register",
   confirmotp: "/register",

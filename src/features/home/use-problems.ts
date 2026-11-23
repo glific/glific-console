@@ -16,7 +16,6 @@ export interface Problem {
 
 const SHOWN = 3;
 
-/** Account problems first, then unread critical and warning notifications; worst first, at most three. */
 export function useProblems() {
   const { t, i18n } = useTranslation();
   const { can } = useAccess();

@@ -19,10 +19,6 @@ const TRIAL_DAYS = 14;
 
 type Account = Omit<TrialSignUp, "organisation">;
 
-/**
- * The 14-day trial from the 2.0 prototype: account details, the organisation's name, then the code emailed to
- * them. A trial organisation is then assigned and they go to its login page.
- */
 export function TrialSignUpPage() {
   const { t } = useTranslation();
   const [account, setAccount] = useState<Account | null>(null);
