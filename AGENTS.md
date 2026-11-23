@@ -78,10 +78,11 @@ accept an overwrite blindly. The `form` registry item is empty in this style; us
 
 ## Data
 
-- The API is Glific's GraphQL. Write operations with `graphql(\`query Name ...\`)`from`@/graphql/generated`in
- `features/<name>/api.ts`, run them with `request()`from`@/graphql/client`, wrap them in TanStack Query hooks
-  with a key factory (`contactKeys`). Live updates: `subscribe()`from`@/graphql/subscriptions`.
-- After adding or changing an operation run `pnpm codegen` and commit `src/graphql/generated` (CI fails if stale).
+- The API is Glific's GraphQL. Write each operation inline with `graphql<NameQuery, NameQueryVariables>(\`query Name ...\`)`  from`@/graphql/document`, in `features/<name>/api.ts`; the two types come from `@/graphql/generated/graphql`. Run
+  them with `request()`from`@/graphql/client`, wrap them in TanStack Query hooks with a key factory
+  (`contactKeys`). Live updates: `subscribe()`from`@/graphql/subscriptions`. Codegen writes only types, so each page
+  ships only its own operations.
+- After adding or changing an operation run `pnpm codegen` and commit `src/graphql/generated/graphql.ts` (CI fails if stale).
   Backend schema changed? `pnpm schema:pull` (needs the `glific` repo at `../glific` or `GLIFIC_BACKEND_DIR`).
 - REST (auth only) goes through `apiClient`. Never call `fetch` from components.
 - Add an MSW handler for every operation (`glificApi.query("Name", ...)` in `src/mocks/handlers.ts`) so dev and tests

@@ -3,10 +3,11 @@ import { useTranslation } from "react-i18next";
 import { toast } from "@/components/ui/sonner";
 import { currentUserKey, useCurrentUser } from "@/features/auth/current-user";
 import { request } from "@/graphql/client";
-import { graphql } from "@/graphql/generated";
+import { graphql } from "@/graphql/document";
+import type { UpdateLanguageMutation, UpdateLanguageMutationVariables } from "@/graphql/generated/graphql";
 import { isLocale, setLocale } from "@/lib/i18n";
 
-const UpdateLanguage = graphql(`
+const updateLanguage = graphql<UpdateLanguageMutation, UpdateLanguageMutationVariables>(`
   mutation UpdateLanguage($input: CurrentUserInput!) {
     updateCurrentUser(input: $input) {
       user {
@@ -31,7 +32,7 @@ export function useLanguageSwitch() {
   );
   const save = useMutation({
     mutationFn: async (languageId: string) => {
-      const result = (await request(UpdateLanguage, { input: { languageId } })).updateCurrentUser;
+      const result = (await request(updateLanguage, { input: { languageId } })).updateCurrentUser;
       if (result?.errors?.length) throw new Error(result.errors[0]?.message ?? "");
     },
   });
