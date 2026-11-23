@@ -16,7 +16,8 @@ test.describe("sign in and out", () => {
     await expect(page).toHaveURL(/\/contacts$/);
     await expect(page.getByRole("heading", { level: 1, name: "Contacts" })).toBeVisible();
 
-    await page.getByRole("link", { name: "Sign out" }).click();
+    await page.getByRole("button", { name: /account and settings/ }).click();
+    await page.getByRole("menuitem", { name: "Sign out" }).click();
     await expect(page).toHaveURL(/\/login$/);
     await page.goto("/");
     await expect(page).toHaveURL(/\/login$/);

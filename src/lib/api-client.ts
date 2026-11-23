@@ -1,6 +1,5 @@
-import { accessToken } from "./auth";
+import { fetchWithSession } from "./auth";
 import { apiBaseUrl } from "./backend";
-import { clearSession } from "./session";
 
 export class ApiError extends Error {
   override name = "ApiError";
@@ -18,13 +17,11 @@ interface RequestOptions extends Omit<RequestInit, "body"> {
 }
 
 async function request<T>(path: string, { body, headers, ...init }: RequestOptions = {}): Promise<T> {
-  const token = await accessToken();
-  const response = await fetch(`${apiBaseUrl()}${path}`, {
+  const response = await fetchWithSession(`${apiBaseUrl()}${path}`, {
     ...init,
     headers: {
       Accept: "application/json",
       ...(body === undefined ? {} : { "Content-Type": "application/json" }),
-      ...(token ? { authorization: token } : {}),
       ...headers,
     },
     body: body === undefined ? null : JSON.stringify(body),
@@ -33,7 +30,6 @@ async function request<T>(path: string, { body, headers, ...init }: RequestOptio
   const text = await response.text();
   const data: unknown = text ? JSON.parse(text) : undefined;
 
-  if (response.status === 401) clearSession();
   if (!response.ok) {
     throw new ApiError(response.status, `Request failed: ${response.status} ${response.statusText}`, data);
   }

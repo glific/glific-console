@@ -18,6 +18,12 @@ describe("ContactsPage", () => {
     await expectNoA11yViolations();
   });
 
+  it("has no section tabs until another Contacts page is rebuilt here", async () => {
+    renderRoute("/contacts");
+    await expect.poll(() => screen.queryAllByRole("row").length).toBe(26);
+    expect(screen.queryByRole("navigation", { name: "Sections in Contacts" })).toBeNull();
+  });
+
   it("searches on the server and pages through results", async () => {
     renderRoute("/contacts");
     await expect.poll(() => screen.queryAllByRole("row").length).toBe(26);

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import type { DataTableColumn } from "@/components/data-table";
 import { ListPage } from "@/components/ListPage";
 import { Badge } from "@/components/ui/badge";
+import { PageSections } from "@/features/shell";
 import type { ContactStatusEnum, ContactsQuery } from "@/graphql/generated/graphql";
 import { useDebouncedValue } from "@/lib/use-debounced-value";
 import { useContacts } from "./api";
@@ -68,6 +69,7 @@ export function ContactsPage() {
     <ListPage
       title={t("contacts.title")}
       description={t("contacts.description")}
+      sections={<PageSections section="contacts" />}
       search={{ value: search, onValueChange: setSearch, placeholder: t("contacts.search") }}
       label={t("contacts.title")}
       columns={columns}

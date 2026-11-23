@@ -20,21 +20,26 @@ const toPaths = (files) => files.filter((file) => file.endsWith(".js")).map((fil
 
 const initial = closure("index.html");
 const monitoringKeys = dynamicEntries((key) => /@sentry|posthog-js/.test(key));
+// Each lazy page is budgeted on its own: what it adds on top of the first load when someone opens it. A total of
+// every page would grow with each page rebuilt, which says nothing about what any user waits for.
 // The internal /design-system page is left unbudgeted: it is served on one host only.
-const designSystemKeys = dynamicEntries((key) => key.includes("features/design-system"));
-const otherKeys = entries.map(([key]) => key).filter((key) => ![...monitoringKeys, ...designSystemKeys].includes(key));
+const pageKeys = dynamicEntries((key) => key.startsWith("src/") && !key.includes("features/design-system"));
 
 const monitoring = minus(union(monitoringKeys.map((key) => closure(key))), initial);
-const app = minus(union(otherKeys.map((key) => closure(key))), new Set(monitoring));
+const allPages = minus(union(pageKeys.map((key) => closure(key))), new Set(monitoring));
 
 export default [
   { name: "Initial JS (shell + home)", path: toPaths([...initial]), limit: "200 kB", gzip: true },
-  {
-    name: "All app JS (lazy pages included; not monitoring or /design-system)",
-    path: toPaths(app),
-    limit: "260 kB",
+  ...pageKeys.map((key) => ({
+    name: `Page: ${key.replace(/^src\//, "")}`,
+    path: toPaths(minus(closure(key), initial)),
+    limit: "60 kB",
     gzip: true,
-  },
+    // Size only: timing each page starts headless Chrome once per page, which times out in CI.
+    running: false,
+  })),
+  // A loose backstop on everything together, so steady growth across pages still gets noticed.
+  { name: "All app JS (backstop)", path: toPaths(allPages), limit: "450 kB", gzip: true, running: false },
   {
     name: "Monitoring SDKs (Sentry + PostHog, after first paint, only where configured)",
     path: toPaths(monitoring),

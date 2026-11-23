@@ -10,7 +10,7 @@ export function AiMark({ size = "default", className }: { size?: "sm" | "default
       aria-label={t("ai.name")}
       data-slot="ai-mark"
       className={cn(
-        "inline-flex shrink-0 items-center justify-center rounded-full bg-ai text-ai-foreground",
+        "inline-flex shrink-0 items-center justify-center rounded-lg bg-ai-gradient text-ai-foreground",
         size === "sm" ? "size-5 [&_svg]:size-3" : "size-7 [&_svg]:size-4",
         className,
       )}

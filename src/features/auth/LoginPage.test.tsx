@@ -57,7 +57,8 @@ describe("LoginPage", () => {
   it("sends signed-in users away from /login, and signs out", async () => {
     const { router } = renderRoute("/login");
     await expect.poll(() => router.state.location.pathname).toBe("/");
-    await userEvent.click(await screen.findByRole("link", { name: "Sign out" }));
+    await userEvent.click(await screen.findByRole("button", { name: /account and settings/ }));
+    await userEvent.click(await screen.findByRole("menuitem", { name: "Sign out" }));
     await expect.poll(() => router.state.location.pathname).toBe("/login");
     expect(getSession()).toBeNull();
   });

@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { request } from "@/graphql/client";
-import { graphql } from "@/graphql/generated";
+import { graphql } from "@/graphql/document";
+import type { CurrentUserQuery, CurrentUserQueryVariables } from "@/graphql/generated/graphql";
 import { useSession } from "@/lib/use-session";
 
 // accessRoles, not roles: only accessRoles includes the custom roles an organisation creates, and the current app uses it.
-const CurrentUserQuery = graphql(`
+const currentUserQuery = graphql<CurrentUserQuery, CurrentUserQueryVariables>(`
   query CurrentUser {
     currentUser {
       user {
@@ -37,7 +38,7 @@ export function useCurrentUser() {
   const session = useSession();
   return useQuery({
     queryKey: currentUserKey,
-    queryFn: async () => (await request(CurrentUserQuery)).currentUser?.user ?? null,
+    queryFn: async () => (await request(currentUserQuery)).currentUser?.user ?? null,
     enabled: Boolean(session),
     staleTime: 5 * 60_000,
   });
@@ -70,6 +71,7 @@ export type RoleKind = "staff" | "manager" | "admin" | "glific_admin" | "custom"
 export const everyone: readonly RoleKind[] = ["staff", "manager", "admin", "glific_admin", "custom"];
 export const managers: readonly RoleKind[] = ["manager", "admin", "glific_admin", "custom"];
 export const admins: readonly RoleKind[] = ["admin", "glific_admin"];
+export const staffManagers: readonly RoleKind[] = ["manager", "admin", "glific_admin"];
 export const glificAdmins: readonly RoleKind[] = ["glific_admin"];
 
 const builtIn = new Set<string>(["staff", "manager", "admin", "glific_admin"]);

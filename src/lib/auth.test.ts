@@ -4,7 +4,7 @@ import { mockSession } from "@/mocks/auth";
 import { worker } from "@/test/msw";
 import { apiClient } from "./api-client";
 import { accessToken, renewSession } from "./auth";
-import { backendOrigin } from "./backend";
+import { backendOrigin, currentAppUrl } from "./backend";
 import { getSession, needsRenewal, SESSION_KEY, setSession } from "./session";
 
 describe("session", () => {
@@ -20,10 +20,10 @@ describe("session", () => {
     expect(getSession()?.access_token).toMatch(/^access-/);
   });
 
-  it("renews 30 seconds before expiry", () => {
+  it("renews two minutes before expiry", () => {
     const now = Date.now();
-    expect(needsRenewal(mockSession(60_000), now)).toBe(false);
-    expect(needsRenewal(mockSession(20_000), now)).toBe(true);
+    expect(needsRenewal(mockSession(180_000), now)).toBe(false);
+    expect(needsRenewal(mockSession(60_000), now)).toBe(true);
   });
 });
 
@@ -54,6 +54,65 @@ describe("auth", () => {
     expect(await accessToken()).toBeNull();
     expect(getSession()).toBeNull();
     await expect(renewSession()).rejects.toThrow("Not signed in");
+  });
+});
+
+describe("session renewal across tabs and failures", () => {
+  it("uses a token another tab already renewed instead of spending the old one", async () => {
+    const renew = vi.fn();
+    worker.use(
+      http.post("*/api/v1/session/renew", () => {
+        renew();
+        return HttpResponse.json({ data: mockSession() });
+      }),
+    );
+    setSession(mockSession(1_000));
+    const fresh = { ...mockSession(), access_token: "access-from-other-tab" };
+    // The other tab finishes first; this tab then re-reads storage inside the lock.
+    setSession(fresh);
+    expect((await renewSession()).access_token).toBe("access-from-other-tab");
+    expect(renew).not.toHaveBeenCalled();
+  });
+
+  it("stays signed in when a rejected renewal lost a race with another tab", async () => {
+    worker.use(
+      http.post("*/api/v1/session/renew", () => {
+        setSession({ ...mockSession(), renewal_token: "renewal-from-other-tab" });
+        return HttpResponse.json({ error: { status: 401, message: "Invalid token" } }, { status: 401 });
+      }),
+    );
+    setSession(mockSession(1_000));
+    await expect(renewSession()).rejects.toMatchObject({ status: 401 });
+    expect(getSession()?.renewal_token).toBe("renewal-from-other-tab");
+  });
+
+  it("keeps the session through network and server errors", async () => {
+    setSession(mockSession(1_000));
+    worker.use(http.post("*/api/v1/session/renew", () => HttpResponse.error()));
+    await expect(renewSession()).rejects.toMatchObject({ status: 0 });
+    worker.use(http.post("*/api/v1/session/renew", () => HttpResponse.json({}, { status: 503 })));
+    await expect(renewSession()).rejects.toMatchObject({ status: 503 });
+    expect(getSession()).not.toBeNull();
+    expect(await accessToken()).toBe(getSession()?.access_token);
+  });
+
+  it("renews and retries once when a request is refused with 401", async () => {
+    let calls = 0;
+    worker.use(
+      http.get("*/api/probe", ({ request }) => {
+        calls += 1;
+        return request.headers.get("authorization") === "access-renewed"
+          ? HttpResponse.json({ ok: true })
+          : HttpResponse.json({ error: "expired" }, { status: 401 });
+      }),
+      http.post("*/api/v1/session/renew", () =>
+        HttpResponse.json({ data: { ...mockSession(), access_token: "access-renewed" } }),
+      ),
+    );
+    setSession(mockSession());
+    await expect(apiClient.get("/probe")).resolves.toEqual({ ok: true });
+    expect(calls).toBe(2);
+    expect(getSession()?.access_token).toBe("access-renewed");
   });
 });
 
@@ -106,5 +165,12 @@ describe("backendOrigin", () => {
         VITE_BACKEND_URL: "https://api.glific.test:4001",
       }),
     ).toBe("https://api.glific.test:4001");
+  });
+
+  it("opens pages not rebuilt yet on the same address without console.", () => {
+    expect(currentAppUrl("/flow", place("https://console.pratham.glific.com/"))).toBe(
+      "https://pratham.glific.com/flow",
+    );
+    expect(currentAppUrl("/flow", place("https://pratham.glific.com/"))).toBe("https://pratham.glific.com/flow");
   });
 });

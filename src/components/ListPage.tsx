@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
-import { PageHeader } from "@/components/PageHeader";
+import { type Crumb, PageHeader } from "@/components/PageHeader";
 import { SelectionBar } from "@/components/SelectionBar";
 import { SearchInput } from "@/components/ui/search-input";
 
@@ -13,6 +13,8 @@ interface ListPageProps<TRow extends RowData> {
   title: ReactNode;
   description?: ReactNode;
   actions?: ReactNode;
+  breadcrumbs?: readonly Crumb[];
+  sections?: ReactNode;
   search: { value: string; onValueChange: (value: string) => void; placeholder: string };
   filters?: ReactNode;
   label: string;
@@ -41,6 +43,8 @@ export function ListPage<TRow extends RowData>({
   title,
   description,
   actions,
+  breadcrumbs,
+  sections,
   search,
   filters,
   label,
@@ -96,7 +100,13 @@ export function ListPage<TRow extends RowData>({
 
   return (
     <div className="flex flex-col gap-section">
-      <PageHeader title={title} description={description} actions={actions} />
+      <PageHeader
+        title={title}
+        description={description}
+        actions={actions}
+        breadcrumbs={breadcrumbs}
+        sections={sections}
+      />
       <div className="flex flex-col gap-stack">
         <div className="flex flex-wrap items-center gap-inline">
           <SearchInput

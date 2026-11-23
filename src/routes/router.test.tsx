@@ -28,7 +28,8 @@ describe("router", () => {
   it("serves /design-system to Glific admins", async () => {
     renderRoute("/design-system");
     expect(await screen.findByRole("heading", { level: 1, name: "Design system" }, { timeout: 5000 })).toBeVisible();
-    expect(screen.getByRole("link", { name: "Design system" })).toHaveAttribute("aria-current", "page");
+    await userEvent.click(await screen.findByRole("button", { name: /account and settings/ }));
+    expect(await screen.findByRole("menuitem", { name: "Design system" })).toHaveAttribute("aria-current", "page");
   });
 
   it("hides /design-system from users who are not Glific admins", async () => {
@@ -57,7 +58,7 @@ describe("expired session", () => {
     renderWithProviders(<RouterProvider router={router} />);
     await expect.poll(() => router.state.location.pathname, { timeout: 5000 }).toBe("/login");
 
-    await userEvent.fill(screen.getByLabelText("Phone number"), "917834811114");
+    await userEvent.fill(await screen.findByLabelText("Phone number"), "917834811114");
     await userEvent.fill(screen.getByLabelText("Password", { exact: true }), MOCK_PASSWORD);
     await userEvent.click(screen.getByRole("button", { name: "Sign in" }));
     await expect.poll(() => router.state.location.pathname).toBe("/contacts");
