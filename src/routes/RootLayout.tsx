@@ -5,10 +5,12 @@ import { useUserLanguage } from "@/features/language/use-user-language";
 import { AppShell } from "@/features/shell";
 import { identifyUser } from "@/lib/monitoring";
 import { getSession } from "@/lib/session";
+import { useSessionKeepAlive } from "@/lib/use-session-keep-alive";
 
 export function RootLayout() {
   useIdentifyUser();
   useUserLanguage();
+  useSessionKeepAlive();
   return (
     <AppShell>
       <Outlet />
