@@ -19,6 +19,18 @@ export function periodRanges(days: Period, now = Date.now()) {
 
 const isoDate = (iso: string) => iso.slice(0, 10);
 
+/** Whole days for the provider's daily usage: the last `days` days, and the same number before, with no shared day. */
+export function periodDays(days: Period, now = Date.now()) {
+  const day = (offset: number) => isoDate(new Date(now - offset * DAY).toISOString());
+  return {
+    current: { fromDate: day(days - 1), toDate: day(0) },
+    previous: { fromDate: day(2 * days - 1), toDate: day(days) },
+  };
+}
+
+// Home's counts are costly on large organisations and change slowly; don't refetch on every visit or focus.
+const homeQuery = { staleTime: 5 * 60_000, refetchOnWindowFocus: false } as const;
+
 /** Percentage change from the previous period; null when there is nothing to compare with. */
 export function change(current: number, previous: number): number | null {
   if (previous === 0) return null;
@@ -67,6 +79,7 @@ function totals(
 export function useActivity(days: Period) {
   return useQuery({
     queryKey: ["home", "activity", days],
+    ...homeQuery,
     queryFn: async () => {
       const { current, previous } = periodRanges(days);
       return request(ActivityCounts, { current, previous });
@@ -79,14 +92,12 @@ export function useUsage(days: Period) {
   const { can } = useAccess();
   return useQuery({
     queryKey: ["home", "usage", days],
+    ...homeQuery,
     enabled: can(admins),
     retry: false,
     queryFn: async () => {
-      const { current, previous } = periodRanges(days);
-      const [now, before] = await Promise.all([
-        request(Usage, { fromDate: isoDate(current.from), toDate: isoDate(current.to) }),
-        request(Usage, { fromDate: isoDate(previous.from), toDate: isoDate(previous.to) }),
-      ]);
+      const { current, previous } = periodDays(days);
+      const [now, before] = await Promise.all([request(Usage, current), request(Usage, previous)]);
       return { current: totals(now.dailyAppUsage ?? []), previous: totals(before.dailyAppUsage ?? []) };
     },
   });
@@ -120,6 +131,7 @@ export function useFlowsAndTriggers() {
   const { can } = useAccess();
   return useQuery({
     queryKey: ["home", "flows"],
+    ...homeQuery,
     enabled: can(managers),
     queryFn: () => request(FlowsAndTriggers),
   });

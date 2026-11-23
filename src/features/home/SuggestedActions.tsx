@@ -11,6 +11,12 @@ import { relativeTime } from "./relative-time";
 
 const SHOWN_EACH = 2;
 
+/** A link into the current app, or none when it can't be reached. */
+function currentAppAction(label: string, path: string) {
+  const href = currentAppUrl(path);
+  return href ? { label, destination: { href } } : undefined;
+}
+
 type Row = HomeRowProps & { id: string };
 
 /**
@@ -31,7 +37,7 @@ export function SuggestedActions() {
       icon: dot("success"),
       title: t("home.next.chats.title"),
       detail: t("home.next.chats.detail"),
-      action: { label: t("home.next.chats.action"), destination: { href: currentAppUrl("/chat") } },
+      action: currentAppAction(t("home.next.chats.action"), "/chat"),
     });
   } else if (data.data) {
     const flows = (data.data.flows ?? []).flatMap((flow) => (flow?.id && flow.uuid ? [flow] : []));
@@ -41,7 +47,7 @@ export function SuggestedActions() {
         icon: dot("success"),
         title: t("home.next.firstFlow.title"),
         detail: t("home.next.firstFlow.detail"),
-        action: { label: t("home.next.firstFlow.action"), destination: { href: currentAppUrl("/flow/add") } },
+        action: currentAppAction(t("home.next.firstFlow.action"), "/flow/add"),
       });
     }
     const drafts = flows.filter(
@@ -59,10 +65,7 @@ export function SuggestedActions() {
         ]
           .filter(Boolean)
           .join(" · "),
-        action: {
-          label: t("home.next.draft.action"),
-          destination: { href: currentAppUrl(`/flow/configure/${flow.uuid}`) },
-        },
+        action: currentAppAction(t("home.next.draft.action"), `/flow/configure/${flow.uuid}`),
       });
     }
     const now = new Date().toISOString();
@@ -88,10 +91,7 @@ export function SuggestedActions() {
         ]
           .filter(Boolean)
           .join(" · "),
-        action: {
-          label: t("home.next.scheduled.action"),
-          destination: { href: currentAppUrl(`/trigger/${trigger.id}/edit`) },
-        },
+        action: currentAppAction(t("home.next.scheduled.action"), `/trigger/${trigger.id}/edit`),
       });
     }
   }

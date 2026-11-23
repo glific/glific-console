@@ -66,11 +66,19 @@ describe("LoginPage", () => {
   });
 
   it("turns away accounts an admin hasn't approved yet", async () => {
-    worker.use(currentUserWithRoles(["None"]));
+    let endedOnServer = false;
+    worker.use(
+      currentUserWithRoles(["None"]),
+      http.delete("*/api/v1/session", () => {
+        endedOnServer = true;
+        return HttpResponse.json({ data: {} });
+      }),
+    );
     renderRoute("/login", { signedIn: false });
     await fillAndSubmit("919876543210", "password");
     expect((await screen.findByRole("alert")).textContent).toContain("Your account is not approved yet.");
     expect(getSession()).toBeNull();
+    expect(endedOnServer).toBe(true);
   });
 
   it("links to password reset and to creating an account", async () => {

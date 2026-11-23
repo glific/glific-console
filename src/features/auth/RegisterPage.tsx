@@ -35,7 +35,7 @@ export function RegisterPage() {
       password: fields.newPassword,
       consentForUpdates: z.boolean(),
     }),
-    { name: "", email: "", phone: "", password: "", consentForUpdates: true },
+    { name: "", email: "", phone: "", password: "", consentForUpdates: false },
   );
   const codeForm = useZodForm(z.object({ code: fields.code }), { code: "" });
 

@@ -2,9 +2,7 @@ import { WalletIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { useWalletBalance } from "./use-wallet-balance";
-
-const LOW_BALANCE = 1;
+import { LOW_BALANCE, useWalletBalance } from "./use-wallet-balance";
 
 export function RailBalance() {
   const { t, i18n } = useTranslation();

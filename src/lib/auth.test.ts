@@ -110,13 +110,11 @@ describe("backendOrigin", () => {
     ).toBe("https://api.glific.test:4001");
   });
 
-  it("opens pages not rebuilt yet in the current app beside console.<shortcode>", () => {
+  it("opens pages not rebuilt yet in the current app beside console.<shortcode>, and nowhere else", () => {
     expect(currentAppUrl("/flow", place("https://console.pratham.glific.com/"), overrides)).toBe(
       "https://pratham.glific.com/flow",
     );
-    expect(currentAppUrl("/flow", place("https://pratham.glific.com/"), overrides)).toBe(
-      "https://pratham.glific.com/flow",
-    );
+    expect(currentAppUrl("/flow", place("https://pratham.glific.com/"), overrides)).toBeNull();
     expect(
       currentAppUrl("/flow", place("https://glific.test:3000/"), {
         ...overrides,

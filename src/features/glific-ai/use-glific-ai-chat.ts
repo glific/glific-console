@@ -39,6 +39,8 @@ const AskGlificFeedback = graphql(`
 
 export type Feedback = "like" | "dislike";
 
+const ANSWER_TIMEOUT_MS = 90_000;
+
 export type ChatTurn =
   | { id: string; role: "user"; text: string }
   | { id: string; role: "answer"; text: string; messageId: string | null; feedback: Feedback | null }
@@ -47,19 +49,18 @@ export type ChatTurn =
 /**
  * A Glific AI conversation. The question goes out as a mutation and the answer comes back on the user's
  * subscription, which every open tab shares, so only the answer echoing this tab's request id is taken.
- * The socket opens only once the chat is in use.
+ * The subscription stays open while Glific AI is available: the backend answers from a background job, and a fast
+ * failure could otherwise arrive before a just-opened subscription is listening.
  */
-export function useGlificAiChat({ listening }: { listening: boolean }) {
+export function useGlificAiChat({ enabled }: { enabled: boolean }) {
   const organizationId = useCurrentUser().data?.organization?.id;
   const [turns, setTurns] = useState<ChatTurn[]>([]);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [pendingRequest, setPendingRequest] = useState<string | null>(null);
   const pending = useRef<string | null>(null);
 
-  const active = listening || turns.length > 0;
-
   useEffect(() => {
-    if (!organizationId || !active) return;
+    if (!organizationId || !enabled) return;
     return subscribe(
       AskGlificResponse,
       { organizationId },
@@ -82,7 +83,19 @@ export function useGlificAiChat({ listening }: { listening: boolean }) {
         },
       },
     );
-  }, [organizationId, active]);
+  }, [organizationId, enabled]);
+
+  // No answer in time (backend job lost, socket down): stop waiting and say so.
+  useEffect(() => {
+    if (!pendingRequest) return;
+    const timer = setTimeout(() => {
+      if (pending.current !== pendingRequest) return;
+      pending.current = null;
+      setPendingRequest(null);
+      setTurns((current) => [...current, { id: pendingRequest, role: "error", text: null }]);
+    }, ANSWER_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+  }, [pendingRequest]);
 
   const ask = useMutation({
     mutationFn: async ({ query, requestId }: { query: string; requestId: string }) => {
@@ -94,6 +107,8 @@ export function useGlificAiChat({ listening }: { listening: boolean }) {
       if (result?.errors?.length) throw new Error(result.errors[0]?.message ?? "");
     },
     onError: (error, { requestId }) => {
+      // A failure for a question asked before "New chat" doesn't belong in this conversation.
+      if (pending.current !== requestId) return;
       pending.current = null;
       setPendingRequest(null);
       setTurns((current) => [...current, { id: requestId, role: "error", text: error.message || null }]);
@@ -118,12 +133,16 @@ export function useGlificAiChat({ listening }: { listening: boolean }) {
     const turn = turns.find((candidate) => candidate.id === turnId);
     if (turn?.role !== "answer") return;
     const next = turn.feedback === rating ? null : rating;
-    setTurns((current) =>
-      current.map((candidate) =>
-        candidate.id === turnId && candidate.role === "answer" ? { ...candidate, feedback: next } : candidate,
-      ),
-    );
-    if (turn.messageId) feedback.mutate({ messageId: turn.messageId, rating: next });
+    const setFeedback = (value: Feedback | null) =>
+      setTurns((current) =>
+        current.map((candidate) =>
+          candidate.id === turnId && candidate.role === "answer" ? { ...candidate, feedback: value } : candidate,
+        ),
+      );
+    setFeedback(next);
+    if (turn.messageId) {
+      feedback.mutate({ messageId: turn.messageId, rating: next }, { onError: () => setFeedback(turn.feedback) });
+    }
   }
 
   function reset() {

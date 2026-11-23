@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import { z } from "zod/mini";
@@ -10,8 +10,7 @@ import { Button } from "@/components/ui/button";
 import { FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/PasswordInput";
-import { AuthError, login } from "@/lib/auth";
-import { clearSession } from "@/lib/session";
+import { AuthError, login, logout } from "@/lib/auth";
 import { useSession } from "@/lib/use-session";
 import { AuthLayout } from "./AuthLayout";
 import { authFields } from "./auth-schemas";
@@ -35,7 +34,11 @@ export function LoginPage() {
     return z.object({ phone: fields.phone, password: fields.password });
   }, [t]);
   const form = useZodForm(schema, { phone: "", password: "" });
-  const notice = (location.state as { notice?: string } | null)?.notice;
+  // Shown once: cleared from history so a refresh doesn't bring it back.
+  const [notice] = useState(() => (location.state as { notice?: string } | null)?.notice);
+  useEffect(() => {
+    if (notice) navigate(location.pathname, { replace: true, state: null });
+  }, [notice, navigate, location.pathname]);
 
   if (session && !submitting) return <Navigate to={redirectTarget(location.state)} replace />;
 
@@ -47,7 +50,8 @@ export function LoginPage() {
       // New staff accounts have no role until an admin approves them, as in the current app.
       const user = await queryClient.fetchQuery({ queryKey: currentUserKey, queryFn: fetchCurrentUser });
       if (!canAccess(roleLabels(user), everyone)) {
-        clearSession();
+        // End the session on the server too, not only in this browser.
+        await logout();
         queryClient.clear();
         setError(t("auth.errors.notApproved"));
         setSubmitting(false);
