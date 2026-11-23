@@ -59,12 +59,10 @@ and can't open it, the main interactions, and axe. Add an E2E flow in `e2e/flows
 ## 5. Switch over, in the same PR
 
 1. In `navigation.ts`, replace `currentAppPath` with `to` (the new route) for each rebuilt page. The rail, section
-   tabs, account menu and Home links all follow.
-2. Remove the section's paths from `currentAppPaths` in `src/routes/current-app-routes.ts`, so old links land on
-   the new pages instead of forwarding.
-3. Search for other links to the old paths (`grep -rn "currentAppUrl(\"/<path>" src`) and point them at the new
+   tabs and account menu all follow.
+2. Search for other links to the old paths (`grep -rn "currentAppUrl(\"/<path>" src`) and point them at the new
    route.
-4. Tick the section's routes in the parity checklist in glific/glific#6078.
-5. `pnpm check`, `pnpm test:e2e`, `pnpm build && pnpm size`.
+3. Tick the section's routes in the parity checklist in glific/glific#6078.
+4. `pnpm check`, `pnpm test:e2e`, `pnpm build && pnpm size`.
 
 Pages in the section you didn't rebuild keep `currentAppPath`; only move what is really done.

@@ -32,7 +32,6 @@ You already have `glific` (backend) and `glific-frontend` running locally.
 | You need                                                             | Look at                                                                                                                               |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | The IA: every section and page, who sees it, which org flag it needs | `src/features/shell/navigation.ts`                                                                                                    |
-| Pages still served by the current app (old links forward there)      | `src/routes/current-app-routes.ts`, `src/routes/CurrentAppRedirect.tsx`, `currentAppUrl()` in `src/lib/backend.ts`                    |
 | Rail, account menu, right panel                                      | `src/features/shell/` (`AppShell`, `AppSidebar`, `AccountMenu`, `SidePanel`)                                                          |
 | Right-panel apps (Glific AI, Notifications, Resources)               | `src/features/shell/side-apps.ts`; open one with `useSideApps().show("glificAi")`                                                     |
 | Glific AI conversation from any page                                 | `useGlificAi()` in `src/features/glific-ai/glific-ai-context.ts`                                                                      |
@@ -67,9 +66,8 @@ To stay out of each other's way:
    PR that the other dev reviews before your feature depends on it.
 2. **Strings under your feature's key** (`flows.*`, `chats.*`), never in another feature's block.
 3. **Mocks in your feature's file** (`src/mocks/flows.ts`), added to the list in `src/mocks/handlers.ts`.
-4. **One PR moves a whole section**: swap `currentAppPath` for `to` in `navigation.ts`, remove its paths from
-   `current-app-routes.ts`, and tick the section's parity checklist in glific/glific#6078. Never leave a section
-   half moved.
+4. **One PR moves a whole section**: swap `currentAppPath` for `to` in `navigation.ts` and tick the section's
+   parity checklist in glific/glific#6078. Never leave a section half moved.
 5. **Backend gaps get their own glific/glific ticket**, linked from your ticket and added to the epic, like
    glific/glific#6235 for Home. Don't wait on the other dev for backend questions.
 

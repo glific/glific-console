@@ -20,9 +20,10 @@ The prototype is a visual and behavioural spec. Its data is fake, and some of it
 2. Organisations get 30 days to get used to it.
 3. Then the console address is retired and the new app moves to `<shortcode>.glific.com`.
 
-During the overlap, any page not rebuilt yet opens in the current app (`currentAppUrl()`), and old links to those
-pages on the console forward there (`CurrentAppRedirect`). Once the console is the only app on an address,
-`CurrentAppRedirect` shows "Page not found" instead of looping.
+During the overlap, any page not rebuilt yet opens in the current app: `currentAppUrl()` is the same address
+without `console.`. Those links appear only in the left rail, the account menu and the right panel and strip, never
+inside pages. The current app's old sign-in addresses (`/registration`, `/resetpassword-phone`, …) redirect to the
+new sign-in pages in `router.tsx`.
 
 ## Strategy
 

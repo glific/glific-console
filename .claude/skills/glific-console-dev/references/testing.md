@@ -59,9 +59,7 @@ Patterns and pitfalls:
   lazy routes; a `getBy*` right after navigation passes locally and fails on the slower CI machine.
 - `location.assign` can't be spied on. Full page loads to other origins go through `browser.open()`
   (`src/lib/browser.ts`); spy on that: `vi.spyOn(browser, "open").mockImplementation(() => {})`.
-- To test forwarding to the current app, mock `currentAppUrl` with
-  `vi.mock("@/lib/backend", async (importOriginal) => ({ ...(await importOriginal()), currentAppUrl: ... }))`
-  (see `src/routes/CurrentAppRedirect.test.tsx`).
+- Links to the current app in tests point at the test page's own origin: expect `${location.origin}/flow`.
 - A test that reloads with "Vite unexpectedly reloaded a test" means a dependency was discovered mid-run: add it
   to `optimizeDeps.include` in `vite.config.ts`.
 - The mock user's name is "Glific Team", so Home greets "Glific".
