@@ -1,15 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { managers, useAccess } from "@/features/auth/current-user";
 import { request } from "@/graphql/client";
-import { graphql } from "@/graphql/generated";
+import { graphql } from "@/graphql/document";
+import type {
+  MarkNotificationsReadMutation,
+  MarkNotificationsReadMutationVariables,
+  RecentNotificationsQuery,
+  RecentNotificationsQueryVariables,
+  UnreadNotificationsQuery,
+  UnreadNotificationsQueryVariables,
+} from "@/graphql/generated/graphql";
 
-const UnreadNotificationsQuery = graphql(`
+const unreadNotificationsQuery = graphql<UnreadNotificationsQuery, UnreadNotificationsQueryVariables>(`
   query UnreadNotifications {
     countNotifications(filter: { isRead: false })
   }
 `);
 
-const RecentNotificationsQuery = graphql(`
+const recentNotificationsQuery = graphql<RecentNotificationsQuery, RecentNotificationsQueryVariables>(`
   query RecentNotifications($opts: Opts) {
     notifications(opts: $opts) {
       id
@@ -22,7 +30,7 @@ const RecentNotificationsQuery = graphql(`
   }
 `);
 
-const MarkNotificationsRead = graphql(`
+const markNotificationsRead = graphql<MarkNotificationsReadMutation, MarkNotificationsReadMutationVariables>(`
   mutation MarkNotificationsRead {
     markNotificationAsRead
   }
@@ -46,7 +54,7 @@ export function useUnreadNotifications() {
   const allowed = can(managers);
   const count = useQuery({
     queryKey: [...notificationsKey, "unread"],
-    queryFn: async () => (await request(UnreadNotificationsQuery)).countNotifications ?? 0,
+    queryFn: async () => (await request(unreadNotificationsQuery)).countNotifications ?? 0,
     enabled: allowed,
     refetchInterval: 5 * 60_000,
   });
@@ -60,7 +68,7 @@ export function useRecentNotifications({ enabled = true }: { enabled?: boolean }
     queryFn: async () =>
       (
         (
-          await request(RecentNotificationsQuery, {
+          await request(recentNotificationsQuery, {
             opts: { limit: RECENT_LIMIT, order: "DESC", orderWith: "updated_at" },
           })
         ).notifications ?? []
@@ -71,7 +79,7 @@ export function useRecentNotifications({ enabled = true }: { enabled?: boolean }
 export function useMarkNotificationsRead() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => request(MarkNotificationsRead),
+    mutationFn: () => request(markNotificationsRead),
     onSuccess: () => queryClient.setQueryData([...notificationsKey, "unread"], 0),
   });
 }

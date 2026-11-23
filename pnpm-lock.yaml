@@ -263,12 +263,9 @@ importers:
       '@graphql-codegen/cli':
         specifier: 8.0.0
         version: 8.0.0(@types/node@26.6.6)(graphql@17.1.0)(typescript@7.0.2)
-      '@graphql-codegen/client-preset':
-        specifier: 7.0.0
-        version: 7.0.0(graphql@17.1.0)
-      '@graphql-typed-document-node/core':
-        specifier: 3.2.0
-        version: 3.2.0(graphql@17.1.0)
+      '@graphql-codegen/typescript-operations':
+        specifier: 7.0.1
+        version: 7.0.1(graphql@17.1.0)
       '@playwright/test':
         specifier: 1.65.0
         version: 1.65.0

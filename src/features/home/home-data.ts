@@ -1,7 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { admins, managers, useAccess } from "@/features/auth/current-user";
 import { request } from "@/graphql/client";
-import { graphql } from "@/graphql/generated";
+import { graphql } from "@/graphql/document";
+import type {
+  HomeActivityQuery,
+  HomeActivityQueryVariables,
+  HomeFlowsAndTriggersQuery,
+  HomeFlowsAndTriggersQueryVariables,
+  HomeUsageQuery,
+  HomeUsageQueryVariables,
+} from "@/graphql/generated/graphql";
 
 export type Period = 7 | 30;
 
@@ -36,7 +44,7 @@ export function change(current: number, previous: number): number | null {
   return Math.round(((current - previous) / previous) * 100);
 }
 
-const ActivityCounts = graphql(`
+const activityCounts = graphql<HomeActivityQuery, HomeActivityQueryVariables>(`
   query HomeActivity($current: DateRangeInput, $previous: DateRangeInput) {
     newContacts: countContacts(filter: { dateRange: $current })
     previousNewContacts: countContacts(filter: { dateRange: $previous })
@@ -45,7 +53,7 @@ const ActivityCounts = graphql(`
   }
 `);
 
-const Usage = graphql(`
+const usage = graphql<HomeUsageQuery, HomeUsageQueryVariables>(`
   query HomeUsage($fromDate: Date!, $toDate: Date!) {
     dailyAppUsage(fromDate: $fromDate, toDate: $toDate) {
       date
@@ -81,7 +89,7 @@ export function useActivity(days: Period) {
     ...homeQuery,
     queryFn: async () => {
       const { current, previous } = periodRanges(days);
-      return request(ActivityCounts, { current, previous });
+      return request(activityCounts, { current, previous });
     },
   });
 }
@@ -96,13 +104,13 @@ export function useUsage(days: Period) {
     retry: false,
     queryFn: async () => {
       const { current, previous } = periodDays(days);
-      const [now, before] = await Promise.all([request(Usage, current), request(Usage, previous)]);
+      const [now, before] = await Promise.all([request(usage, current), request(usage, previous)]);
       return { current: totals(now.dailyAppUsage ?? []), previous: totals(before.dailyAppUsage ?? []) };
     },
   });
 }
 
-const FlowsAndTriggers = graphql(`
+const flowsAndTriggers = graphql<HomeFlowsAndTriggersQuery, HomeFlowsAndTriggersQueryVariables>(`
   query HomeFlowsAndTriggers {
     flows(filter: { isTemplate: false }, opts: { limit: 50, order: DESC, orderWith: "updated_at" }) {
       id
@@ -132,6 +140,6 @@ export function useFlowsAndTriggers() {
     queryKey: ["home", "flows"],
     ...homeQuery,
     enabled: can(managers),
-    queryFn: () => request(FlowsAndTriggers),
+    queryFn: () => request(flowsAndTriggers),
   });
 }

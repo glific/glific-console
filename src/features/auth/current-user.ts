@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { request } from "@/graphql/client";
-import { graphql } from "@/graphql/generated";
+import { graphql } from "@/graphql/document";
+import type { CurrentUserQuery, CurrentUserQueryVariables } from "@/graphql/generated/graphql";
 import { useSession } from "@/lib/use-session";
 
 // accessRoles, not roles: only accessRoles includes the custom roles an organisation creates, and the current app uses it.
-const CurrentUserQuery = graphql(`
+const currentUserQuery = graphql<CurrentUserQuery, CurrentUserQueryVariables>(`
   query CurrentUser {
     currentUser {
       user {
@@ -33,7 +34,7 @@ const CurrentUserQuery = graphql(`
 
 export const currentUserKey = ["currentUser"] as const;
 
-export const fetchCurrentUser = async () => (await request(CurrentUserQuery)).currentUser?.user ?? null;
+export const fetchCurrentUser = async () => (await request(currentUserQuery)).currentUser?.user ?? null;
 
 export function useCurrentUser() {
   const session = useSession();

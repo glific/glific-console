@@ -4,13 +4,14 @@ const config: CodegenConfig = {
   schema: "schema/glific.graphql",
   documents: ["src/**/*.{ts,tsx}", "!src/graphql/generated/**"],
   ignoreNoDocuments: true,
+  // The graphql() helper in src/graphql/document.ts marks the operations to type.
+  pluckConfig: { modules: [{ name: "@/graphql/document", identifier: "graphql" }] },
   generates: {
-    "src/graphql/generated/": {
-      preset: "client",
-      presetConfig: { fragmentMasking: false },
+    // Types only: operations stay inline where they are used, so nothing maps every query into one bundle.
+    "src/graphql/generated/graphql.ts": {
+      plugins: ["typescript-operations"],
       config: {
-        // Plain strings, so requests need no graphql runtime in the bundle.
-        documentMode: "string",
+        onlyOperationTypes: true,
         enumsAsTypes: true,
         useTypeImports: true,
         scalars: { DateTime: "string", Date: "string", Time: "string", Json: "unknown", Gid: "string" },

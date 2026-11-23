@@ -1,9 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { request } from "@/graphql/client";
-import { graphql } from "@/graphql/generated";
+import { graphql } from "@/graphql/document";
+import type {
+  OrganizationQuery,
+  OrganizationQueryVariables,
+  OrganizationServicesQuery,
+  OrganizationServicesQueryVariables,
+} from "@/graphql/generated/graphql";
 import { useSession } from "@/lib/use-session";
 
-const OrganizationQuery = graphql(`
+const organizationQuery = graphql<OrganizationQuery, OrganizationQueryVariables>(`
   query Organization {
     organization {
       organization {
@@ -20,7 +26,7 @@ const OrganizationQuery = graphql(`
   }
 `);
 
-const OrganizationServicesQuery = graphql(`
+const organizationServicesQuery = graphql<OrganizationServicesQuery, OrganizationServicesQueryVariables>(`
   query OrganizationServices {
     organizationServices {
       askGlificEnabled
@@ -47,7 +53,7 @@ export function useOrganization() {
   const session = useSession();
   return useQuery({
     queryKey: ["organization"],
-    queryFn: async () => (await request(OrganizationQuery)).organization?.organization ?? null,
+    queryFn: async () => (await request(organizationQuery)).organization?.organization ?? null,
     enabled: Boolean(session),
     staleTime: 5 * 60_000,
   });
@@ -57,7 +63,7 @@ export function useOrganizationServices() {
   const session = useSession();
   const services = useQuery({
     queryKey: ["organizationServices"],
-    queryFn: async () => (await request(OrganizationServicesQuery)).organizationServices ?? null,
+    queryFn: async () => (await request(organizationServicesQuery)).organizationServices ?? null,
     enabled: Boolean(session),
     staleTime: 5 * 60_000,
   });

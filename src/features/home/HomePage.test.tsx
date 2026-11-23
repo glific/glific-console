@@ -14,7 +14,9 @@ const section = (name: string) => screen.findByRole("region", { name: new RegExp
 describe("Home", () => {
   it("greets the user and shows activity, problems and next steps from the backend", async () => {
     renderRoute("/");
-    expect(await screen.findByRole("heading", { level: 1, name: /Glific/ })).toBeVisible();
+    // Late at night the greeting is "Working late?", without a name.
+    const heading = await screen.findByRole("heading", { level: 1 });
+    if (dayMood().withName) expect(heading).toHaveTextContent("Glific");
 
     const stats = await section("How it's going");
     expect(await within(stats).findByText("212")).toBeVisible();

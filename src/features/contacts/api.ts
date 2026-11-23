@@ -1,8 +1,9 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { request } from "@/graphql/client";
-import { graphql } from "@/graphql/generated";
+import { graphql } from "@/graphql/document";
+import type { ContactsQuery, ContactsQueryVariables } from "@/graphql/generated/graphql";
 
-const ContactsQuery = graphql(`
+const contactsQuery = graphql<ContactsQuery, ContactsQueryVariables>(`
   query Contacts($filter: ContactFilter, $opts: Opts) {
     contacts(filter: $filter, opts: $opts) {
       id
@@ -30,7 +31,7 @@ export function useContacts(params: ContactsParams) {
   return useQuery({
     queryKey: contactKeys.list(params),
     queryFn: () =>
-      request(ContactsQuery, {
+      request(contactsQuery, {
         filter: params.term ? { term: params.term } : {},
         opts: { limit: params.pageSize, offset: params.pageIndex * params.pageSize, order: "ASC", orderWith: "name" },
       }),

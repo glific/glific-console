@@ -6,10 +6,11 @@ import { mockSession } from "@/mocks/auth";
 import { glificApi } from "@/mocks/handlers";
 import { worker } from "@/test/msw";
 import { GraphQLRequestError, request } from "./client";
-import { TypedDocumentString } from "./generated/graphql";
+import type { TypedDocument } from "./document";
 import { subscribe } from "./subscriptions";
 
-const Ping = new TypedDocumentString<{ ping: string }, Record<string, never>>("query Ping { ping }");
+// Not in the schema, so cast rather than graphql(), which codegen would type-check against it.
+const ping = "query Ping { ping }" as TypedDocument<{ ping: string }, Record<string, never>>;
 
 describe("GraphQL request", () => {
   it("sends the query with the access token and returns data", async () => {
@@ -21,7 +22,7 @@ describe("GraphQL request", () => {
       }),
     );
     setSession(mockSession());
-    await expect(request(Ping)).resolves.toEqual({ ping: "pong" });
+    await expect(request(ping)).resolves.toEqual({ ping: "pong" });
     expect(authorization).toBe(getSession()?.access_token);
   });
 
@@ -29,11 +30,11 @@ describe("GraphQL request", () => {
     worker.use(
       glificApi.query("Ping", () => HttpResponse.json({ errors: [{ message: "Unauthorized", path: ["ping"] }] })),
     );
-    await expect(request(Ping)).rejects.toMatchObject({ name: "GraphQLRequestError", message: "Unauthorized" });
+    await expect(request(ping)).rejects.toMatchObject({ name: "GraphQLRequestError", message: "Unauthorized" });
 
     setSession(mockSession());
     worker.use(http.post("*/api", () => HttpResponse.json({ error: "expired" }, { status: 401 })));
-    const error = await request(Ping).catch((caught: unknown) => caught);
+    const error = await request(ping).catch((caught: unknown) => caught);
     expect(error).toBeInstanceOf(GraphQLRequestError);
     expect((error as GraphQLRequestError).status).toBe(401);
     expect(getSession()).toBeNull();
@@ -49,14 +50,13 @@ describe("GraphQL subscriptions", () => {
         sub.publish({ data: { receivedMessage: { id: "m1", body: "Hi" } } });
       }),
     );
-    const ReceivedMessage = new TypedDocumentString<
-      { receivedMessage: { id: string; body: string } },
-      { organizationId: string }
-    >(
-      "subscription ReceivedMessage($organizationId: ID!) { receivedMessage(organizationId: $organizationId) { id body } }",
-    );
+    const receivedMessage =
+      "subscription ReceivedMessage($organizationId: ID!) { receivedMessage(organizationId: $organizationId) { id body } }" as TypedDocument<
+        { receivedMessage: { id: string; body: string } },
+        { organizationId: string }
+      >;
     const next = vi.fn();
-    const unsubscribe = subscribe(ReceivedMessage, { organizationId: "1" }, { next });
+    const unsubscribe = subscribe(receivedMessage, { organizationId: "1" }, { next });
     await expect.poll(() => next.mock.calls.length, { timeout: 5000 }).toBe(1);
     expect(next).toHaveBeenCalledWith({ receivedMessage: { id: "m1", body: "Hi" } });
     unsubscribe();
