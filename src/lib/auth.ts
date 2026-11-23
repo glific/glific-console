@@ -43,31 +43,50 @@ export async function login(phone: string, password: string): Promise<Session> {
 
 let renewing: Promise<Session> | null = null;
 
-/** Single-flight: concurrent requests that find the token expiring share one renewal. */
-export function renewSession(): Promise<Session> {
-  renewing ??= (async () => {
+// The backend's renewal tokens work once. Tabs (and the current app, when it shares this address) take turns so
+// two of them never spend the same token, which would sign everyone out.
+const RENEW_LOCK = "glific-session-renewal";
+
+function withRenewLock<T>(task: () => Promise<T>): Promise<T> {
+  const locks = globalThis.navigator?.locks;
+  return locks ? locks.request(RENEW_LOCK, task) : task();
+}
+
+/**
+ * Single-flight renewal shared by every request in this tab. `rejected` is an access token the server just
+ * refused; without it, renewal only happens when the token is about to expire.
+ */
+export function renewSession({ rejected }: { rejected?: string } = {}): Promise<Session> {
+  renewing ??= withRenewLock(async () => {
+    const session = getSession();
+    if (!session) throw new AuthError("Not signed in", 401);
+    // Another tab may have renewed while this one waited for the lock.
+    const stillCurrent = rejected ? session.access_token === rejected : needsRenewal(session);
+    if (!stillCurrent) return session;
+
+    let response: Response;
     try {
-      const session = getSession();
-      if (!session) throw new AuthError("Not signed in", 401);
-      const response = await post("/v1/session/renew", {
-        method: "POST",
-        headers: { authorization: session.renewal_token },
-      });
-      if (!response.ok) throw new AuthError(await errorMessage(response), response.status);
-      const { data } = (await response.json()) as { data: Session };
-      setSession(data);
-      return data;
-    } catch (error) {
-      clearSession();
-      throw error;
-    } finally {
-      renewing = null;
+      response = await post("/v1/session/renew", { method: "POST", headers: { authorization: session.renewal_token } });
+    } catch {
+      // Offline or the server is unreachable: keep the session and try again later.
+      throw new AuthError("Network error", 0);
     }
-  })();
+    if (response.status === 401) {
+      // Signed out only if nobody replaced the renewal token in the meantime.
+      if (getSession()?.renewal_token === session.renewal_token) clearSession();
+      throw new AuthError(await errorMessage(response), 401);
+    }
+    if (!response.ok) throw new AuthError(await errorMessage(response), response.status);
+    const { data } = (await response.json()) as { data: Session };
+    setSession(data);
+    return data;
+  }).finally(() => {
+    renewing = null;
+  });
   return renewing;
 }
 
-/** A usable access token, renewed first if it expires within 30 seconds; null when signed out. */
+/** A usable access token, renewed first if it is about to expire; null when signed out. */
 export async function accessToken(): Promise<string | null> {
   const session = getSession();
   if (!session) return null;
@@ -75,7 +94,28 @@ export async function accessToken(): Promise<string | null> {
   try {
     return (await renewSession()).access_token;
   } catch {
-    return null;
+    // A failed renewal that didn't end the session (network, server error): try with what we have.
+    return getSession()?.access_token ?? null;
+  }
+}
+
+/**
+ * fetch with the session's access token. A 401 renews the session once and retries, so a token the server
+ * expired early doesn't sign the person out; a second 401 does.
+ */
+export async function fetchWithSession(url: string, init: RequestInit = {}): Promise<Response> {
+  const send = (token: string | null) =>
+    fetch(url, { ...init, headers: { ...init.headers, ...(token ? { authorization: token } : {}) } });
+  const token = await accessToken();
+  const response = await send(token);
+  if (response.status !== 401 || !token) return response;
+  try {
+    const renewed = await renewSession({ rejected: token });
+    const retry = await send(renewed.access_token);
+    if (retry.status === 401) clearSession();
+    return retry;
+  } catch {
+    return response;
   }
 }
 

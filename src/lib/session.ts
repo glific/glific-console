@@ -10,9 +10,11 @@ export interface Session {
   trial_expiration_date?: string | null;
 }
 
-// Same key and shape as the current app, so a signed-in session carries over between the two.
+// Same key and shape as the current app. Browsers keep storage per address, so the two apps share a session only
+// when they are served from the same one; console.<shortcode> and <shortcode> each sign in once.
 export const SESSION_KEY = "glific_session";
-const RENEW_BEFORE_MS = 30_000;
+// Renew a little early: a few minutes absorbs clock differences between this device and the server.
+export const RENEW_BEFORE_MS = 2 * 60_000;
 
 const listeners = new Set<() => void>();
 let cached: { raw: string | null; session: Session | null } = { raw: null, session: null };
