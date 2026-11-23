@@ -4,7 +4,7 @@ export interface Env {
   /** Backend origin override (local dev). Unset: derived per NGO host, api.<shortcode>.glific.com. */
   readonly VITE_BACKEND_URL: string | null;
   readonly VITE_API_SUBDOMAIN: string;
-  /** Current app origin. Unset: <shortcode>.glific.com when served at console.<shortcode>, otherwise prod.glific.com. */
+  /** Current app origin override. Unset: this address without `console.` (console.<shortcode> → <shortcode>). */
   readonly VITE_CURRENT_APP_URL: string | null;
   readonly VITE_ENABLE_MOCKS: boolean;
   readonly VITE_SENTRY_DSN: string | null;

@@ -168,14 +168,13 @@ describe("backendOrigin", () => {
     ).toBe("https://api.glific.test:4001");
   });
 
-  it("opens pages not rebuilt yet beside console.<shortcode>, or on production, never on this same app", () => {
+  it("opens pages not rebuilt yet on the same address without console.", () => {
     expect(currentAppUrl("/flow", place("https://console.pratham.glific.com/"), overrides)).toBe(
       "https://pratham.glific.com/flow",
     );
-    expect(currentAppUrl("/flow", place("https://glific-console-git-x.vercel.app/"), overrides)).toBe(
-      "https://prod.glific.com/flow",
+    expect(currentAppUrl("/flow", place("https://pratham.glific.com/"), overrides)).toBe(
+      "https://pratham.glific.com/flow",
     );
-    expect(currentAppUrl("/flow", place("https://prod.glific.com/"), overrides)).toBeNull();
     expect(
       currentAppUrl("/flow", place("https://glific.test:3000/"), {
         ...overrides,
