@@ -20,11 +20,11 @@ describe("right panel", () => {
     expect(screen.getByRole("button", { name: "Resources" })).toHaveAttribute("aria-pressed", "true");
 
     const handle = screen.getByRole("separator", { name: "Resize the panel" });
-    expect(handle).toHaveAttribute("aria-valuenow", "400");
+    expect(handle).toHaveAttribute("aria-valuenow", "460");
     handle.focus();
     await userEvent.keyboard("{ArrowLeft}");
-    expect(handle).toHaveAttribute("aria-valuenow", "416");
-    expect(localStorage.getItem("glific.sidePanelWidth")).toBe("416");
+    expect(handle).toHaveAttribute("aria-valuenow", "476");
+    expect(localStorage.getItem("glific.sidePanelWidth")).toBe("476");
     await expectNoA11yViolations();
 
     await userEvent.keyboard("{Escape}");
@@ -33,9 +33,13 @@ describe("right panel", () => {
 
   it("links to apps still in the current app and hides apps the user can't use", async () => {
     worker.use(currentUserWithRoles(["Staff"]));
-    renderRoute("/");
+    renderRoute("/contacts");
     const apps = await strip();
     expect(await within(apps).findByRole("button", { name: "Glific AI" })).toBeVisible();
+    expect(within(apps).getByRole("link", { name: "Raise a ticket" })).toHaveAttribute(
+      "href",
+      "https://discord.gg/kyqsZAJEPK",
+    );
     expect(within(apps).queryByRole("button", { name: /Notifications/ })).toBeNull();
     expect(within(apps).queryByRole("link", { name: "Webhook logs" })).toBeNull();
   });
@@ -46,5 +50,12 @@ describe("right panel", () => {
       "href",
       "https://current.glific.test/webhook-logs",
     );
+  });
+
+  it("leaves Glific AI out of the strip on Home, which has its own Ask box", async () => {
+    renderRoute("/");
+    const apps = await strip();
+    await within(apps).findByRole("button", { name: "Resources" });
+    expect(within(apps).queryByRole("button", { name: "Glific AI" })).toBeNull();
   });
 });

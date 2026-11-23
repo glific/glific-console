@@ -61,7 +61,7 @@ describe("Glific AI", () => {
         return HttpResponse.json({ data: { askGlificFeedback: { success: true } } });
       }),
     );
-    renderRoute("/");
+    renderRoute("/contacts");
     await userEvent.click(await screen.findByRole("button", { name: "Glific AI" }));
     const panel = await screen.findByRole("complementary", { name: "Glific AI" });
     await userEvent.click(await within(panel).findByRole("button", { name: "How do I use Google Sheets in my flow?" }));
@@ -79,7 +79,7 @@ describe("Glific AI", () => {
 
   it("shows an error when the question can't be sent", async () => {
     worker.use(glificApi.mutation("AskGlific", () => HttpResponse.json({ errors: [{ message: "AI is down" }] })));
-    renderRoute("/");
+    renderRoute("/contacts");
     await userEvent.click(await screen.findByRole("button", { name: "Glific AI" }));
     const panel = await screen.findByRole("complementary", { name: "Glific AI" });
     await userEvent.fill(await within(panel).findByRole("textbox", { name: "Ask Glific AI" }), "Hello");

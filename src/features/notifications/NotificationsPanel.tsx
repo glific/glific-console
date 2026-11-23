@@ -3,13 +3,11 @@ import { type ReactNode, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
-import { StatusDot } from "@/components/StatusDot";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { currentAppUrl } from "@/lib/backend";
-import { parseSeverity, type Severity, useMarkNotificationsRead, useRecentNotifications } from "./notifications";
-
-const tones = { critical: "danger", warning: "warning", info: "info" } as const satisfies Record<Severity, string>;
+import { NotificationCard } from "./NotificationCard";
+import { groupByDay, useMarkNotificationsRead, useRecentNotifications } from "./notifications";
 
 export function NotificationsPanel() {
   const { t, i18n } = useTranslation();
@@ -22,7 +20,14 @@ export function NotificationsPanel() {
     if (hasUnread) mutate();
   }, [hasUnread, mutate]);
 
-  const time = new Intl.DateTimeFormat(i18n.language, { dateStyle: "medium", timeStyle: "short" });
+  const dayLabel = (day: string) => {
+    const date = new Date(`${day}T00:00`);
+    const today = new Date();
+    const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+    if (date.toDateString() === today.toDateString()) return t("notifications.today");
+    if (date.toDateString() === yesterday.toDateString()) return t("notifications.yesterday");
+    return new Intl.DateTimeFormat(i18n.language, { weekday: "short", day: "numeric", month: "short" }).format(date);
+  };
 
   let body: ReactNode;
   if (notifications.isPending) {
@@ -39,33 +44,24 @@ export function NotificationsPanel() {
     body = <EmptyState icon={<BellOffIcon />} title={t("notifications.empty")} />;
   } else {
     body = (
-      <ul className="flex flex-col divide-y">
-        {notifications.data.map((notification) => {
-          const severity = parseSeverity(notification.severity);
-          return (
-            <li key={notification.id} className="flex gap-inline px-stack py-3">
-              <StatusDot tone={tones[severity]} label={t(`notifications.severity.${severity}`)} className="mt-1.5" />
-              <div className="flex min-w-0 flex-col gap-0.5">
-                <p className="text-body">{notification.message}</p>
-                <p className="text-body-sm text-muted-foreground">
-                  {[
-                    notification.category,
-                    notification.insertedAt ? time.format(new Date(notification.insertedAt)) : null,
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </p>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="flex flex-col gap-stack p-stack">
+        {groupByDay(notifications.data).map(({ day, items }) => (
+          <section key={day} aria-label={dayLabel(day)} className="flex flex-col gap-inline">
+            <h3 className="text-body-sm font-medium text-muted-foreground">{dayLabel(day)}</h3>
+            <ul className="flex flex-col gap-inline">
+              {items.map((notification) => (
+                <NotificationCard key={notification.id} notification={notification} />
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
     );
   }
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="min-h-0 flex-1 overflow-y-auto">{body}</div>
+      <div className="min-h-0 flex-1 overflow-y-auto bg-muted">{body}</div>
       <div className="border-t p-stack">
         <Button variant="outline" size="sm" className="w-full" asChild>
           <a href={currentAppUrl("/notifications")}>{t("notifications.viewAll")}</a>
