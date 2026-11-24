@@ -1,21 +1,17 @@
 import { useTranslation } from "react-i18next";
 import { StatusDot } from "@/components/StatusDot";
 import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { managers, useAccess } from "@/features/auth/current-user";
 import { HomeRow, type HomeRowProps } from "./HomeRow";
 import { HomeSection } from "./HomeSection";
-import { useFlowsAndTriggers } from "./home-data";
+import { placeholderDrafts, placeholderScheduled } from "./placeholder-data";
 import { relativeTime } from "./relative-time";
-
-const SHOWN_EACH = 2;
 
 type Row = HomeRowProps & { id: string };
 
 export function SuggestedActions() {
   const { t, i18n } = useTranslation();
   const { can } = useAccess();
-  const data = useFlowsAndTriggers();
   const isManager = can(managers);
   const dot = (tone: "neutral" | "info" | "success") => <StatusDot tone={tone} />;
 
@@ -27,64 +23,38 @@ export function SuggestedActions() {
       title: t("home.next.chats.title"),
       detail: t("home.next.chats.detail"),
     });
-  } else if (data.data) {
-    const flows = (data.data.flows ?? []).flatMap((flow) => (flow?.id && flow.uuid ? [flow] : []));
-    if (flows.length === 0) {
+  } else {
+    for (const draft of placeholderDrafts) {
       rows.push({
-        id: "first-flow",
-        icon: dot("success"),
-        title: t("home.next.firstFlow.title"),
-        detail: t("home.next.firstFlow.detail"),
-      });
-    }
-    const drafts = flows.filter(
-      (flow) => !flow.lastPublishedAt || (flow.lastChangedAt && flow.lastChangedAt > flow.lastPublishedAt),
-    );
-    for (const flow of drafts.slice(0, SHOWN_EACH)) {
-      const edited = flow.lastChangedAt ?? flow.updatedAt;
-      rows.push({
-        id: `draft-${flow.id}`,
+        id: draft.id,
         icon: dot("neutral"),
-        title: flow.name ?? "",
+        title: draft.name,
         detail: [
-          t(flow.lastPublishedAt ? "home.next.draft.unpublished" : "home.next.draft.never"),
-          edited ? t("home.next.draft.edited", { when: relativeTime(edited, i18n.language) }) : null,
-        ]
-          .filter(Boolean)
-          .join(" · "),
+          t("home.next.draft.unpublished"),
+          t("home.next.draft.edited", {
+            when: relativeTime(new Date(Date.now() - draft.editedAgo).toISOString(), i18n.language),
+          }),
+        ].join(" · "),
       });
     }
-    const now = new Date().toISOString();
-    const scheduled = (data.data.triggers ?? [])
-      .flatMap((trigger) =>
-        trigger?.id && trigger.isActive && trigger.nextTriggerAt && trigger.nextTriggerAt > now ? [trigger] : [],
-      )
-      .sort((a, b) => String(a.nextTriggerAt).localeCompare(String(b.nextTriggerAt)));
     const when = new Intl.DateTimeFormat(i18n.language, {
       day: "numeric",
       month: "short",
       hour: "2-digit",
       minute: "2-digit",
     });
-    for (const trigger of scheduled.slice(0, SHOWN_EACH)) {
+    for (const trigger of placeholderScheduled) {
       rows.push({
-        id: `trigger-${trigger.id}`,
+        id: trigger.id,
         icon: dot("info"),
-        title: trigger.flow?.name ?? trigger.name ?? "",
-        detail: [
-          when.format(new Date(String(trigger.nextTriggerAt))),
-          (trigger.groups ?? []).filter(Boolean).join(", "),
-        ]
-          .filter(Boolean)
-          .join(" · "),
+        title: trigger.name,
+        detail: [when.format(new Date(Date.now() + trigger.inMs)), trigger.groups.join(", ")].join(" · "),
       });
     }
   }
 
   let body: React.ReactNode;
-  if (isManager && data.isPending) body = <Skeleton className="m-stack h-10" />;
-  else if (rows.length === 0)
-    body = <p className="px-stack py-3 text-body text-muted-foreground">{t("home.next.none")}</p>;
+  if (rows.length === 0) body = <p className="px-stack py-3 text-body text-muted-foreground">{t("home.next.none")}</p>;
   else
     body = (
       <ul className="divide-y">

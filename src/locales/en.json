@@ -90,7 +90,6 @@
       "withName": "{{greeting}}, {{name}}"
     },
     "summary": {
-      "firstFlow": "Let's build your first flow.",
       "trial_one": "{{count}} day left in your trial.",
       "trial_other": "{{count}} days left in your trial.",
       "problems_one": "{{count}} thing needs your attention.",
@@ -99,12 +98,6 @@
     "ask": {
       "placeholder": "Ask Glific AI about your chats, flows or spend",
       "pills": {
-        "new": {
-          "one": "Build a sign-up flow",
-          "two": "Make a class reminder",
-          "three": "Start from a template",
-          "four": "Show me how Glific works"
-        },
         "trial": {
           "one": "Test my draft",
           "two": "Improve my flow",
@@ -131,11 +124,10 @@
       "last7": "Last 7 days",
       "last30": "Last 30 days",
       "newContacts": "New contacts",
-      "messages": "Messages",
       "received": "Messages received",
       "sent": "Messages sent",
       "spent": "Spent",
-      "error": "Couldn't load the numbers"
+      "sample": "Sample numbers, for now. Live figures are coming soon."
     },
     "fix": {
       "title": "Things to fix",
@@ -156,10 +148,6 @@
     "next": {
       "title": "Suggested actions",
       "none": "Nothing to do right now.",
-      "firstFlow": {
-        "title": "Build your first flow",
-        "detail": "No flows yet"
-      },
       "draft": {
         "never": "Never published",
         "unpublished": "Unpublished changes",
