@@ -121,27 +121,6 @@ export type AskGlificFeedbackMutationVariables = Exact<{
 
 export type AskGlificFeedbackMutation = { askGlificFeedback: { success: boolean | null } | null };
 
-export type HomeActivityQueryVariables = Exact<{
-  current?: DateRangeInput | null | undefined;
-  previous?: DateRangeInput | null | undefined;
-}>;
-
-
-export type HomeActivityQuery = { newContacts: number | null, previousNewContacts: number | null, messages: number | null, previousMessages: number | null };
-
-export type HomeUsageQueryVariables = Exact<{
-  fromDate: string;
-  toDate: string;
-}>;
-
-
-export type HomeUsageQuery = { dailyAppUsage: Array<{ date: string | null, incomingMsg: number | null, outgoingMsg: number | null, totalFees: number | null } | null> | null };
-
-export type HomeFlowsAndTriggersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type HomeFlowsAndTriggersQuery = { flows: Array<{ id: string | null, uuid: unknown, name: string | null, lastPublishedAt: string | null, lastChangedAt: string | null, updatedAt: string | null } | null> | null, triggers: Array<{ id: string | null, name: string | null, isActive: boolean | null, nextTriggerAt: string | null, groups: Array<string | null> | null, flow: { name: string | null } | null } | null> | null };
-
 export type UpdateLanguageMutationVariables = Exact<{
   input: CurrentUserInput;
 }>;
