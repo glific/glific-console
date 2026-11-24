@@ -148,7 +148,7 @@ export type MarkNotificationsReadMutation = { markNotificationAsRead: boolean | 
 export type OrganizationQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OrganizationQuery = { organization: { organization: { id: string | null, name: string | null, isTrialOrg: boolean | null, isSuspended: boolean | null, bsp: { shortcode: string | null } | null } | null } | null };
+export type OrganizationQuery = { organization: { organization: { id: string | null, name: string | null, isTrialOrg: boolean | null, isSuspended: boolean | null, trialExpirationDate: string | null, bsp: { shortcode: string | null } | null } | null } | null };
 
 export type OrganizationServicesQueryVariables = Exact<{ [key: string]: never; }>;
 

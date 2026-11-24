@@ -31,7 +31,11 @@ function glificDevServer(): ServerOptions {
 
 export default defineConfig(({ command, mode }) => {
   // Fail fast at dev/build start rather than at the first API call.
-  parseEnv(loadEnv(mode, process.cwd(), "VITE_"));
+  const env = parseEnv(loadEnv(mode, process.cwd(), "VITE_"));
+  // The backend only checks the captcha when a token is sent, so production must never ship without one.
+  if (process.env.VERCEL_ENV === "production" && !env.VITE_RECAPTCHA_SITE_KEY) {
+    throw new Error("VITE_RECAPTCHA_SITE_KEY is required for production builds (staff sign-up captcha).");
+  }
   const localDev = command === "serve" && !process.env.VITEST;
 
   return {

@@ -78,7 +78,86 @@
   },
   "home": {
     "title": "Home",
-    "description": "Welcome to the new Glific console."
+    "greeting": {
+      "morning": "Good morning",
+      "earlyStart": "Early start",
+      "freshWeek": "Fresh week",
+      "weekend": "Happy {{weekday}}",
+      "afternoon": "Good afternoon",
+      "almostWeekend": "Almost the weekend",
+      "evening": "Good evening",
+      "late": "Working late?",
+      "withName": "{{greeting}}, {{name}}"
+    },
+    "summary": {
+      "trial_one": "{{count}} day left in your trial.",
+      "trial_other": "{{count}} days left in your trial.",
+      "problems_one": "{{count}} thing needs your attention.",
+      "problems_other": "{{count}} things need your attention."
+    },
+    "ask": {
+      "placeholder": "Ask Glific AI about your chats, flows or spend",
+      "pills": {
+        "trial": {
+          "one": "Test my draft",
+          "two": "Improve my flow",
+          "three": "What do I need to go live?",
+          "four": "Build another flow"
+        },
+        "returning": {
+          "one": "How many people replied this week?",
+          "two": "Build a sign-up flow",
+          "three": "Make an AI assistant",
+          "four": "What needs fixing in my flows?"
+        }
+      }
+    },
+    "trial": {
+      "goLive": "Go live on WhatsApp",
+      "daysLeft_one": "{{count}} day left",
+      "daysLeft_other": "{{count}} days left",
+      "ended": "Your trial has ended."
+    },
+    "stats": {
+      "title": "How it's going",
+      "period": "Period",
+      "last7": "Last 7 days",
+      "last30": "Last 30 days",
+      "newContacts": "New contacts",
+      "received": "Messages received",
+      "sent": "Messages sent",
+      "spent": "Spent",
+      "sample": "Sample numbers, for now. Live figures are coming soon."
+    },
+    "fix": {
+      "title": "Things to fix",
+      "none": "Everything is working.",
+      "suspended": {
+        "title": "Your account is paused",
+        "detail": "Messages aren't going out. Write to support@glific.org for help."
+      },
+      "walletEmpty": {
+        "title": "Your WhatsApp wallet is empty",
+        "detail": "Outgoing messages are on hold until you recharge your Gupshup wallet."
+      },
+      "walletLow": {
+        "title": "Your WhatsApp wallet is running low",
+        "detail": "Recharge your Gupshup wallet so messages keep going out."
+      }
+    },
+    "next": {
+      "title": "Suggested actions",
+      "none": "Nothing to do right now.",
+      "draft": {
+        "never": "Never published",
+        "unpublished": "Unpublished changes",
+        "edited": "edited {{when}}"
+      },
+      "chats": {
+        "title": "Reply to your chats",
+        "detail": "See who is waiting for an answer"
+      }
+    }
   },
   "contacts": {
     "title": "Contacts",
@@ -222,21 +301,114 @@
     "contents": "Contents"
   },
   "auth": {
-    "title": "Sign in to Glific",
+    "title": "Log in",
     "description": "Use the phone number and password for your Glific account.",
     "phone": "Phone number",
     "phoneHint": "With country code, e.g. 919876543210",
     "password": "Password",
+    "passwordRules": "10 to 30 characters, with upper and lower case letters, a number and a symbol.",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
-    "submit": "Sign in",
-    "submitting": "Signing in…",
-    "errors": {
-      "required": "Enter your phone number and password.",
-      "generic": "Couldn't sign in. Check your connection and try again."
+    "submit": "Log in",
+    "submitting": "Logging in…",
+    "forgotPassword": "Forgot password?",
+    "newHere": "New to Glific?",
+    "createAccount": "Create an account",
+    "haveAccount": "Have an account?",
+    "logIn": "Log in",
+    "backToLogin": "Back to log in",
+    "signOut": "Log out",
+    "signingOut": "Logging out…",
+    "code": {
+      "label": "Verification code",
+      "resend": "Send a new code",
+      "resendIn": "Send a new code in {{seconds}}s"
     },
-    "signOut": "Sign out",
-    "signingOut": "Signing out…"
+    "reset": {
+      "title": "Reset your password",
+      "description": "We'll send a code to your WhatsApp number.",
+      "sendCode": "Send code",
+      "codeSent": "If {{phone}} has an account, a code is on its way on WhatsApp.",
+      "newPassword": "New password",
+      "save": "Save password",
+      "changeNumber": "Use a different number",
+      "done": "Your password has been changed. Log in with the new one."
+    },
+    "register": {
+      "title": "Create your account",
+      "description": "Join your organisation's Glific. An admin approves new accounts.",
+      "name": "Your full name",
+      "email": "Email",
+      "phoneHint": "Your personal WhatsApp number, not your chatbot's. We'll send a code to it.",
+      "updates": "I would like to receive product updates",
+      "sendCode": "Send code on WhatsApp",
+      "codeTitle": "Check WhatsApp",
+      "codeSent": "Enter the code we sent to {{phone}}.",
+      "submit": "Create account",
+      "editDetails": "Change my details",
+      "doneTitle": "Your account is created",
+      "done": "Ask an admin in your organisation to approve it. You can log in once they have."
+    },
+    "trial": {
+      "title": "Create your account",
+      "description": "Free. No card needed.",
+      "name": "Name",
+      "email": "Work email",
+      "phone": "Number",
+      "phoneHint": "You log in with it, and try your chatbot on it.",
+      "terms": "By starting, you agree to the terms of service and privacy policy.",
+      "start": "Start {{days}}-day trial",
+      "organisationTitle": "What's your organisation called?",
+      "organisation": "Organisation name",
+      "organisationPlaceholder": "e.g. Saarthi Learning",
+      "organisationRequired": "Enter your organisation's name",
+      "continue": "Continue",
+      "back": "Back",
+      "codeTitle": "Check your email",
+      "codeSent": "Enter the code we sent to {{email}}.",
+      "verify": "Verify and start trial"
+    },
+    "panel": {
+      "label": "About Glific",
+      "headline": "The right information, to the right person,",
+      "highlight": "on WhatsApp.",
+      "subline": "Build a chatbot that teaches, reminds and answers, in their language. No code.",
+      "chat": {
+        "greeting": "Namaste! 👋 Which class is your child in?",
+        "reply": "Class 5",
+        "lesson": "Here's this week's lesson 📚 Reply DONE when you've finished it."
+      },
+      "proof": {
+        "nonprofits": {
+          "value": "250+",
+          "label": "nonprofits"
+        },
+        "messages": {
+          "value": "100M+",
+          "label": "messages"
+        },
+        "openSource": {
+          "value": "Open",
+          "label": "source"
+        }
+      }
+    },
+    "errors": {
+      "generic": "Couldn't log in. Check your connection and try again.",
+      "notApproved": "Your account is not approved yet. Please contact your organization admin.",
+      "nameRequired": "Enter your name",
+      "emailInvalid": "Enter a valid email address",
+      "phoneInvalid": "Enter the number with its country code, e.g. 919876543210",
+      "passwordRequired": "Enter your password",
+      "passwordShort": "Password must be at least 10 characters long.",
+      "passwordLong": "Password can be at most 30 characters long.",
+      "passwordRules": "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+      "codeInvalid": "Enter the code from the message",
+      "codeNotSent": "We are unable to generate an OTP, kindly contact your technical team.",
+      "registerFailed": "We couldn't create your account. Check the code and try again.",
+      "resetFailed": "We are unable to update your password, please enter the correct OTP.",
+      "trialFailed": "We couldn't start your trial. Check the code and try again."
+    }
   },
   "list": {
     "total_one": "{{count}} result",

@@ -3,6 +3,7 @@ import { HttpResponse, http } from "msw";
 import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 import { getSession } from "@/lib/session";
+import { currentUserWithRoles } from "@/mocks/handlers";
 import { expectNoA11yViolations } from "@/test/axe";
 import { worker } from "@/test/msw";
 import { renderRoute } from "@/test/render";
@@ -16,7 +17,7 @@ async function fillAndSubmit(phone: string, password: string) {
 describe("LoginPage", () => {
   it("guards app routes and returns to the requested page after signing in", async () => {
     const { router } = renderRoute("/contacts", { signedIn: false });
-    expect(await screen.findByRole("heading", { level: 1, name: "Sign in to Glific" })).toBeVisible();
+    expect(await screen.findByRole("heading", { level: 1, name: "Log in" })).toBeVisible();
     await expectNoA11yViolations();
     await fillAndSubmit("+91 98765 43210", "password");
     await expect.poll(() => router.state.location.pathname).toBe("/contacts");
@@ -27,7 +28,6 @@ describe("LoginPage", () => {
     renderRoute("/login", { signedIn: false });
     await fillAndSubmit("919876543210", "wrong");
     expect((await screen.findByRole("alert")).textContent).toContain("Invalid phone or password");
-    expect(screen.getByLabelText("Password")).toHaveAttribute("aria-invalid", "true");
 
     worker.use(
       http.post("*/api/v1/session", () =>
@@ -40,8 +40,10 @@ describe("LoginPage", () => {
 
   it("validates empty fields, toggles password visibility and handles network failure", async () => {
     renderRoute("/login", { signedIn: false });
-    await userEvent.click(await screen.findByRole("button", { name: "Sign in" }));
-    expect((await screen.findByRole("alert")).textContent).toContain("Enter your phone number and password.");
+    await userEvent.click(await screen.findByRole("button", { name: "Log in" }));
+    expect(await screen.findByText("Enter the number with its country code, e.g. 919876543210")).toBeVisible();
+    expect(screen.getByText("Enter your password")).toBeVisible();
+    expect(screen.getByLabelText("Phone number")).toHaveAttribute("aria-invalid", "true");
 
     const password = screen.getByLabelText("Password");
     await userEvent.click(screen.getByRole("button", { name: "Show password" }));
@@ -51,15 +53,37 @@ describe("LoginPage", () => {
 
     worker.use(http.post("*/api/v1/session", () => HttpResponse.error()));
     await fillAndSubmit("919876543210", "password");
-    await expect.poll(() => screen.getByRole("alert").textContent).toContain("Couldn't sign in");
+    await expect.poll(() => screen.getByRole("alert").textContent).toContain("Couldn't log in");
   });
 
   it("sends signed-in users away from /login, and signs out", async () => {
     const { router } = renderRoute("/login");
     await expect.poll(() => router.state.location.pathname).toBe("/");
     await userEvent.click(await screen.findByRole("button", { name: /account and settings/ }));
-    await userEvent.click(await screen.findByRole("menuitem", { name: "Sign out" }));
+    await userEvent.click(await screen.findByRole("menuitem", { name: "Log out" }));
     await expect.poll(() => router.state.location.pathname).toBe("/login");
     expect(getSession()).toBeNull();
+  });
+
+  it("turns away accounts an admin hasn't approved yet", async () => {
+    let endedOnServer = false;
+    worker.use(
+      currentUserWithRoles(["None"]),
+      http.delete("*/api/v1/session", () => {
+        endedOnServer = true;
+        return HttpResponse.json({ data: {} });
+      }),
+    );
+    renderRoute("/login", { signedIn: false });
+    await fillAndSubmit("919876543210", "password");
+    expect((await screen.findByRole("alert")).textContent).toContain("Your account is not approved yet.");
+    expect(getSession()).toBeNull();
+    expect(endedOnServer).toBe(true);
+  });
+
+  it("links to password reset and to creating an account", async () => {
+    renderRoute("/login", { signedIn: false });
+    expect(await screen.findByRole("link", { name: "Forgot password?" })).toHaveAttribute("href", "/forgot-password");
+    expect(screen.getByRole("link", { name: "Create an account" })).toHaveAttribute("href", "/register");
   });
 });

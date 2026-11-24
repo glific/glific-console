@@ -19,6 +19,8 @@
   --palette-brand-500: #23995b;
   --palette-brand-700: #11452b;
   --palette-brand-900: #063f24;
+  /* sign-in panel highlight from the 2.0 prototype */
+  --palette-lime-400: #6be07a;
 
   --palette-red-100: #ffe1e2;
   --palette-red-700: #ab2c30;
@@ -35,6 +37,16 @@
   --palette-violet-500: #7357d9;
   --palette-purple-400: #a35ddb;
   --palette-pink-400: #d978b4;
+
+  /* Home greeting by time of day, from the 2.0 prototype */
+  --palette-sunrise-500: #e07b39;
+  --palette-sunrise-100: #ffe6d2;
+  --palette-sun-500: #d9a21b;
+  --palette-sky-100: #dceeff;
+  --palette-sunset-500: #d2617a;
+  --palette-sunset-100: #f8dce6;
+  --palette-moon-500: #5b5fc7;
+  --palette-moon-100: #d9ddf4;
 
   --palette-wa-wallpaper: #f8f6f2;
   --palette-wa-bubble-out: #d9fdd3;
@@ -95,6 +107,19 @@
   --chat-meta: var(--palette-wa-meta);
   --chat-read: var(--palette-wa-read);
   --whatsapp: var(--palette-wa-green);
+
+  --mood-morning: var(--palette-sunrise-500);
+  --mood-morning-wash: var(--palette-sunrise-100);
+  --mood-afternoon: var(--palette-sun-500);
+  --mood-afternoon-wash: var(--palette-sky-100);
+  --mood-evening: var(--palette-sunset-500);
+  --mood-evening-wash: var(--palette-sunset-100);
+  --mood-night: var(--palette-moon-500);
+  --mood-night-wash: var(--palette-moon-100);
+
+  --brand-panel: var(--palette-brand-900);
+  --brand-panel-foreground: var(--palette-white);
+  --brand-highlight: var(--palette-lime-400);
 
   --chart-1: var(--palette-brand-700);
   --chart-2: var(--palette-blue-500);
@@ -162,6 +187,17 @@
   --color-chat-meta: var(--chat-meta);
   --color-chat-read: var(--chat-read);
   --color-whatsapp: var(--whatsapp);
+  --color-mood-morning: var(--mood-morning);
+  --color-mood-morning-wash: var(--mood-morning-wash);
+  --color-mood-afternoon: var(--mood-afternoon);
+  --color-mood-afternoon-wash: var(--mood-afternoon-wash);
+  --color-mood-evening: var(--mood-evening);
+  --color-mood-evening-wash: var(--mood-evening-wash);
+  --color-mood-night: var(--mood-night);
+  --color-mood-night-wash: var(--mood-night-wash);
+  --color-brand-panel: var(--brand-panel);
+  --color-brand-panel-foreground: var(--brand-panel-foreground);
+  --color-brand-highlight: var(--brand-highlight);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);

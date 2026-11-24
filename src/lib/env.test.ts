@@ -10,6 +10,7 @@ describe("parseEnv", () => {
       VITE_SENTRY_DSN: null,
       VITE_POSTHOG_KEY: null,
       VITE_POSTHOG_HOST: "https://us.i.posthog.com",
+      VITE_RECAPTCHA_SITE_KEY: null,
     });
     const env = parseEnv({
       VITE_BACKEND_URL: "https://api.glific.test:4001/",

@@ -27,6 +27,9 @@ const walletBalanceSubscription = graphql<WalletBalanceUpdatedSubscription, Wall
 const NO_WALLET_PROVIDERS = new Set(["gupshup_enterprise"]);
 const walletBalanceKey = ["walletBalance"] as const;
 
+/** At or below this (USD) the wallet counts as low, as in the current app. */
+export const LOW_BALANCE = 1;
+
 function parseBalance(raw: unknown): number | null {
   try {
     const value = typeof raw === "string" ? JSON.parse(raw) : raw;

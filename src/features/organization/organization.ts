@@ -17,6 +17,7 @@ const organizationQuery = graphql<OrganizationQuery, OrganizationQueryVariables>
         name
         isTrialOrg
         isSuspended
+        trialExpirationDate
         bsp {
           shortcode
         }

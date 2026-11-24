@@ -3,7 +3,7 @@ import { expect, test } from "../fixtures";
 test.describe("contacts", () => {
   test("navigates from home to contacts and searches", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { level: 1, name: "Home" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
     await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Contacts" }).click();
     await expect(page).toHaveURL(/\/contacts$/);
