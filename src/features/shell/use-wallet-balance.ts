@@ -2,16 +2,22 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useOrganization } from "@/features/organization/organization";
 import { request } from "@/graphql/client";
-import { graphql } from "@/graphql/generated";
+import { graphql } from "@/graphql/document";
+import type {
+  WalletBalanceQuery,
+  WalletBalanceQueryVariables,
+  WalletBalanceUpdatedSubscription,
+  WalletBalanceUpdatedSubscriptionVariables,
+} from "@/graphql/generated/graphql";
 import { subscribe } from "@/graphql/subscriptions";
 
-const WalletBalanceQuery = graphql(`
+const walletBalanceQuery = graphql<WalletBalanceQuery, WalletBalanceQueryVariables>(`
   query WalletBalance {
     bspbalance
   }
 `);
 
-const WalletBalanceSubscription = graphql(`
+const walletBalanceSubscription = graphql<WalletBalanceUpdatedSubscription, WalletBalanceUpdatedSubscriptionVariables>(`
   subscription WalletBalanceUpdated($organizationId: ID!) {
     bspBalance(organizationId: $organizationId)
   }
@@ -41,7 +47,7 @@ export function useWalletBalance() {
     Boolean(organization) && !organization?.isTrialOrg && !NO_WALLET_PROVIDERS.has(organization?.bsp?.shortcode ?? "");
   const balance = useQuery({
     queryKey: walletBalanceKey,
-    queryFn: async () => parseBalance((await request(WalletBalanceQuery)).bspbalance),
+    queryFn: async () => parseBalance((await request(walletBalanceQuery)).bspbalance),
     enabled: shown,
     staleTime: Number.POSITIVE_INFINITY,
   });
@@ -50,7 +56,7 @@ export function useWalletBalance() {
   useEffect(() => {
     if (!shown || !organizationId) return;
     return subscribe(
-      WalletBalanceSubscription,
+      walletBalanceSubscription,
       { organizationId },
       {
         next: (data) => {

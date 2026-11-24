@@ -7,27 +7,28 @@ import { expectNoA11yViolations } from "@/test/axe";
 import { worker } from "@/test/msw";
 import { renderRoute } from "@/test/render";
 import { dayMood } from "./day-mood";
-import { periodDays } from "./home-data";
 
 const section = (name: string) => screen.findByRole("region", { name: new RegExp(`^${name}`) });
 
 describe("Home", () => {
-  it("greets the user and shows activity, problems and next steps from the backend", async () => {
+  it("greets the user and shows sample activity, problems and next steps", async () => {
     renderRoute("/");
-    expect(await screen.findByRole("heading", { level: 1, name: /Glific/ })).toBeVisible();
+    // Late at night the greeting is "Working late?", without a name.
+    const heading = await screen.findByRole("heading", { level: 1, name: dayMood().withName ? /Glific/ : undefined });
+    expect(heading).toBeVisible();
 
     const stats = await section("How it's going");
     expect(await within(stats).findByText("212")).toBeVisible();
     expect(within(stats).getByText("Messages received")).toBeVisible();
     expect(within(stats).getByText("3,480")).toBeVisible();
     expect(within(stats).getByText("$2.10")).toBeVisible();
+    expect(within(stats).getByText(/Sample numbers/)).toBeVisible();
 
     const fix = await section("Things to fix");
     expect(await within(fix).findByText("Registration flow stopped: the webhook returned an error.")).toBeVisible();
 
     const next = await section("Suggested actions");
     expect(await within(next).findByText("Worker onboarding")).toBeVisible();
-    expect(within(next).queryByText("State registration")).toBeNull();
     expect(within(next).getByText("Weekly lesson")).toBeVisible();
     // Links into the current app stay in the rail and the right panel, not on Home.
     expect(within(stats).queryAllByRole("link")).toEqual([]);
@@ -37,14 +38,12 @@ describe("Home", () => {
     await expectNoA11yViolations();
   });
 
-  it("shows staff the numbers the backend lets them see, and their chats", async () => {
+  it("shows staff their chats as the next step", async () => {
     worker.use(currentUserWithRoles(["Staff"]));
     renderRoute("/");
-    const stats = await section("How it's going");
-    expect(await within(stats).findByText("4,380")).toBeVisible();
-    expect(within(stats).queryByText("Spent")).toBeNull();
     const next = await section("Suggested actions");
     expect(await within(next).findByText("Reply to your chats")).toBeVisible();
+    expect(within(next).queryByText("Worker onboarding")).toBeNull();
   });
 
   it("asks Glific AI from Home, with pills that fill the box", async () => {
@@ -57,7 +56,7 @@ describe("Home", () => {
     expect(await within(panel).findByText("How many people replied this week?")).toBeVisible();
   });
 
-  it("starts a trial with no flows on building the first one", async () => {
+  it("shows a trial its days left and trial suggestions", async () => {
     worker.use(
       glificApi.query("Organization", () =>
         HttpResponse.json({
@@ -75,14 +74,11 @@ describe("Home", () => {
           },
         }),
       ),
-      glificApi.query("HomeFlowsAndTriggers", () => HttpResponse.json({ data: { flows: [], triggers: [] } })),
     );
     renderRoute("/");
-    expect(await screen.findByText("Let's build your first flow.")).toBeVisible();
+    expect(await screen.findByText("3 days left in your trial.")).toBeVisible();
     expect(screen.getByRole("link", { name: /Go live on WhatsApp\s*3 days left/ })).toBeVisible();
-    const next = await section("Suggested actions");
-    expect(await within(next).findByText("Build your first flow")).toBeVisible();
-    expect(screen.getByRole("button", { name: "Build a sign-up flow" })).toBeVisible();
+    expect(await screen.findByRole("button", { name: "Test my draft" })).toBeVisible();
   });
 
   it("doesn't call a trial ended when its end date is unknown", async () => {
@@ -119,15 +115,5 @@ describe("dayMood", () => {
     expect(dayMood(new Date(2026, 10, 21, 14)).greeting).toBe("weekend");
     expect(dayMood(new Date(2026, 10, 17, 18)).mood).toBe("evening");
     expect(dayMood(new Date(2026, 10, 17, 23))).toMatchObject({ mood: "night", withName: false });
-  });
-});
-
-describe("periodDays", () => {
-  it("splits whole days into this period and the one before, without sharing a day", () => {
-    const now = Date.UTC(2026, 10, 23, 12);
-    expect(periodDays(7, now)).toEqual({
-      current: { fromDate: "2026-11-17", toDate: "2026-11-23" },
-      previous: { fromDate: "2026-11-10", toDate: "2026-11-16" },
-    });
   });
 });

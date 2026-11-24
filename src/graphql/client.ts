@@ -1,6 +1,6 @@
 import { fetchWithSession } from "@/lib/auth";
 import { apiBaseUrl } from "@/lib/backend";
-import type { TypedDocumentString } from "./generated/graphql";
+import type { TypedDocument } from "./document";
 
 export class GraphQLRequestError extends Error {
   override name = "GraphQLRequestError";
@@ -15,13 +15,13 @@ export class GraphQLRequestError extends Error {
 
 /** Runs a typed query or mutation against the Glific GraphQL API (`/api`), with the session's access token. */
 export async function request<TResult, TVariables>(
-  document: TypedDocumentString<TResult, TVariables>,
+  document: TypedDocument<TResult, TVariables>,
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ): Promise<TResult> {
   const response = await fetchWithSession(apiBaseUrl(), {
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
-    body: JSON.stringify({ query: document.toString(), variables }),
+    body: JSON.stringify({ query: document, variables }),
   });
 
   const body = (await response.json().catch(() => null)) as {

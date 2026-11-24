@@ -31,10 +31,11 @@ glific/glific#6078 and linked from your ticket (see #6235). Build the first vers
 
 1. **Feature folder**: `src/features/<name>/` with `api.ts` (operations and hooks), one component per file in
    PascalCase, and `index.ts` exporting the page.
-2. **Data**: write operations with `graphql()` from `@/graphql/generated`, run them with `request()` from
-   `@/graphql/client`, and wrap them in TanStack Query hooks with a key factory (see `contactKeys`). Then
-   `pnpm codegen` and commit `src/graphql/generated`. The schema is `schema/glific.graphql`; refresh it with
-   `pnpm schema:pull` when the backend changes (needs the backend at `../glific`).
+2. **Data**: write each operation inline in `features/<name>/api.ts` as
+   `graphql<NameQuery, NameQueryVariables>(\`query Name …\`)`from`@/graphql/document`, with the types from
+   `@/graphql/generated/graphql`. Run them with `request()`from`@/graphql/client`and wrap them in TanStack Query
+   hooks with a key factory (see`contactKeys`). Then `pnpm codegen`and commit`src/graphql/generated/graphql.ts`. The schema is `schema/glific.graphql`; refresh it with
+   `pnpm schema:pull`when the backend changes (needs the backend at`../glific`).
 3. **Live updates**: `subscribe()` from `@/graphql/subscriptions`. It shares one socket and loads it lazily.
 4. **Route**: add a lazy route in `src/routes/router.tsx`, wrapped in `<RequireAccess allow={...}>` with the same
    role group as the current app's menu entry (`everyone`, `managers`, `admins`, `staffManagers`, `glificAdmins`).

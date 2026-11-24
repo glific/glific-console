@@ -75,7 +75,7 @@ To stay out of each other's way:
 
 1. `pnpm check` passes (typecheck, lint, design-system lint, unit and component tests).
 2. UI change: `pnpm test:e2e` passes against your local backend.
-3. Changed a GraphQL operation: `pnpm codegen` and commit `src/graphql/generated`.
+3. Changed a GraphQL operation: `pnpm codegen` and commit `src/graphql/generated/graphql.ts`.
 4. New page or heavy import: `pnpm build && pnpm size` stays inside the budgets.
 5. Strings exist in both `en.json` and `hi.json`.
 6. Commits: Conventional Commits with a lowercase subject (`feat(flows): add folders`), body lines at most 100

@@ -7,7 +7,6 @@ import { dayMood } from "./day-mood";
 import { HomeAsk } from "./HomeAsk";
 import { HomeGreeting } from "./HomeGreeting";
 import { HowItsGoing } from "./HowItsGoing";
-import { useFlowsAndTriggers } from "./home-data";
 import { SuggestedActions } from "./SuggestedActions";
 import { ThingsToFix } from "./ThingsToFix";
 import { TrialStrip } from "./TrialStrip";
@@ -27,7 +26,6 @@ export function HomePage() {
   const mood = dayMood();
   const user = useCurrentUser().data;
   const organization = useOrganization().data;
-  const flows = useFlowsAndTriggers().data?.flows;
   const problems = useProblems();
   const hasGlificAi = useVisibleSideApps().panels.some((app) => app.id === "glificAi");
   const firstName = user?.name?.trim().split(/\s+/)[0] ?? "";
@@ -37,19 +35,14 @@ export function HomePage() {
   const daysLeft = organization?.trialExpirationDate
     ? Math.max(0, Math.ceil((new Date(organization.trialExpirationDate).getTime() - Date.now()) / DAY))
     : null;
-  const noFlows = flows != null && flows.length === 0;
-
   let summary: string | null = null;
-  if (noFlows) summary = t("home.summary.firstFlow");
-  else if (trial && daysLeft !== null) {
+  if (trial && daysLeft !== null) {
     summary = daysLeft > 0 ? t("home.summary.trial", { count: daysLeft }) : t("home.trial.ended");
   } else if (!problems.isLoading) {
     summary = problems.total > 0 ? t("home.summary.problems", { count: problems.total }) : t("home.fix.none");
   }
 
-  let stage: "new" | "trial" | "returning" = "returning";
-  if (noFlows) stage = "new";
-  else if (trial) stage = "trial";
+  const stage = trial ? "trial" : "returning";
   const suggestions = (["one", "two", "three", "four"] as const).map((n) => t(`home.ask.pills.${stage}.${n}`));
 
   return (

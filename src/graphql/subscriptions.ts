@@ -1,7 +1,7 @@
 import type { Client } from "graphql-ws";
 import { accessToken } from "@/lib/auth";
 import { backendOrigin } from "@/lib/backend";
-import type { TypedDocumentString } from "./generated/graphql";
+import type { TypedDocument } from "./document";
 
 let client: Promise<Client> | null = null;
 
@@ -21,7 +21,7 @@ function socket(): Promise<Client> {
 
 /** Subscribes over the shared graphql-ws socket; returns an unsubscribe function. */
 export function subscribe<TResult, TVariables>(
-  document: TypedDocumentString<TResult, TVariables>,
+  document: TypedDocument<TResult, TVariables>,
   variables: TVariables,
   handlers: { next: (data: TResult) => void; error?: (error: unknown) => void },
 ): () => void {
@@ -30,7 +30,7 @@ export function subscribe<TResult, TVariables>(
   void socket().then((ws) => {
     if (cancelled) return;
     unsubscribe = ws.subscribe<TResult>(
-      { query: document.toString(), variables: variables as Record<string, unknown> },
+      { query: document, variables: variables as Record<string, unknown> },
       {
         next: (result) => {
           if (result.data) handlers.next(result.data);

@@ -1,7 +1,6 @@
 import { authHandlers } from "./auth";
 import { contactsHandlers } from "./contacts";
 import { glificAiHandlers } from "./glific-ai";
-import { homeHandlers } from "./home";
 import { notificationsHandlers } from "./notifications";
 import { organizationHandlers } from "./organization";
 import { userHandlers } from "./user";
@@ -16,6 +15,5 @@ export const handlers = [
   ...organizationHandlers,
   ...notificationsHandlers,
   ...glificAiHandlers,
-  ...homeHandlers,
   ...contactsHandlers,
 ];

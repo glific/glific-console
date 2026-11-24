@@ -2,10 +2,18 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "@/features/auth/current-user";
 import { request } from "@/graphql/client";
-import { graphql } from "@/graphql/generated";
+import { graphql } from "@/graphql/document";
+import type {
+  AskGlificFeedbackMutation,
+  AskGlificFeedbackMutationVariables,
+  AskGlificMutation,
+  AskGlificMutationVariables,
+  AskGlificResponseSubscription,
+  AskGlificResponseSubscriptionVariables,
+} from "@/graphql/generated/graphql";
 import { subscribe } from "@/graphql/subscriptions";
 
-const AskGlific = graphql(`
+const askGlific = graphql<AskGlificMutation, AskGlificMutationVariables>(`
   mutation AskGlific($input: AskGlificInput!) {
     askGlific(input: $input) {
       errors {
@@ -15,7 +23,7 @@ const AskGlific = graphql(`
   }
 `);
 
-const AskGlificResponse = graphql(`
+const askGlificResponse = graphql<AskGlificResponseSubscription, AskGlificResponseSubscriptionVariables>(`
   subscription AskGlificResponse($organizationId: ID!) {
     askGlificResponse(organizationId: $organizationId) {
       answer
@@ -29,7 +37,7 @@ const AskGlificResponse = graphql(`
   }
 `);
 
-const AskGlificFeedback = graphql(`
+const askGlificFeedback = graphql<AskGlificFeedbackMutation, AskGlificFeedbackMutationVariables>(`
   mutation AskGlificFeedback($input: AskGlificFeedbackInput!) {
     askGlificFeedback(input: $input) {
       success
@@ -62,7 +70,7 @@ export function useGlificAiChat({ enabled }: { enabled: boolean }) {
   useEffect(() => {
     if (!organizationId || !enabled) return;
     return subscribe(
-      AskGlificResponse,
+      askGlificResponse,
       { organizationId },
       {
         next: ({ askGlificResponse: response }) => {
@@ -99,7 +107,7 @@ export function useGlificAiChat({ enabled }: { enabled: boolean }) {
   const ask = useMutation({
     mutationFn: async ({ query, requestId }: { query: string; requestId: string }) => {
       const result = (
-        await request(AskGlific, {
+        await request(askGlific, {
           input: { query, conversationId: conversationId ?? "", pageUrl: globalThis.location.href, requestId },
         })
       ).askGlific;
@@ -116,7 +124,7 @@ export function useGlificAiChat({ enabled }: { enabled: boolean }) {
 
   const feedback = useMutation({
     mutationFn: ({ messageId, rating }: { messageId: string; rating: Feedback | null }) =>
-      request(AskGlificFeedback, { input: { messageId, rating } }),
+      request(askGlificFeedback, { input: { messageId, rating } }),
   });
 
   function send(query: string) {
